@@ -4,7 +4,7 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import col, delete
 
-from app.api.deps import CurrentUser, SessionDep, get_current_active_superuser
+from app.shared.deps.deps import CurrentUser, SessionDep, get_current_active_superuser
 from app.core.config import settings
 from app.core.security import get_password_hash, verify_password
 from app.modules.news.model.item import Item

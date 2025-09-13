@@ -3,7 +3,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from app.api.deps import CurrentUser, SessionDep
+from app.shared.deps.deps import CurrentUser, SessionDep
 from app.modules.news.model.item import Item
 from app.schemas import ItemCreate, ItemPublic, ItemsPublic, ItemUpdate, Message
 from app.services import item_service
