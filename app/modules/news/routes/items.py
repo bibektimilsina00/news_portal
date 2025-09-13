@@ -3,10 +3,11 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from app.shared.deps.deps import CurrentUser, SessionDep
 from app.modules.news.model.item import Item
-from app.schemas import ItemCreate, ItemPublic, ItemsPublic, ItemUpdate, Message
-from app.services import item_service
+from app.modules.news.schema.item import ItemCreate, ItemPublic, ItemsPublic, ItemUpdate
+from app.modules.news.services.item_service import item_service
+from app.shared.deps.deps import CurrentUser, SessionDep
+from app.shared.schema.message import Message
 
 router = APIRouter()
 

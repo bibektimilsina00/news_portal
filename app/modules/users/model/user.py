@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from sqlmodel import Field, Relationship
 
-from app.users.schema.user import UserBase
+from app.modules.users.schema.user import UserBase
 
 if TYPE_CHECKING:
     from app.modules.news.model.item import Item

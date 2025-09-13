@@ -3,9 +3,9 @@ from typing import Any
 
 from sqlmodel import Session, select
 
-from app.shared.crud.base import CRUDBase
 from app.modules.news.model.item import Item
-from app.news.schema.item import ItemCreate, ItemUpdate
+from app.modules.news.schema.item import ItemCreate, ItemUpdate
+from app.shared.crud.base import CRUDBase
 
 
 class CRUDItem(CRUDBase[Item, ItemCreate, ItemUpdate]):

@@ -4,13 +4,12 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import col, delete
 
-from app.shared.deps.deps import CurrentUser, SessionDep, get_current_active_superuser
 from app.core.config import settings
 from app.core.security import get_password_hash, verify_password
 from app.modules.news.model.item import Item
 from app.modules.users.model.user import User
-from app.schemas import (
-    Message,
+from app.modules.users.schema.auth import Token
+from app.modules.users.schema.user import (
     UpdatePassword,
     UserCreate,
     UserPublic,
@@ -19,8 +18,10 @@ from app.schemas import (
     UserUpdate,
     UserUpdateMe,
 )
-from app.services import user_service
-from app.utils import generate_new_account_email, send_email
+from app.modules.users.services.user_service import user_service
+from app.shared.deps.deps import CurrentUser, SessionDep, get_current_active_superuser
+from app.shared.schema.message import Message
+from app.shared.utils.utils import generate_new_account_email, send_email
 
 router = APIRouter()
 

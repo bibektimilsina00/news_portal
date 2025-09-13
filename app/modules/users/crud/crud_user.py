@@ -4,9 +4,9 @@ from typing import Any
 from sqlmodel import Session, select
 
 from app.core.security import get_password_hash, verify_password
-from app.shared.crud.base import CRUDBase
 from app.modules.users.model.user import User
-from app.users.schema.user import UserCreate, UserUpdate
+from app.modules.users.schema.user import UserCreate, UserUpdate
+from app.shared.crud.base import CRUDBase
 
 
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
