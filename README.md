@@ -1,6 +1,6 @@
 # 🚀 FastAPI + PostgreSQL Starter Kit
 
-Welcome to the **FastAPI + PostgreSQL Starter Kit** – your new best friend for building blazing-fast backend applications with a database that's as solid as a rock (or should we say, as solid as a *Postgres*? 😉).
+Welcome to the **FastAPI + PostgreSQL Starter Kit** – your new best friend for building blazing-fast backend applications with a database that's as solid as a rock (or should we say, as solid as a _Postgres_? 😉).
 
 ## 🛠 What's Inside the Box?
 
