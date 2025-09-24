@@ -1,0 +1,38 @@
+# Code owners for the News Portal API project
+# This file defines who owns which parts of the codebase
+
+# Global owners (maintainers)
+* @bibektimilsina00
+
+# Module-specific owners
+app/modules/authentication/ @bibektimilsina00
+app/modules/users/ @bibektimilsina00
+app/modules/posts/ @bibektimilsina00
+app/modules/news/ @bibektimilsina00
+app/modules/stories/ @bibektimilsina00
+app/modules/reels/ @bibektimilsina00
+app/modules/live_streams/ @bibektimilsina00
+app/modules/social/ @bibektimilsina00
+app/modules/messaging/ @bibektimilsina00
+app/modules/notifications/ @bibektimilsina00
+app/modules/search/ @bibektimilsina00
+app/modules/media/ @bibektimilsina00
+app/modules/content_moderation/ @bibektimilsina00
+app/modules/analytics/ @bibektimilsina00
+app/modules/monetization/ @bibektimilsina00
+app/modules/ai_features/ @bibektimilsina00
+app/modules/integrations/ @bibektimilsina00
+
+# Core infrastructure
+app/core/ @bibektimilsina00
+app/shared/ @bibektimilsina00
+
+# Configuration and deployment
+.github/ @bibektimilsina00
+scripts/ @bibektimilsina00
+Dockerfile* @bibektimilsina00
+docker-compose*.yml @bibektimilsina00
+
+# Documentation
+README.md @bibektimilsina00
+docs/ @bibektimilsina00
