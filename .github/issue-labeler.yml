@@ -1,0 +1,48 @@
+policy:
+  - conditions:
+      - payload-type: issues
+      - is: open
+    actions:
+      - add-label: triage
+
+  - conditions:
+      - payload-type: issues
+      - title: /\[BUG\]/
+    actions:
+      - add-label: bug
+
+  - conditions:
+      - payload-type: issues
+      - title: /\[FEATURE\]/
+    actions:
+      - add-label: enhancement
+
+  - conditions:
+      - payload-type: issues
+      - title: /\[SECURITY\]/
+    actions:
+      - add-label: security
+
+  - conditions:
+      - payload-type: issues
+      - body: /authentication|auth|login|password/
+    actions:
+      - add-label: module:authentication
+
+  - conditions:
+      - payload-type: issues
+      - body: /user|profile|account/
+    actions:
+      - add-label: module:users
+
+  - conditions:
+      - payload-type: issues
+      - body: /post|feed|timeline/
+    actions:
+      - add-label: module:posts
+
+  - conditions:
+      - payload-type: issues
+      - body: /news|article|category|source/
+    actions:
+      - add-label: module:news
