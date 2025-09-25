@@ -50,6 +50,24 @@ def get_current_user(session: SessionDep, token: TokenDep) -> User:
 CurrentUser = Annotated[User, Depends(get_current_user)]
 
 
+def get_current_active_user(current_user: CurrentUser) -> User:
+    if not current_user.is_active:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
+
+
+def get_current_user_optional(session: SessionDep, token: TokenDep) -> User | None:
+    try:
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
+        )
+        token_data = TokenPayload(**payload)
+    except (InvalidTokenError, ValidationError):
+        return None
+    user = session.get(User, token_data.sub)
+    return user
+
+
 def get_current_active_superuser(current_user: CurrentUser) -> User:
     if not current_user.is_superuser:
         raise HTTPException(

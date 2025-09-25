@@ -8,11 +8,15 @@ from app.modules.users.schema.user import UserBase
 from app.shared.enums.account_type import AccountType
 from app.shared.enums.gender import Gender
 
-# if TYPE_CHECKING:
-# from app.modules.news.model.news import News
-# from app.modules.posts.model.post import Post
-# from app.modules.reels.model.reel import Reel
-# from app.modules.stories.model.story import Story
+if TYPE_CHECKING:
+    from app.modules.news.model.news import News
+    from app.modules.notifications.model.device import Device
+    from app.modules.notifications.model.notification import Notification
+    from app.modules.notifications.model.preference import NotificationPreference
+    from app.modules.posts.model.post import Post
+    from app.modules.reels.model.reel import Reel
+    from app.modules.search.model.search import SearchHistory, SearchQuery
+    from app.modules.stories.model.story import Story
 
 
 class User(UserBase, table=True):
@@ -73,9 +77,30 @@ class User(UserBase, table=True):
     #     sa_relationship_kwargs={"foreign_keys": "Follow.follower_id"},
     # )
 
+    # Notification relationships
+    received_notifications: List["Notification"] = Relationship(
+        back_populates="recipient",
+        sa_relationship_kwargs={"foreign_keys": "Notification.recipient_id"},
+    )
+    sent_notifications: List["Notification"] = Relationship(
+        back_populates="sender",
+        sa_relationship_kwargs={"foreign_keys": "Notification.sender_id"},
+    )
+    devices: List["Device"] = Relationship(back_populates="user", cascade_delete=True)
+    notification_preferences: Optional["NotificationPreference"] = Relationship(
+        back_populates="user", cascade_delete=True
+    )
+
+    # Search relationships
+    search_queries: List["SearchQuery"] = Relationship(
+        back_populates="user", cascade_delete=True
+    )
+    search_history: List["SearchHistory"] = Relationship(
+        back_populates="user", cascade_delete=True
+    )
+
     class Config:
-        orm_mode = True
-        use_enum_values = True
+        from_attributes = True
 
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username}, email={self.email})>"

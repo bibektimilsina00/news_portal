@@ -28,6 +28,28 @@ class InvalidUserDataException(BaseAppException):
         )
 
 
+class InvalidPostDataException(BaseAppException):
+    """Raised when user provides invalid post data"""
+
+    def __init__(self, detail: str = "Invalid post data provided") -> None:
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=detail,
+            error_code="INVALID_POST_DATA",
+        )
+
+
+class PostNotFoundException(BaseAppException):
+    """Raised when post is not found"""
+
+    def __init__(self, detail: str = "Post not found") -> None:
+        super().__init__(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=detail,
+            error_code="POST_NOT_FOUND",
+        )
+
+
 class UnauthorizedException(BaseAppException):
     """Raised when user is not authorized to perform an action"""
 

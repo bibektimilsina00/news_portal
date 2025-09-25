@@ -29,8 +29,14 @@ class Settings(BaseSettings):
     )
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = secrets.token_urlsafe(32)
+    REFRESH_SECRET_KEY: str = secrets.token_urlsafe(32)
+    ALGORITHM: str = "HS256"
     # 60 minutes * 24 hours * 8 days = 8 days
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 30  # 30 days
+    PASSWORD_RESET_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
+    EMAIL_VERIFICATION_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
+    API_TOKEN_EXPIRE_DAYS: int = 365  # 1 year
     DOMAIN: str = "localhost"
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
 
@@ -42,9 +48,9 @@ class Settings(BaseSettings):
             return f"http://{self.DOMAIN}"
         return f"https://{self.DOMAIN}"
 
-    BACKEND_CORS_ORIGINS: Annotated[
-        list[AnyUrl] | str, BeforeValidator(parse_cors)
-    ] = []
+    BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = (
+        []
+    )
 
     PROJECT_NAME: str
     SENTRY_DSN: HttpUrl | None = None

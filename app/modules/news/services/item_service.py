@@ -3,7 +3,7 @@ from typing import Any
 
 from sqlmodel import Session
 
-from app.modules.news.crud.crud_item import item
+from app.modules.news.crud.crud_news import item
 from app.modules.news.model.item import Item
 from app.modules.news.schema.item import ItemCreate, ItemUpdate
 
