@@ -21,7 +21,7 @@ jobs:
 
       - name: Greet new contributors
         if: github.event_name == 'pull_request' && github.event.action == 'opened'
-        uses: actions/first-interaction@v1
+        uses: actions/first-interaction@v3
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           pr-message: |
