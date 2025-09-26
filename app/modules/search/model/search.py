@@ -44,7 +44,9 @@ class SearchQuery(SQLModel, table=True):
     filters: Optional[dict] = Field(default=None, sa_column=Column(JSON))
 
     # User who performed the search
-    user_id: Optional[str] = Field(default=None, foreign_key="user.id", index=True)
+    user_id: Optional[uuid.UUID] = Field(
+        default=None, foreign_key="user.id", index=True
+    )
 
     # Search metadata
     result_count: int = Field(default=0, ge=0)

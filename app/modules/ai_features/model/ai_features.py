@@ -16,7 +16,6 @@ if TYPE_CHECKING:
 class ContentRecommendation(SQLModel, table=True):
     """AI-generated content recommendations for users."""
 
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     user_id: UUID = Field(foreign_key="user.id", index=True)
     content_type: str = Field(max_length=50)  # post, news, story, reel
@@ -44,7 +43,6 @@ class ContentRecommendation(SQLModel, table=True):
 class ContentAnalysis(SQLModel, table=True):
     """AI analysis results for content."""
 
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     content_type: str = Field(max_length=50)
     content_id: UUID = Field(index=True)
@@ -68,13 +66,12 @@ class ContentAnalysis(SQLModel, table=True):
 class UserBehavior(SQLModel, table=True):
     """User behavior tracking for ML models."""
 
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     user_id: UUID = Field(foreign_key="user.id", index=True)
     action_type: str = Field(max_length=50)  # view, like, share, comment, follow, etc.
     target_type: str = Field(max_length=50)  # post, news, user, story, reel
     target_id: UUID = Field(index=True)
-    session_id: Optional[str] = Field(default=None, max_length=100)
+    session_id: Optional[UUID] = Field(default=None, max_length=100)
     device_info: Optional[dict] = Field(default_factory=dict, sa_column=Column(JSON))
     location_info: Optional[dict] = Field(default_factory=dict, sa_column=Column(JSON))
     duration_seconds: Optional[int] = Field(default=None)  # For views
@@ -89,7 +86,6 @@ class UserBehavior(SQLModel, table=True):
 
 class PersonalizedFeed(SQLModel, table=True):
     """Personalized feed configurations for users."""
-
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     user_id: UUID = Field(foreign_key="user.id", index=True, unique=True)
@@ -118,7 +114,6 @@ class PersonalizedFeed(SQLModel, table=True):
 class TrendAnalysis(SQLModel, table=True):
     """Trend analysis and predictions."""
 
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     trend_type: str = Field(max_length=50)  # hashtag, topic, content_type, etc.
     trend_value: str = Field(max_length=200)
@@ -141,7 +136,6 @@ class TrendAnalysis(SQLModel, table=True):
 
 class ContentClassification(SQLModel, table=True):
     """Content classification results."""
-
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     content_type: str = Field(max_length=50)
@@ -168,7 +162,6 @@ class ContentClassification(SQLModel, table=True):
 class AnomalyDetection(SQLModel, table=True):
     """Anomaly detection results."""
 
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     target_type: str = Field(max_length=50)  # user, content, behavior, etc.
     target_id: UUID = Field(index=True)
@@ -188,7 +181,6 @@ class AnomalyDetection(SQLModel, table=True):
 
 class EngagementPrediction(SQLModel, table=True):
     """Engagement predictions for content."""
-
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     content_type: str = Field(max_length=50)
@@ -212,7 +204,6 @@ class EngagementPrediction(SQLModel, table=True):
 
 class ChurnPrediction(SQLModel, table=True):
     """User churn predictions."""
-
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     user_id: UUID = Field(foreign_key="user.id", index=True)
@@ -238,7 +229,6 @@ class ChurnPrediction(SQLModel, table=True):
 class TranslationCache(SQLModel, table=True):
     """Cache for translated content."""
 
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     content_type: str = Field(max_length=50)
     content_id: UUID = Field(index=True)
@@ -259,7 +249,6 @@ class TranslationCache(SQLModel, table=True):
 
 class AIModelMetrics(SQLModel, table=True):
     """Performance metrics for AI models."""
-
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     model_name: str = Field(max_length=100)

@@ -63,8 +63,8 @@ class NotificationBase(SQLModel):
     entity_type: Optional[str] = Field(
         default=None, max_length=50
     )  # e.g., "post", "comment", "user"
-    entity_id: Optional[str] = Field(
-        default=None, max_length=100
+    entity_id: Optional[uuid.UUID] = Field(
+        default=None
     )  # UUID or ID of the related entity
     action_url: Optional[str] = Field(
         default=None, max_length=500

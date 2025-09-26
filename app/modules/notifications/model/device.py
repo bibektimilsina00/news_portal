@@ -79,7 +79,7 @@ class Device(DeviceBase, table=True):
 
     # Push service data
     push_service: str = Field(default="fcm", max_length=50)  # "fcm", "apns", etc.
-    push_service_id: Optional[str] = Field(
+    push_service_id: Optional[uuid.UUID] = Field(
         default=None, max_length=200
     )  # Service-specific ID
 

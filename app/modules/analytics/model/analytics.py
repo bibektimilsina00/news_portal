@@ -28,7 +28,7 @@ class UserAnalytics(SQLModel, table=True):
 
     # Content performance
     avg_engagement_rate: float = Field(default=0.0)
-    top_performing_post_id: Optional[str] = Field(default=None)
+    top_performing_post_id: Optional[uuid.UUID] = Field(default=None)
     top_performing_score: float = Field(default=0.0)
 
     # Activity tracking

@@ -34,7 +34,6 @@ class StoryVisibility(str, enum.Enum):
 class Story(SQLModel, table=True):
     """Instagram-style Stories model"""
 
-
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
@@ -64,7 +63,7 @@ class Story(SQLModel, table=True):
     interactive_data: Optional[dict] = Field(default=None, sa_column=Column(JSON))
 
     # Music integration
-    music_id: Optional[str] = Field(default=None, max_length=255)
+    music_id: Optional[uuid.UUID] = Field(default=None, max_length=255)
     music_title: Optional[str] = Field(default=None, max_length=255)
     music_artist: Optional[str] = Field(default=None, max_length=255)
     music_duration: Optional[int] = Field(default=None)  # seconds
