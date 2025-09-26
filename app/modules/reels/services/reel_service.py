@@ -61,7 +61,7 @@ class ReelService:
         # Create a new ReelCreate object with user_id
         reel_data = reel_in.model_dump()
         reel_data["user_id"] = user_id
-        reel_data["status"] = ReelStatus.PROCESSING
+        reel_data["status"] = ReelStatus.processing
 
         reel_create = ReelCreate(**reel_data)
         reel = crud_reel.create(session, obj_in=reel_create)
@@ -97,7 +97,7 @@ class ReelService:
     ) -> Optional[Reel]:
         """Publish a processed reel"""
         reel = crud_reel.get(session, id=reel_id)
-        if not reel or reel.user_id != user_id or reel.status != ReelStatus.PROCESSING:
+        if not reel or reel.user_id != user_id or reel.status != ReelStatus.processing:
             return None
 
         return crud_reel.update_status(
@@ -145,7 +145,7 @@ class ReelService:
             "duration": duet_in.duration,
             "title": duet_in.title,
             "description": duet_in.description,
-            "status": ReelStatus.PROCESSING,
+            "status": ReelStatus.processing,
         }
 
         reel_create = ReelCreate(**reel_data)
@@ -170,7 +170,7 @@ class ReelService:
             "duration": stitch_in.duration,
             "title": stitch_in.title,
             "description": stitch_in.description,
-            "status": ReelStatus.PROCESSING,
+            "status": ReelStatus.processing,
         }
 
         reel_create = ReelCreate(**reel_data)

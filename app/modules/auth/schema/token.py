@@ -15,7 +15,7 @@ class TokenBase(SQLModel):
     token: str
     token_type: TokenType
     name: Optional[str] = None
-    status: TokenStatus = TokenStatus.ACTIVE
+    status: TokenStatus = TokenStatus.active
     expires_at: Optional[datetime] = None
     usage_limit: Optional[int] = None
 

@@ -32,7 +32,7 @@ class NotificationService:
         title: str,
         message: str,
         sender_id: Optional[str] = None,
-        priority: NotificationPriority = NotificationPriority.MEDIUM,
+        priority: NotificationPriority = NotificationPriority.medium,
         entity_type: Optional[str] = None,
         entity_id: Optional[str] = None,
         action_url: Optional[str] = None,

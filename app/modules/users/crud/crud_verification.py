@@ -37,7 +37,7 @@ class CRUDVerificationRequest(
         """Get all pending verification requests"""
         statement = (
             select(VerificationRequest)
-            .where(VerificationRequest.status == VerificationStatus.PENDING)
+            .where(VerificationRequest.status == VerificationStatus.pending)
             .offset(skip)
             .limit(limit)
         )
@@ -70,7 +70,7 @@ class CRUDVerificationRequest(
     ) -> Optional[VerificationRequest]:
         """Approve a verification request"""
         request = self.get(session=session, id=request_id)
-        if request and request.status == VerificationStatus.PENDING:
+        if request and request.status == VerificationStatus.pending:
             request.approve(reviewer_id, notes)
             session.commit()
             session.refresh(request)
@@ -88,7 +88,7 @@ class CRUDVerificationRequest(
     ) -> Optional[VerificationRequest]:
         """Reject a verification request"""
         request = self.get(session=session, id=request_id)
-        if request and request.status == VerificationStatus.PENDING:
+        if request and request.status == VerificationStatus.pending:
             request.reject(reviewer_id, reason, notes)
             session.commit()
             session.refresh(request)
@@ -100,7 +100,7 @@ class CRUDVerificationRequest(
     ) -> Optional[VerificationRequest]:
         """Mark request as under review"""
         request = self.get(session=session, id=request_id)
-        if request and request.status == VerificationStatus.PENDING:
+        if request and request.status == VerificationStatus.pending:
             request.mark_under_review()
             session.commit()
             session.refresh(request)
@@ -114,7 +114,7 @@ class CRUDVerificationRequest(
         current_time = datetime.utcnow()
 
         statement = select(VerificationRequest).where(
-            VerificationRequest.status == VerificationStatus.PENDING,
+            VerificationRequest.status == VerificationStatus.pending,
             VerificationRequest.submitted_at < (current_time - timedelta(days=30)),
         )
         return list(session.exec(statement))

@@ -26,7 +26,7 @@ class DeviceBase(SQLModel):
     app_version: Optional[str] = Field(default=None, max_length=50)  # App version
 
     status: DeviceStatus = Field(
-        default=DeviceStatus.ACTIVE, sa_column=Column(Enum(DeviceStatus))
+        default=DeviceStatus.active, sa_column=Column(Enum(DeviceStatus))
     )
 
     # Location data (optional, for geo-targeted notifications)

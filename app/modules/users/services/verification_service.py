@@ -38,7 +38,7 @@ class VerificationService:
         existing_request = verification_request.get_by_user_id(
             session=session, user_id=user_id
         )
-        if existing_request and existing_request.status == VerificationStatus.PENDING:
+        if existing_request and existing_request.status == VerificationStatus.pending:
             raise ValueError("User already has a pending verification request")
 
         # Create the request

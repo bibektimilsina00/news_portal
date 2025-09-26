@@ -54,7 +54,7 @@ class CRUDConversationParticipant(
             session.exec(
                 select(ConversationParticipant).where(
                     ConversationParticipant.conversation_id == conversation_id,
-                    ConversationParticipant.status == ParticipantStatus.ACTIVE,
+                    ConversationParticipant.status == ParticipantStatus.active,
                 )
             ).all()
         )
@@ -70,7 +70,7 @@ class CRUDConversationParticipant(
                 select(ConversationParticipant).where(
                     ConversationParticipant.conversation_id == conversation_id,
                     ConversationParticipant.role.in_(
-                        [ParticipantRole.ADMIN, ParticipantRole.OWNER]
+                        [ParticipantRole.admin, ParticipantRole.owner]
                     ),
                 )
             ).all()
@@ -118,7 +118,7 @@ class CRUDConversationParticipant(
             session, user_id, conversation_id
         )
         if participant:
-            participant.status = ParticipantStatus.LEFT
+            participant.status = ParticipantStatus.left
             participant.left_at = datetime.utcnow()
             session.add(participant)
             session.commit()
@@ -147,7 +147,7 @@ class CRUDConversationParticipant(
 
         participant = self.get(session, participant_id)
         if participant:
-            participant.status = ParticipantStatus.MUTED
+            participant.status = ParticipantStatus.muted
             # Note: muted_until field doesn't exist in model, using status instead
             session.add(participant)
             session.commit()
@@ -162,7 +162,7 @@ class CRUDConversationParticipant(
 
         participant = self.get(session, participant_id)
         if participant:
-            participant.status = ParticipantStatus.ACTIVE
+            participant.status = ParticipantStatus.active
             session.add(participant)
             session.commit()
             session.refresh(participant)
@@ -176,7 +176,7 @@ class CRUDConversationParticipant(
 
         participant = self.get(session, participant_id)
         if participant:
-            participant.status = ParticipantStatus.BANNED
+            participant.status = ParticipantStatus.banned
             participant.left_at = datetime.utcnow()
             session.add(participant)
             session.commit()
@@ -191,7 +191,7 @@ class CRUDConversationParticipant(
 
         participant = self.get(session, participant_id)
         if participant:
-            participant.status = ParticipantStatus.ACTIVE
+            participant.status = ParticipantStatus.active
             participant.left_at = None
             session.add(participant)
             session.commit()
@@ -280,7 +280,7 @@ class CRUDConversationParticipant(
 
         participant = self.get(session, participant_id)
         if participant:
-            participant.status = ParticipantStatus.MUTED
+            participant.status = ParticipantStatus.muted
             # Note: muted_until field doesn't exist in model, using status instead
             session.add(participant)
             session.commit()
@@ -324,7 +324,7 @@ class CRUDConversationParticipant(
 
         participant = self.get(session, participant_id)
         if participant:
-            participant.status = ParticipantStatus.BANNED
+            participant.status = ParticipantStatus.banned
             participant.left_at = datetime.utcnow()
             session.add(participant)
             session.commit()

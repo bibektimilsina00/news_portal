@@ -22,7 +22,7 @@ class StreamViewer(SQLModel, table=True):
     user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Viewer info
-    role: ViewerRole = Field(default=ViewerRole.VIEWER)
+    role: ViewerRole = Field(default=ViewerRole.viewer)
     is_muted: bool = Field(default=False)
     is_banned: bool = Field(default=False)
     joined_at: datetime = Field(default_factory=datetime.utcnow)

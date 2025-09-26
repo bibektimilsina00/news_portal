@@ -38,7 +38,7 @@ class CRUDDevice(CRUDBase[Device, DeviceCreate, DeviceUpdate]):
         return list(
             session.exec(
                 select(Device).where(
-                    Device.user_id == user_id, Device.status == DeviceStatus.ACTIVE
+                    Device.user_id == user_id, Device.status == DeviceStatus.active
                 )
             )
         )
@@ -85,7 +85,7 @@ class CRUDDevice(CRUDBase[Device, DeviceCreate, DeviceUpdate]):
         return list(
             session.exec(
                 select(Device).where(
-                    Device.status == DeviceStatus.ACTIVE,
+                    Device.status == DeviceStatus.active,
                     Device.last_active_at < cutoff_date,
                 )
             )

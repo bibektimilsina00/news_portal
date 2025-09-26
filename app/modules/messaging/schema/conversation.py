@@ -17,7 +17,7 @@ class ConversationBase(SQLModel):
 
     title: Optional[str] = Field(default=None, max_length=100)
     description: Optional[str] = Field(default=None, max_length=500)
-    type: ConversationType = Field(default=ConversationType.DIRECT)
+    type: ConversationType = Field(default=ConversationType.direct)
 
     # Conversation settings
     is_encrypted: bool = Field(default=True)

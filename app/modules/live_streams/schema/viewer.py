@@ -12,7 +12,7 @@ from app.modules.live_streams.model.viewer import ViewerRole
 class StreamViewerBase(SQLModel):
     """Base stream viewer schema"""
 
-    role: ViewerRole = Field(default=ViewerRole.VIEWER)
+    role: ViewerRole = Field(default=ViewerRole.viewer)
     is_muted: bool = Field(default=False)
     is_banned: bool = Field(default=False)
 

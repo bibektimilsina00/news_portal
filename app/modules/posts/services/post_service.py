@@ -146,7 +146,7 @@ class PostService:
             session=session, user_id=user_id, post_id=post_id
         )
 
-        if db_post.status != PostStatus.DRAFT:
+        if db_post.status != PostStatus.draft:
             raise InvalidPostDataException("Only draft posts can be published")
 
         return post.publish_post(session=session, post_id=post_id)

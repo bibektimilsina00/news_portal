@@ -17,7 +17,7 @@ class DeviceBase(SQLModel):
     os_version: Optional[str] = Field(default=None, max_length=50)
     app_version: Optional[str] = Field(default=None, max_length=50)
 
-    status: DeviceStatus = DeviceStatus.ACTIVE
+    status: DeviceStatus = DeviceStatus.active
 
     # Location data
     timezone: Optional[str] = Field(default=None, max_length=50)

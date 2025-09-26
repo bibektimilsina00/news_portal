@@ -28,7 +28,7 @@ class UserBase(SQLModel):
     location: Optional[str] = Field(default=None, max_length=100)
 
     # Account settings
-    account_type: AccountType = Field(default=AccountType.PERSONAL)
+    account_type: AccountType = Field(default=AccountType.personal)
     is_private: bool = Field(default=False)
     is_professional_account: bool = Field(default=False)
     category: Optional[str] = Field(default=None, max_length=50)

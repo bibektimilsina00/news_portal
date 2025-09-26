@@ -24,7 +24,7 @@ class CRUDStory(CRUDBase[Story, StoryCreate, StoryUpdate]):
         now = datetime.utcnow()
         statement = (
             select(Story)
-            .where(and_(Story.status == StoryStatus.ACTIVE, Story.expires_at > now))
+            .where(and_(Story.status == StoryStatus.active, Story.expires_at > now))
             .order_by(Story.created_at.desc())
         )
 

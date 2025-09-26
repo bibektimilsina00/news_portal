@@ -24,7 +24,7 @@ class Story(SQLModel, table=True):
     user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Content Fields
-    type: StoryType = Field(default=StoryType.PHOTO)
+    type: StoryType = Field(default=StoryType.photo)
     media_url: str = Field(max_length=1000)  # URL to photo/video
     thumbnail_url: Optional[str] = Field(default=None, max_length=1000)
 
@@ -56,7 +56,7 @@ class Story(SQLModel, table=True):
     effect_data: Optional[dict] = Field(default=None, sa_column=Column(JSON))
 
     # Story settings
-    visibility: StoryVisibility = Field(default=StoryVisibility.PUBLIC)
+    visibility: StoryVisibility = Field(default=StoryVisibility.public)
     allow_replies: bool = Field(default=True)
     show_viewers: bool = Field(default=True)
 
@@ -66,7 +66,7 @@ class Story(SQLModel, table=True):
     longitude: Optional[float] = Field(default=None, ge=-180, le=180)
 
     # Status and timing
-    status: StoryStatus = Field(default=StoryStatus.ACTIVE)
+    status: StoryStatus = Field(default=StoryStatus.active)
     expires_at: datetime = Field(
         default_factory=lambda: datetime.utcnow() + timedelta(hours=24)
     )

@@ -58,7 +58,7 @@ class News(SQLModel, table=True):
     is_breaking_news: bool = Field(default=False, index=True)
     is_featured: bool = Field(default=False, index=True)
     is_trending: bool = Field(default=False, index=True)
-    priority: NewsPriority = Field(default=NewsPriority.MEDIUM, index=True)
+    priority: NewsPriority = Field(default=NewsPriority.medium, index=True)
 
     # Source & Attribution
     original_url: Optional[str] = Field(default=None, max_length=1000)
@@ -78,7 +78,7 @@ class News(SQLModel, table=True):
     canonical_url: Optional[str] = Field(default=None, max_length=1000)
 
     # Status & Visibility
-    status: NewsStatus = Field(default=NewsStatus.DRAFT, index=True)
+    status: NewsStatus = Field(default=NewsStatus.draft, index=True)
     visibility: str = Field(
         default="public", max_length=50
     )  # public, followers_only, private

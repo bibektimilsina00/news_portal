@@ -18,7 +18,7 @@ class VerificationRequest(SQLModel, table=True):
 
     # Request details
     verification_type: VerificationType
-    status: VerificationStatus = Field(default=VerificationStatus.PENDING)
+    status: VerificationStatus = Field(default=VerificationStatus.pending)
 
     # Personal/Organization information
     full_name: str = Field(max_length=255)

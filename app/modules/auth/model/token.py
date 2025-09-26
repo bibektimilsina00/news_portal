@@ -20,7 +20,7 @@ class Token(SQLModel, table=True):
     token: str = Field(max_length=1000, index=True)
     token_type: TokenType
     name: Optional[str] = Field(default=None, max_length=255)  # For API tokens
-    status: TokenStatus = Field(default=TokenStatus.ACTIVE)
+    status: TokenStatus = Field(default=TokenStatus.active)
 
     # Expiration
     expires_at: Optional[datetime] = Field(default=None)
@@ -52,7 +52,7 @@ class Token(SQLModel, table=True):
 
     def is_active(self) -> bool:
         """Check if token is active"""
-        return self.status == TokenStatus.ACTIVE and not self.is_expired()
+        return self.status == TokenStatus.active and not self.is_expired()
 
     def can_use(self) -> bool:
         """Check if token can be used"""
@@ -76,7 +76,7 @@ class Token(SQLModel, table=True):
 
     def reactivate(self) -> None:
         """Reactivate token"""
-        self.status = TokenStatus.ACTIVE
+        self.status = TokenStatus.active
         self.deactivated_at = None
 
 

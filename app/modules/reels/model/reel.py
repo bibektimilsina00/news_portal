@@ -24,10 +24,10 @@ class Reel(SQLModel, table=True):
     stitch_reel_id: Optional[uuid.UUID] = Field(default=None, foreign_key="reel.id")
 
     # Reel metadata
-    type: ReelType = Field(default=ReelType.ORIGINAL)
+    type: ReelType = Field(default=ReelType.original)
     title: Optional[str] = Field(default=None, max_length=100)
     description: Optional[str] = Field(default=None, max_length=500)
-    visibility: ReelVisibility = Field(default=ReelVisibility.PUBLIC)
+    visibility: ReelVisibility = Field(default=ReelVisibility.public)
 
     # Video details
     video_url: str = Field(max_length=1000)
@@ -59,7 +59,7 @@ class Reel(SQLModel, table=True):
     mentions: List[str] = Field(default_factory=list, sa_column=Column(JSON))
 
     # Processing status
-    status: ReelStatus = Field(default=ReelStatus.PROCESSING)
+    status: ReelStatus = Field(default=ReelStatus.processing)
     processing_progress: float = Field(default=0.0, ge=0, le=100)
 
     # Timestamps
@@ -73,7 +73,7 @@ class Reel(SQLModel, table=True):
     # Computed properties
     @property
     def is_processing(self) -> bool:
-        return self.status == ReelStatus.PROCESSING
+        return self.status == ReelStatus.processing
 
     @property
     def is_published(self) -> bool:

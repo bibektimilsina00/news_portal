@@ -48,7 +48,7 @@ class CRUDConversation(CRUDBase[Conversation, ConversationCreate, ConversationUp
         return list(
             session.exec(
                 select(Conversation).where(
-                    Conversation.status == ConversationStatus.ACTIVE
+                    Conversation.status == ConversationStatus.active
                 )
             ).all()
         )
@@ -93,7 +93,7 @@ class CRUDConversation(CRUDBase[Conversation, ConversationCreate, ConversationUp
 
         conversation = self.get(session, conversation_id)
         if conversation:
-            conversation.status = ConversationStatus.ARCHIVED
+            conversation.status = ConversationStatus.archived
             session.add(conversation)
             session.commit()
             session.refresh(conversation)
@@ -107,7 +107,7 @@ class CRUDConversation(CRUDBase[Conversation, ConversationCreate, ConversationUp
 
         conversation = self.get(session, conversation_id)
         if conversation:
-            conversation.status = ConversationStatus.ACTIVE
+            conversation.status = ConversationStatus.active
             session.add(conversation)
             session.commit()
             session.refresh(conversation)
@@ -121,7 +121,7 @@ class CRUDConversation(CRUDBase[Conversation, ConversationCreate, ConversationUp
 
         conversation = self.get(session, conversation_id)
         if conversation:
-            conversation.status = ConversationStatus.DELETED
+            conversation.status = ConversationStatus.deleted
             session.add(conversation)
             session.commit()
             session.refresh(conversation)

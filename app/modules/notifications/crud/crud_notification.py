@@ -95,7 +95,7 @@ class CRUDNotification(CRUDBase[Notification, NotificationCreate, NotificationUp
         return list(
             session.exec(
                 select(Notification)
-                .where(Notification.status == NotificationStatus.PENDING)
+                .where(Notification.status == NotificationStatus.pending)
                 .limit(limit)
             )
         )

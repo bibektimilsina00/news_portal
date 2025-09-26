@@ -17,8 +17,8 @@ class PostBase(SQLModel):
     summary: Optional[str] = Field(default=None, max_length=500)
 
     # Post type & visibility
-    post_type: PostType = Field(default=PostType.REGULAR)
-    visibility: PostVisibility = Field(default=PostVisibility.PUBLIC)
+    post_type: PostType = Field(default=PostType.regular)
+    visibility: PostVisibility = Field(default=PostVisibility.public)
 
     # Media
     media_urls: Optional[List[str]] = Field(default=[])

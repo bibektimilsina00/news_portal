@@ -22,7 +22,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
     def get_published_by_slug(self, session: Session, *, slug: str) -> Optional[News]:
         """Get published news by slug"""
         statement = select(News).where(
-            and_(News.slug == slug, News.status == NewsStatus.PUBLISHED)
+            and_(News.slug == slug, News.status == NewsStatus.published)
         )
         return session.exec(statement).first()
 
@@ -39,7 +39,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         priority: Optional[NewsPriority] = None,
     ) -> List[News]:
         """Get published news with optional filtering"""
-        statement = select(News).where(News.status == NewsStatus.PUBLISHED)
+        statement = select(News).where(News.status == NewsStatus.published)
 
         if category_id:
             statement = statement.where(News.category_id == category_id)
@@ -66,7 +66,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         statement = (
             select(News)
             .where(
-                and_(News.status == NewsStatus.PUBLISHED, News.is_breaking_news == True)
+                and_(News.status == NewsStatus.published, News.is_breaking_news == True)
             )
             .order_by(News.published_at.desc())
         )
@@ -83,7 +83,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
             select(News)
             .where(
                 and_(
-                    News.status == NewsStatus.PUBLISHED,
+                    News.status == NewsStatus.published,
                     News.published_at >= time_threshold,
                 )
             )
@@ -102,7 +102,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
             select(News)
             .where(
                 and_(
-                    News.status == NewsStatus.SCHEDULED,
+                    News.status == NewsStatus.scheduled,
                     News.scheduled_at > datetime.utcnow(),
                 )
             )
@@ -124,7 +124,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         statement = select(News).where(News.category_id == category_id)
 
         if only_published:
-            statement = statement.where(News.status == NewsStatus.PUBLISHED)
+            statement = statement.where(News.status == NewsStatus.published)
 
         statement = statement.order_by(News.published_at.desc())
         return list(session.exec(statement.offset(skip).limit(limit)))
@@ -142,7 +142,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         statement = select(News).where(News.source_id == source_id)
 
         if only_published:
-            statement = statement.where(News.status == NewsStatus.PUBLISHED)
+            statement = statement.where(News.status == NewsStatus.published)
 
         statement = statement.order_by(News.published_at.desc())
         return list(session.exec(statement.offset(skip).limit(limit)))
@@ -169,7 +169,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         )
 
         if only_published:
-            statement = statement.where(News.status == NewsStatus.PUBLISHED)
+            statement = statement.where(News.status == NewsStatus.published)
 
         statement = statement.order_by(
             case(
@@ -193,7 +193,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         limit: int = 100,
     ) -> List[News]:
         """Get news by location"""
-        statement = select(News).where(News.status == NewsStatus.PUBLISHED)
+        statement = select(News).where(News.status == NewsStatus.published)
 
         if country:
             statement = statement.where(News.country.ilike(f"%{country}%"))
@@ -229,7 +229,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         """Get user's draft news"""
         statement = (
             select(News)
-            .where(and_(News.user_id == user_id, News.status == NewsStatus.DRAFT))
+            .where(and_(News.user_id == user_id, News.status == NewsStatus.draft))
             .order_by(News.created_at.desc())
         )
 
@@ -260,7 +260,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         if not news:
             return None
 
-        news.status = NewsStatus.SCHEDULED
+        news.status = NewsStatus.scheduled
         news.scheduled_at = scheduled_at
 
         session.add(news)
@@ -275,7 +275,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         if not news:
             return None
 
-        news.status = NewsStatus.PUBLISHED
+        news.status = NewsStatus.published
         news.published_at = datetime.utcnow()
         news.last_interaction_at = datetime.utcnow()
 
@@ -291,7 +291,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         if not news:
             return None
 
-        news.status = NewsStatus.ARCHIVED
+        news.status = NewsStatus.archived
         news.archived_at = datetime.utcnow()
 
         session.add(news)
@@ -318,19 +318,19 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
         published_count = session.exec(
             select(func.count(News.id))
             .select_from(base_query)
-            .where(News.status == NewsStatus.PUBLISHED)
+            .where(News.status == NewsStatus.published)
         ).one()
 
         draft_count = session.exec(
             select(func.count(News.id))
             .select_from(base_query)
-            .where(News.status == NewsStatus.DRAFT)
+            .where(News.status == NewsStatus.draft)
         ).one()
 
         scheduled_count = session.exec(
             select(func.count(News.id))
             .select_from(base_query)
-            .where(News.status == NewsStatus.SCHEDULED)
+            .where(News.status == NewsStatus.scheduled)
         ).one()
 
         # Breaking news
@@ -368,7 +368,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
             select(News)
             .where(
                 and_(
-                    News.status == NewsStatus.PUBLISHED,
+                    News.status == NewsStatus.published,
                     News.published_at >= time_threshold,
                 )
             )

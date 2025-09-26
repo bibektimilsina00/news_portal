@@ -40,7 +40,7 @@ class User(UserBase, table=True):
     gender: Optional[Gender] = Field(default=None)
 
     # Account Settings
-    account_type: AccountType = Field(default=AccountType.PERSONAL)
+    account_type: AccountType = Field(default=AccountType.personal)
     is_private: bool = Field(default=False)
     is_professional_account: bool = Field(default=False)
     category: Optional[str] = Field(

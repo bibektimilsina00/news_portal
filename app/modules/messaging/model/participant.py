@@ -22,8 +22,8 @@ class ConversationParticipant(SQLModel, table=True):
     user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Participant info
-    role: ParticipantRole = Field(default=ParticipantRole.MEMBER)
-    status: ParticipantStatus = Field(default=ParticipantStatus.ACTIVE)
+    role: ParticipantRole = Field(default=ParticipantRole.member)
+    status: ParticipantStatus = Field(default=ParticipantStatus.active)
 
     # Permissions and settings
     can_send_messages: bool = Field(default=True)
@@ -66,12 +66,12 @@ class ConversationParticipant(SQLModel, table=True):
     @property
     def is_active(self) -> bool:
         """Check if participant is currently active"""
-        return self.status == ParticipantStatus.ACTIVE
+        return self.status == ParticipantStatus.active
 
     @property
     def is_admin(self) -> bool:
         """Check if participant has admin privileges"""
-        return self.role in [ParticipantRole.ADMIN, ParticipantRole.OWNER]
+        return self.role in [ParticipantRole.admin, ParticipantRole.owner]
 
     @property
     def is_owner(self) -> bool:

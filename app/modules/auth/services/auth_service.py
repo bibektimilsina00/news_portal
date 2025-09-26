@@ -83,7 +83,7 @@ class AuthService:
             session=session,
             user_id=user.id,
             token=access_token,
-            token_type=TokenType.ACCESS,
+            token_type=TokenType.access,
             expires_at=datetime.utcnow() + access_token_expires,
         )
 
@@ -91,7 +91,7 @@ class AuthService:
             session=session,
             user_id=user.id,
             token=refresh_token,
-            token_type=TokenType.REFRESH,
+            token_type=TokenType.refresh,
             expires_at=datetime.utcnow() + refresh_token_expires,
         )
 
@@ -119,7 +119,7 @@ class AuthService:
             session=session,
             user_id=user_id,
             token=access_token,
-            token_type=TokenType.ACCESS,
+            token_type=TokenType.access,
             expires_at=datetime.utcnow() + access_token_expires,
         )
 
@@ -164,8 +164,8 @@ class AuthService:
         token_obj = session.exec(
             select(Token).where(
                 Token.token == refresh_token,
-                Token.token_type == TokenType.REFRESH,
-                Token.status == TokenStatus.ACTIVE,
+                Token.token_type == TokenType.refresh,
+                Token.status == TokenStatus.active,
             )
         ).first()
 
@@ -175,7 +175,7 @@ class AuthService:
         """Revoke refresh token"""
         token_obj = session.exec(
             select(Token).where(
-                Token.token == refresh_token, Token.token_type == TokenType.REFRESH
+                Token.token == refresh_token, Token.token_type == TokenType.refresh
             )
         ).first()
 
@@ -189,7 +189,7 @@ class AuthService:
         """Revoke all tokens for a user"""
         tokens = session.exec(
             select(Token).where(
-                Token.user_id == user_id, Token.status == TokenStatus.ACTIVE
+                Token.user_id == user_id, Token.status == TokenStatus.active
             )
         ).all()
 

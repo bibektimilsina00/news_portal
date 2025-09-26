@@ -12,7 +12,7 @@ from app.modules.stories.model.story import StoryStatus, StoryType, StoryVisibil
 class StoryBase(SQLModel):
     """Base story schema"""
 
-    type: StoryType = Field(default=StoryType.PHOTO)
+    type: StoryType = Field(default=StoryType.photo)
     media_url: str = Field(min_length=1, max_length=1000)
     thumbnail_url: Optional[str] = Field(default=None, max_length=1000)
 
@@ -44,7 +44,7 @@ class StoryBase(SQLModel):
     effect_data: Optional[Dict[str, Any]] = Field(default=None)
 
     # Story settings
-    visibility: StoryVisibility = Field(default=StoryVisibility.PUBLIC)
+    visibility: StoryVisibility = Field(default=StoryVisibility.public)
     allow_replies: bool = Field(default=True)
     show_viewers: bool = Field(default=True)
 

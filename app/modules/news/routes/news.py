@@ -76,7 +76,7 @@ def get_breaking_news(
     """
     try:
         # Get news marked as breaking
-        news_filter = NewsFilter(is_breaking_news=True, status=NewsStatus.PUBLISHED)
+        news_filter = NewsFilter(is_breaking_news=True, status=NewsStatus.published)
         result = news_service.get_news_list(
             session=session, skip=0, limit=limit, news_filter=news_filter
         )
@@ -129,7 +129,7 @@ def get_featured_news(
     Get featured news articles
     """
     try:
-        news_filter = NewsFilter(is_featured=True, status=NewsStatus.PUBLISHED)
+        news_filter = NewsFilter(is_featured=True, status=NewsStatus.published)
         result = news_service.get_news_list(
             session=session, skip=skip, limit=limit, news_filter=news_filter
         )
@@ -208,7 +208,7 @@ def get_my_drafts(
             user_id=current_user.id,
             skip=skip,
             limit=limit,
-            status=NewsStatus.DRAFT,
+            status=NewsStatus.draft,
         )
 
         return NewsListResponse(
@@ -244,7 +244,7 @@ def get_my_scheduled(
             user_id=current_user.id,
             skip=skip,
             limit=limit,
-            status=NewsStatus.SCHEDULED,
+            status=NewsStatus.scheduled,
         )
 
         return NewsListResponse(
@@ -550,7 +550,7 @@ def search_news(
     """
     try:
         # For now, use the existing get_news_list with search filter
-        news_filter = NewsFilter(search_query=q, status=NewsStatus.PUBLISHED)
+        news_filter = NewsFilter(search_query=q, status=NewsStatus.published)
         result = news_service.get_news_list(
             session=session,
             skip=skip,
@@ -588,7 +588,7 @@ def get_nearby_news(
     try:
         # For now, filter by location name or coordinates
         # A more sophisticated implementation would use geospatial queries
-        news_filter = NewsFilter(status=NewsStatus.PUBLISHED)
+        news_filter = NewsFilter(status=NewsStatus.published)
         result = news_service.get_news_list(
             session=session,
             skip=skip,

@@ -25,7 +25,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
         visibility: Optional[PostVisibility] = None,
     ) -> List[Post]:
         """Get published posts with optional filtering"""
-        statement = select(Post).where(Post.status == PostStatus.PUBLISHED)
+        statement = select(Post).where(Post.status == PostStatus.published)
 
         if user_id:
             statement = statement.where(Post.user_id == user_id)
@@ -72,11 +72,11 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
     ) -> List[Post]:
         """Get posts for user feed"""
         statement = select(Post).where(
-            and_(Post.user_id.in_(user_ids), Post.status == PostStatus.PUBLISHED)
+            and_(Post.user_id.in_(user_ids), Post.status == PostStatus.published)
         )
 
         if not include_private:
-            statement = statement.where(Post.visibility == PostVisibility.PUBLIC)
+            statement = statement.where(Post.visibility == PostVisibility.public)
 
         statement = statement.order_by(Post.published_at.desc())
         return list(session.exec(statement.offset(skip).limit(limit)))
@@ -90,12 +90,12 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
         exclude_user_id: Optional[uuid.UUID] = None,
     ) -> List[Post]:
         """Get posts for explore/discover page"""
-        statement = select(Post).where(Post.status == PostStatus.PUBLISHED)
+        statement = select(Post).where(Post.status == PostStatus.published)
 
         if exclude_user_id:
             statement = statement.where(Post.user_id != exclude_user_id)
 
-        statement = statement.where(Post.visibility == PostVisibility.PUBLIC)
+        statement = statement.where(Post.visibility == PostVisibility.public)
 
         # Order by engagement (likes + comments + shares)
         statement = statement.order_by(
@@ -114,7 +114,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
     ) -> List[Post]:
         """Get posts that have media"""
         statement = select(Post).where(
-            and_(Post.status == PostStatus.PUBLISHED, Post.media_urls != [])
+            and_(Post.status == PostStatus.published, Post.media_urls != [])
         )
 
         if user_id:
@@ -144,7 +144,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
             select(Post)
             .where(
                 and_(
-                    Post.status == PostStatus.PUBLISHED,
+                    Post.status == PostStatus.published,
                     Post.latitude.isnot(None),
                     Post.longitude.isnot(None),
                     Post.latitude >= latitude - lat_range,
@@ -175,7 +175,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
         )
 
         if only_published:
-            statement = statement.where(Post.status == PostStatus.PUBLISHED)
+            statement = statement.where(Post.status == PostStatus.published)
 
         statement = statement.order_by(Post.created_at.desc())
         return list(session.exec(statement.offset(skip).limit(limit)))
@@ -187,7 +187,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
         statement = (
             select(Post)
             .where(
-                and_(Post.status == PostStatus.PUBLISHED, Post.is_highlighted == True)
+                and_(Post.status == PostStatus.published, Post.is_highlighted == True)
             )
             .order_by(Post.created_at.desc())
         )
@@ -202,7 +202,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
                 and_(
                     Post.user_id == user_id,
                     Post.is_pinned == True,
-                    Post.status == PostStatus.PUBLISHED,
+                    Post.status == PostStatus.published,
                 )
             )
             .order_by(Post.created_at.desc())
@@ -214,7 +214,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
         """Get user's draft posts"""
         statement = (
             select(Post)
-            .where(and_(Post.user_id == user_id, Post.status == PostStatus.DRAFT))
+            .where(and_(Post.user_id == user_id, Post.status == PostStatus.draft))
             .order_by(Post.created_at.desc())
         )
 
@@ -278,7 +278,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
         if not post:
             return None
 
-        post.status = PostStatus.PUBLISHED
+        post.status = PostStatus.published
         post.published_at = datetime.utcnow()
         post.last_interaction_at = datetime.utcnow()
 
@@ -320,13 +320,13 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
         published_count = session.exec(
             select(func.count(Post.id))
             .select_from(base_query)
-            .where(Post.status == PostStatus.PUBLISHED)
+            .where(Post.status == PostStatus.published)
         ).one()
 
         draft_count = session.exec(
             select(func.count(Post.id))
             .select_from(base_query)
-            .where(Post.status == PostStatus.DRAFT)
+            .where(Post.status == PostStatus.draft)
         ).one()
 
         scheduled_count = session.exec(
@@ -374,8 +374,8 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
             .where(
                 and_(
                     Post.user_id.in_(following_ids),
-                    Post.status == PostStatus.PUBLISHED,
-                    Post.visibility == PostVisibility.PUBLIC,
+                    Post.status == PostStatus.published,
+                    Post.visibility == PostVisibility.public,
                 )
             )
             .order_by(Post.created_at.desc())

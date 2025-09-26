@@ -23,7 +23,7 @@ class Conversation(SQLModel, table=True):
     # Conversation metadata
     title: Optional[str] = Field(default=None, max_length=100, index=True)
     description: Optional[str] = Field(default=None, max_length=500)
-    type: ConversationType = Field(default=ConversationType.DIRECT)
+    type: ConversationType = Field(default=ConversationType.direct)
 
     # Conversation settings
     is_group: bool = Field(default=False)
@@ -39,7 +39,7 @@ class Conversation(SQLModel, table=True):
     only_admins_can_send: bool = Field(default=False)
 
     # Status and metadata
-    status: ConversationStatus = Field(default=ConversationStatus.ACTIVE)
+    status: ConversationStatus = Field(default=ConversationStatus.active)
     last_message_at: Optional[datetime] = Field(default=None, index=True)
     last_message_preview: Optional[str] = Field(default=None, max_length=200)
 
@@ -63,12 +63,12 @@ class Conversation(SQLModel, table=True):
     @property
     def is_direct_chat(self) -> bool:
         """Check if this is a direct one-on-one conversation"""
-        return self.type == ConversationType.DIRECT and not self.is_group
+        return self.type == ConversationType.direct and not self.is_group
 
     @property
     def is_group_chat(self) -> bool:
         """Check if this is a group conversation"""
-        return self.type == ConversationType.GROUP or self.is_group
+        return self.type == ConversationType.group or self.is_group
 
     @property
     def can_add_participants(self) -> bool:

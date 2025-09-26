@@ -12,7 +12,7 @@ from app.modules.messaging.model.message import MessageStatus, MessageType
 class MessageBase(SQLModel):
     """Base message schema"""
 
-    type: MessageType = Field(default=MessageType.TEXT)
+    type: MessageType = Field(default=MessageType.text)
     content: Optional[str] = Field(default=None, max_length=10000)
 
     # Media attachments

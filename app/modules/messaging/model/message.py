@@ -23,7 +23,7 @@ class Message(SQLModel, table=True):
     sender_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Message content
-    type: MessageType = Field(default=MessageType.TEXT)
+    type: MessageType = Field(default=MessageType.text)
     content: Optional[str] = Field(
         default=None, max_length=10000
     )  # Text content or caption
@@ -43,7 +43,7 @@ class Message(SQLModel, table=True):
     forwarded_from: Optional[uuid.UUID] = Field(default=None, foreign_key="user.id")
 
     # Status and delivery
-    status: MessageStatus = Field(default=MessageStatus.SENDING)
+    status: MessageStatus = Field(default=MessageStatus.sending)
     delivered_at: Optional[datetime] = Field(default=None)
     read_at: Optional[datetime] = Field(default=None)
 

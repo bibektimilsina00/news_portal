@@ -17,8 +17,8 @@ class NotificationBase(SQLModel):
     title: str = Field(max_length=200)
     message: str = Field(max_length=1000)
     type: NotificationType
-    priority: NotificationPriority = NotificationPriority.MEDIUM
-    status: NotificationStatus = NotificationStatus.PENDING
+    priority: NotificationPriority = NotificationPriority.medium
+    status: NotificationStatus = NotificationStatus.pending
 
     # Optional metadata
     entity_type: Optional[str] = Field(default=None, max_length=50)

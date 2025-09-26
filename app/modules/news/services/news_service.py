@@ -198,7 +198,7 @@ class NewsService:
         if news_obj.user_id != current_user_id:
             raise UnauthorizedException("Not authorized to publish this news article")
 
-        if news_obj.status != NewsStatus.DRAFT:
+        if news_obj.status != NewsStatus.draft:
             raise Exception("Only draft articles can be published")
 
         update_data = NewsUpdate(
@@ -299,7 +299,7 @@ class NewsService:
         stats = {
             "total_news": len(all_news),
             "published": len([n for n in all_news if n.status == NewsStatus.PUBLISHED]),
-            "drafts": len([n for n in all_news if n.status == NewsStatus.DRAFT]),
+            "drafts": len([n for n in all_news if n.status == NewsStatus.draft]),
             "scheduled": len([n for n in all_news if n.status == NewsStatus.SCHEDULED]),
             "breaking_news": len([n for n in all_news if n.is_breaking_news]),
             "featured": len([n for n in all_news if n.is_featured]),

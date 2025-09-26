@@ -18,11 +18,11 @@ class NotificationBase(SQLModel):
     message: str = Field(max_length=1000)
     type: NotificationType = Field(sa_column=Column(Enum(NotificationType)))
     priority: NotificationPriority = Field(
-        default=NotificationPriority.MEDIUM,
+        default=NotificationPriority.medium,
         sa_column=Column(Enum(NotificationPriority)),
     )
     status: NotificationStatus = Field(
-        default=NotificationStatus.PENDING, sa_column=Column(Enum(NotificationStatus))
+        default=NotificationStatus.pending, sa_column=Column(Enum(NotificationStatus))
     )
 
     # Optional metadata

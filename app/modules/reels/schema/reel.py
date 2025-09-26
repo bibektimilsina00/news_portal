@@ -12,10 +12,10 @@ from app.modules.reels.model.reel import ReelStatus, ReelType, ReelVisibility
 class ReelBase(SQLModel):
     """Base reel schema"""
 
-    type: ReelType = Field(default=ReelType.ORIGINAL)
+    type: ReelType = Field(default=ReelType.original)
     title: Optional[str] = Field(default=None, max_length=100)
     description: Optional[str] = Field(default=None, max_length=500)
-    visibility: ReelVisibility = Field(default=ReelVisibility.PUBLIC)
+    visibility: ReelVisibility = Field(default=ReelVisibility.public)
 
     # Video details
     video_url: str = Field(min_length=1, max_length=1000)

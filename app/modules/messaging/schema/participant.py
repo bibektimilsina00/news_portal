@@ -12,7 +12,7 @@ from app.modules.messaging.model.participant import ParticipantRole, Participant
 class ConversationParticipantBase(SQLModel):
     """Base conversation participant schema"""
 
-    role: ParticipantRole = Field(default=ParticipantRole.MEMBER)
+    role: ParticipantRole = Field(default=ParticipantRole.member)
 
     # Permissions
     can_send_messages: bool = Field(default=True)

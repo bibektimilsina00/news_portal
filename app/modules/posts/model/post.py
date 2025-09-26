@@ -32,9 +32,9 @@ class Post(SQLModel, table=True):
     summary: Optional[str] = Field(default=None, max_length=500)
 
     # Post Type & Status
-    post_type: PostType = Field(default=PostType.REGULAR, index=True)
-    status: PostStatus = Field(default=PostStatus.DRAFT, index=True)
-    visibility: PostVisibility = Field(default=PostVisibility.PUBLIC)
+    post_type: PostType = Field(default=PostType.regular, index=True)
+    status: PostStatus = Field(default=PostStatus.draft, index=True)
+    visibility: PostVisibility = Field(default=PostVisibility.public)
 
     # Media Fields
     media_urls: List[str] = Field(default_factory=list, sa_column=Column(JSON))
@@ -141,7 +141,7 @@ class Post(SQLModel, table=True):
 
     def is_published(self) -> bool:
         """Check if post is published"""
-        return self.status == PostStatus.PUBLISHED
+        return self.status == PostStatus.published
 
     def is_visible_to_user(
         self,
@@ -150,7 +150,7 @@ class Post(SQLModel, table=True):
         is_close_friend: bool = False,
     ) -> bool:
         """Check if post is visible to specific user"""
-        if self.visibility == PostVisibility.PUBLIC:
+        if self.visibility == PostVisibility.public:
             return True
         elif self.visibility == PostVisibility.FOLLOWERS_ONLY:
             return is_following

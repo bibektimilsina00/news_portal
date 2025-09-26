@@ -40,7 +40,7 @@ class NewsBase(SQLModel):
     is_breaking_news: bool = Field(default=False)
     is_featured: bool = Field(default=False)
     is_trending: bool = Field(default=False)
-    priority: NewsPriority = Field(default=NewsPriority.MEDIUM)
+    priority: NewsPriority = Field(default=NewsPriority.medium)
 
     # Source & Attribution
     original_url: Optional[str] = Field(default=None, max_length=1000)
@@ -60,7 +60,7 @@ class NewsBase(SQLModel):
     canonical_url: Optional[str] = Field(default=None, max_length=1000)
 
     # Status & Visibility
-    status: NewsStatus = Field(default=NewsStatus.DRAFT)
+    status: NewsStatus = Field(default=NewsStatus.draft)
     visibility: str = Field(default="public", max_length=50)
 
     # Scheduling
