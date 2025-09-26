@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
@@ -6,34 +5,14 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import StreamQuality, StreamStatus, StreamVisibility
+
 if TYPE_CHECKING:
     from app.modules.users.model.user import User
 
 
-class StreamStatus(str, enum.Enum):
-    SCHEDULED = "scheduled"
-    LIVE = "live"
-    ENDED = "ended"
-    CANCELLED = "cancelled"
-    PROCESSING = "processing"
-
-
-class StreamVisibility(str, enum.Enum):
-    PUBLIC = "public"
-    PRIVATE = "private"
-    UNLISTED = "unlisted"
-
-
-class StreamQuality(str, enum.Enum):
-    LOW = "480p"
-    MEDIUM = "720p"
-    HIGH = "1080p"
-    ULTRA = "4k"
-
-
 class Stream(SQLModel, table=True):
     """Live stream model"""
-
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)

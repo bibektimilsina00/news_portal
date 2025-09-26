@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
@@ -6,33 +5,11 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import MessageStatus, MessageType
+
 if TYPE_CHECKING:
     from app.modules.messaging.model.conversation import Conversation
     from app.modules.users.model.user import User
-
-
-class MessageType(str, enum.Enum):
-    """Types of messages"""
-
-    TEXT = "text"
-    IMAGE = "image"
-    VIDEO = "video"
-    AUDIO = "audio"
-    FILE = "file"
-    VOICE = "voice"
-    LOCATION = "location"
-    CONTACT = "contact"
-    SYSTEM = "system"  # System messages (user joined, etc.)
-
-
-class MessageStatus(str, enum.Enum):
-    """Message delivery status"""
-
-    SENDING = "sending"
-    SENT = "sent"
-    DELIVERED = "delivered"
-    READ = "read"
-    FAILED = "failed"
 
 
 class Message(SQLModel, table=True):

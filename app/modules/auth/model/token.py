@@ -1,32 +1,17 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import JSON, Column, Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import TokenStatus, TokenType
+
 if TYPE_CHECKING:
     from app.modules.auth.model.auth import UserCredentials
 
 
-class TokenType(str, enum.Enum):
-    ACCESS = "access"
-    REFRESH = "refresh"
-    PASSWORD_RESET = "password_reset"
-    EMAIL_VERIFICATION = "email_verification"
-    API = "api"
-
-
-class TokenStatus(str, enum.Enum):
-    ACTIVE = "active"
-    EXPIRED = "expired"
-    REVOKED = "revoked"
-    BLACKLISTED = "blacklisted"
-
-
 class Token(SQLModel, table=True):
     """Token management for authentication"""
-
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     user_id: uuid.UUID = Field(foreign_key="usercredentials.id", index=True)
@@ -98,7 +83,6 @@ class Token(SQLModel, table=True):
 class TokenBlacklist(SQLModel, table=True):
     """Token blacklist for revoked tokens"""
 
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     token: str = Field(max_length=1000, unique=True, index=True)
     token_type: TokenType
@@ -118,7 +102,6 @@ class TokenBlacklist(SQLModel, table=True):
 
 class APIToken(SQLModel, table=True):
     """API tokens for programmatic access"""
-
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     user_id: uuid.UUID = Field(foreign_key="user.id", index=True)

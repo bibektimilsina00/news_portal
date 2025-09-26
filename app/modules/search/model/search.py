@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, Optional
@@ -6,31 +5,10 @@ from typing import TYPE_CHECKING, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import SearchResultType, SearchType
+
 if TYPE_CHECKING:
     from app.modules.users.model.user import User
-
-
-class SearchType(str, enum.Enum):
-    """Types of searchable content"""
-
-    POST = "post"
-    NEWS = "news"
-    USER = "user"
-    HASHTAG = "hashtag"
-    LOCATION = "location"
-    STORY = "story"
-    REEL = "reel"
-    LIVE_STREAM = "live_stream"
-
-
-class SearchResultType(str, enum.Enum):
-    """Types of search results"""
-
-    CONTENT = "content"
-    USER = "user"
-    HASHTAG = "hashtag"
-    LOCATION = "location"
-    TRENDING = "trending"
 
 
 class SearchQuery(SQLModel, table=True):

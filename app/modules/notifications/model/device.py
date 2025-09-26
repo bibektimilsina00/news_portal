@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
@@ -6,25 +5,10 @@ from typing import TYPE_CHECKING, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import DeviceStatus, DeviceType
+
 if TYPE_CHECKING:
     from app.modules.users.model.user import User
-
-
-class DeviceType(str, enum.Enum):
-    """Types of devices for push notifications"""
-
-    IOS = "ios"
-    ANDROID = "android"
-    WEB = "web"
-    DESKTOP = "desktop"
-
-
-class DeviceStatus(str, enum.Enum):
-    """Device registration status"""
-
-    ACTIVE = "active"
-    INACTIVE = "inactive"
-    BLOCKED = "blocked"
 
 
 class DeviceBase(SQLModel):

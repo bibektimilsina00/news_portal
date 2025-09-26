@@ -1,5 +1,3 @@
-
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
@@ -7,28 +5,14 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import ConversationStatus, ConversationType
+
 if TYPE_CHECKING:
     from app.modules.users.model.user import User
 
 
-class ConversationType(str, enum.Enum):
-    """Types of conversations"""
-
-    DIRECT = "direct"  # One-on-one chat
-    GROUP = "group"  # Group chat
-
-
-class ConversationStatus(str, enum.Enum):
-    """Conversation status"""
-
-    ACTIVE = "active"
-    ARCHIVED = "archived"
-    DELETED = "deleted"
-
-
 class Conversation(SQLModel, table=True):
     """Conversation/chat model"""
-
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)

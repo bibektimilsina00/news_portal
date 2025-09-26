@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime, timedelta
 from typing import TYPE_CHECKING, List, Optional
@@ -6,29 +5,13 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import StoryStatus, StoryType, StoryVisibility
+
 if TYPE_CHECKING:
     from app.modules.stories.model.highlight import StoryHighlight
     from app.modules.stories.model.interaction import StoryInteraction
     from app.modules.stories.model.viewer import StoryViewer
     from app.modules.users.model.user import User
-
-
-class StoryType(str, enum.Enum):
-    PHOTO = "photo"
-    VIDEO = "video"
-    TEXT = "text"
-
-
-class StoryStatus(str, enum.Enum):
-    ACTIVE = "active"
-    EXPIRED = "expired"
-    DELETED = "deleted"
-
-
-class StoryVisibility(str, enum.Enum):
-    PUBLIC = "public"
-    CLOSE_FRIENDS = "close_friends"
-    PRIVATE = "private"
 
 
 class Story(SQLModel, table=True):

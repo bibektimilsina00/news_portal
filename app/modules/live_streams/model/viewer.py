@@ -1,19 +1,14 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import ViewerRole
+
 if TYPE_CHECKING:
     from app.modules.live_streams.model.stream import Stream
     from app.modules.users.model.user import User
-
-
-class ViewerRole(str, enum.Enum):
-    VIEWER = "viewer"
-    MODERATOR = "moderator"
-    HOST = "host"
 
 
 class StreamViewer(SQLModel, table=True):

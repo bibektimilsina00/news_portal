@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
@@ -6,21 +5,15 @@ from typing import TYPE_CHECKING, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import InteractionType
+
 if TYPE_CHECKING:
     from app.modules.stories.model.story import Story
     from app.modules.users.model.user import User
 
 
-class InteractionType(str, enum.Enum):
-    POLL_VOTE = "poll_vote"
-    QUESTION_REPLY = "question_reply"
-    QUIZ_ANSWER = "quiz_answer"
-    REACTION = "reaction"
-
-
 class StoryInteraction(SQLModel, table=True):
     """Interactive elements for stories (polls, questions, quizzes)"""
-
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)

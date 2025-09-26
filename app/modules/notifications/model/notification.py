@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
@@ -6,43 +5,10 @@ from typing import TYPE_CHECKING, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import NotificationPriority, NotificationStatus, NotificationType
+
 if TYPE_CHECKING:
     from app.modules.users.model.user import User
-
-
-class NotificationType(str, enum.Enum):
-    """Types of notifications"""
-
-    LIKE = "like"
-    COMMENT = "comment"
-    FOLLOW = "follow"
-    MENTION = "mention"
-    SHARE = "share"
-    MESSAGE = "message"
-    NEWS_PUBLISHED = "news_published"
-    STORY_ADDED = "story_added"
-    REEL_PUBLISHED = "reel_published"
-    LIVE_STREAM_STARTED = "live_stream_started"
-    SYSTEM = "system"
-
-
-class NotificationPriority(str, enum.Enum):
-    """Notification priority levels"""
-
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    URGENT = "urgent"
-
-
-class NotificationStatus(str, enum.Enum):
-    """Notification delivery status"""
-
-    PENDING = "pending"
-    SENT = "sent"
-    DELIVERED = "delivered"
-    READ = "read"
-    FAILED = "failed"
 
 
 class NotificationBase(SQLModel):

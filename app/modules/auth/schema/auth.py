@@ -1,10 +1,11 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from sqlmodel import SQLModel
+
+from app.shared.enums import OAuth2Provider
 
 
 # Token Models
@@ -269,12 +270,6 @@ class RateLimitStatus(BaseModel):
 
 
 # OAuth2 Models
-class OAuth2Provider(str, enum.Enum):
-    GOOGLE = "google"
-    FACEBOOK = "facebook"
-    TWITTER = "twitter"
-    GITHUB = "github"
-    MICROSOFT = "microsoft"
 
 
 class OAuth2Login(BaseModel):

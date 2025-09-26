@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
@@ -6,28 +5,10 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import ReelStatus, ReelType, ReelVisibility
+
 if TYPE_CHECKING:
     from app.modules.users.model.user import User
-
-
-class ReelType(str, enum.Enum):
-    ORIGINAL = "original"
-    DUET = "duet"
-    STITCH = "stitch"
-    REMIX = "remix"
-
-
-class ReelStatus(str, enum.Enum):
-    PROCESSING = "processing"
-    PUBLISHED = "published"
-    FAILED = "failed"
-    DELETED = "deleted"
-
-
-class ReelVisibility(str, enum.Enum):
-    PUBLIC = "public"
-    FRIENDS = "friends"
-    PRIVATE = "private"
 
 
 class Reel(SQLModel, table=True):

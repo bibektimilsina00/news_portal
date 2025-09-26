@@ -7,39 +7,7 @@ from uuid import UUID
 from sqlalchemy import String
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
-
-# Integration Types and Categories
-class IntegrationType(str):
-    SOCIAL_MEDIA = "social_media"
-    NEWS_API = "news_api"
-    WEATHER = "weather"
-    STOCKS = "stocks"
-    SPORTS = "sports"
-    PAYMENT = "payment"
-    MAPS = "maps"
-    CALENDAR = "calendar"
-    EMAIL = "email"
-    SMS = "sms"
-    WEBHOOK = "webhook"
-
-
-class IntegrationStatus(str):
-    ACTIVE = "active"
-    INACTIVE = "inactive"
-    ERROR = "error"
-    PENDING = "pending"
-    SUSPENDED = "suspended"
-
-
-class WebhookEvent(str):
-    POST_CREATED = "post.created"
-    POST_UPDATED = "post.updated"
-    POST_DELETED = "post.deleted"
-    USER_REGISTERED = "user.registered"
-    USER_UPDATED = "user.updated"
-    COMMENT_ADDED = "comment.added"
-    LIKE_ADDED = "like.added"
-    FOLLOW_ADDED = "follow.added"
+from app.shared.enums import IntegrationStatus, IntegrationType, WebhookEvent
 
 
 # Core Integration Models

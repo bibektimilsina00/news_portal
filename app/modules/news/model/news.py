@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
@@ -6,26 +5,13 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import NewsPriority, NewsStatus
+
 if TYPE_CHECKING:
     from app.modules.news.model.category import Category
     from app.modules.news.model.factcheck import FactCheck
     from app.modules.news.model.source import NewsSource
     from app.modules.users.model.user import User
-
-
-class NewsStatus(str, enum.Enum):
-    DRAFT = "draft"
-    PUBLISHED = "published"
-    ARCHIVED = "archived"
-    SCHEDULED = "scheduled"
-
-
-class NewsPriority(str, enum.Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    URGENT = "urgent"
-    BREAKING = "breaking"
 
 
 class News(SQLModel, table=True):

@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
@@ -6,30 +5,14 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import EffectCategory, EffectType
+
 if TYPE_CHECKING:
     from app.modules.reels.model.reel import Reel
 
 
-class EffectType(str, enum.Enum):
-    FILTER = "filter"
-    TRANSITION = "transition"
-    TEXT = "text"
-    STICKER = "sticker"
-    GREEN_SCREEN = "green_screen"
-    SPEED = "speed"
-    AUDIO = "audio"
-
-
-class EffectCategory(str, enum.Enum):
-    VISUAL = "visual"
-    AUDIO = "audio"
-    TEXT = "text"
-    TRANSITION = "transition"
-
-
 class Effect(SQLModel, table=True):
     """Video effects for reels"""
-
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)

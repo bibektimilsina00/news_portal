@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
-    from app.modules.authentication.model.token import Token
+    from app.modules.auth.model.token import Token
     from app.modules.users.model.user import User
 
 

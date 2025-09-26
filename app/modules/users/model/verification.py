@@ -1,31 +1,17 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import JSON, Column, Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import VerificationStatus, VerificationType
+
 if TYPE_CHECKING:
     from app.modules.users.model.user import User
 
 
-class VerificationStatus(str, enum.Enum):
-    PENDING = "pending"
-    UNDER_REVIEW = "under_review"
-    APPROVED = "approved"
-    REJECTED = "rejected"
-    EXPIRED = "expired"
-
-
-class VerificationType(str, enum.Enum):
-    JOURNALIST = "journalist"
-    ORGANIZATION = "organization"
-    BUSINESS = "business"
-
-
 class VerificationRequest(SQLModel, table=True):
     """Verification requests for journalists and organizations"""
-
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
@@ -116,7 +102,6 @@ class VerificationRequest(SQLModel, table=True):
 
 class VerificationBadge(SQLModel, table=True):
     """Verification badges earned by users"""
-
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     user_id: uuid.UUID = Field(foreign_key="user.id", index=True)

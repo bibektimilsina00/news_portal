@@ -1,10 +1,11 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
+
+from app.shared.enums import PostStatus, PostType, PostVisibility
 
 if TYPE_CHECKING:
     from app.modules.posts.model.bookmark import Bookmark
@@ -14,27 +15,6 @@ if TYPE_CHECKING:
     from app.modules.posts.model.post_tag import PostTag
     from app.modules.posts.model.tag import Tag
     from app.modules.users.model.user import User
-
-
-class PostType(str, enum.Enum):
-    REGULAR = "regular"
-    STORY = "story"
-    REEL = "reel"
-    LIVE = "live"
-    ARTICLE = "article"
-
-
-class PostStatus(str, enum.Enum):
-    DRAFT = "draft"
-    PUBLISHED = "published"
-    ARCHIVED = "archived"
-    SCHEDULED = "scheduled"
-
-
-class PostVisibility(str, enum.Enum):
-    PUBLIC = "public"
-    FOLLOWERS_ONLY = "followers_only"
-    CLOSE_FRIENDS = "close_friends"
 
 
 class Post(SQLModel, table=True):

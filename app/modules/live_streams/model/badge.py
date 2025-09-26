@@ -1,29 +1,18 @@
 import uuid
 from datetime import datetime
-from enum import Enum
 from typing import TYPE_CHECKING, Optional
 
 from sqlmodel import Field, Relationship, SQLModel
+
+from app.shared.enums import BadgeType
 
 if TYPE_CHECKING:
     from app.modules.live_streams.model.stream import Stream
     from app.modules.users.model.user import User
 
 
-class BadgeType(str, Enum):
-    """Badge types for donations/tips"""
-
-    HEART = "heart"
-    STAR = "star"
-    DIAMOND = "diamond"
-    FIRE = "fire"
-    ROCKET = "rocket"
-    CROWN = "crown"
-
-
 class StreamBadge(SQLModel, table=True):
     """Stream badges/tips model"""
-
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)

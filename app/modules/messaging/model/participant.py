@@ -1,30 +1,14 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import ParticipantRole, ParticipantStatus
+
 if TYPE_CHECKING:
     from app.modules.messaging.model.conversation import Conversation
     from app.modules.users.model.user import User
-
-
-class ParticipantRole(str, enum.Enum):
-    """Participant roles in conversations"""
-
-    MEMBER = "member"  # Regular member
-    ADMIN = "admin"  # Group admin
-    OWNER = "owner"  # Conversation owner/creator
-
-
-class ParticipantStatus(str, enum.Enum):
-    """Participant status"""
-
-    ACTIVE = "active"
-    MUTED = "muted"
-    BANNED = "banned"
-    LEFT = "left"
 
 
 class ConversationParticipant(SQLModel, table=True):

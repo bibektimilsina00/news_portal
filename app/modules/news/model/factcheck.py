@@ -1,4 +1,3 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
@@ -6,25 +5,11 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import JSON, TEXT, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.shared.enums import FactCheckPriority, FactCheckStatus
+
 if TYPE_CHECKING:
     from app.modules.news.model.news import News
     from app.modules.users.model.user import User
-
-
-class FactCheckStatus(str, enum.Enum):
-    PENDING = "pending"
-    VERIFIED = "verified"
-    FALSE = "false"
-    MISLEADING = "misleading"
-    PARTIALLY_TRUE = "partially_true"
-    UNVERIFIABLE = "unverifiable"
-
-
-class FactCheckPriority(str, enum.Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    URGENT = "urgent"
 
 
 class FactCheck(SQLModel, table=True):
