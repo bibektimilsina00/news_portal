@@ -1,3 +1,4 @@
+import uuid
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, Query
@@ -67,7 +68,7 @@ def get_content_analytics(
     *,
     session: SessionDep,
     current_user: CurrentUser,
-    content_id: str,
+    content_id: uuid.UUID,
     start_date: Optional[str] = Query(None, description="Start date (YYYY-MM-DD)"),
     end_date: Optional[str] = Query(None, description="End date (YYYY-MM-DD)"),
 ) -> ContentAnalyticsList:
@@ -93,7 +94,7 @@ def get_author_content_analytics(
     *,
     session: SessionDep,
     current_user: CurrentUser,
-    author_id: str,
+    author_id: uuid.UUID,
     content_type: Optional[str] = Query(None, description="Filter by content type"),
 ) -> ContentAnalyticsList:
     """

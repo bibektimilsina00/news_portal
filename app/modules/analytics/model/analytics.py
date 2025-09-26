@@ -9,13 +9,10 @@ from sqlmodel import Field, Relationship, SQLModel
 class UserAnalytics(SQLModel, table=True):
     """User analytics tracking model"""
 
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
-    )
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # User reference
-    user_id: str = Field(index=True)
+    user_id: uuid.UUID = Field(index=True)
 
     # Profile analytics
     profile_views: int = Field(default=0)
@@ -64,19 +61,18 @@ class UserAnalytics(SQLModel, table=True):
 class ContentAnalytics(SQLModel, table=True):
     """Content analytics tracking model"""
 
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
-    )
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Content reference
-    content_id: str = Field(index=True)  # Could be post_id, story_id, reel_id, etc.
+    content_id: uuid.UUID = Field(
+        index=True
+    )  # Could be post_id, story_id, reel_id, etc.
     content_type: str = Field(
         index=True
     )  # "post", "story", "reel", "news", "live_stream"
 
     # User reference
-    author_id: str = Field(index=True)
+    author_id: uuid.UUID = Field(index=True)
 
     # Basic metrics
     views: int = Field(default=0)
@@ -121,10 +117,7 @@ class ContentAnalytics(SQLModel, table=True):
 class PlatformAnalytics(SQLModel, table=True):
     """Platform-wide analytics model"""
 
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
-    )
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Platform metrics
     total_users: int = Field(default=0)

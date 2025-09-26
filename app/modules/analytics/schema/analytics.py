@@ -8,7 +8,7 @@ from sqlmodel import SQLModel
 
 # Base schemas
 class UserAnalyticsBase(SQLModel):
-    user_id: str = Field(description="User ID for analytics")
+    user_id: uuid.UUID = Field(description="User ID for analytics")
     profile_views: int = Field(default=0, description="Number of profile views")
     follower_count: int = Field(default=0, description="Current follower count")
     following_count: int = Field(default=0, description="Current following count")
@@ -39,11 +39,11 @@ class UserAnalyticsBase(SQLModel):
 
 
 class ContentAnalyticsBase(SQLModel):
-    content_id: str = Field(description="Content ID (post, story, reel, etc.)")
+    content_id: uuid.UUID = Field(description="Content ID (post, story, reel, etc.)")
     content_type: str = Field(
         description="Type of content: post, story, reel, news, live_stream"
     )
-    author_id: str = Field(description="Author/creator of the content")
+    author_id: uuid.UUID = Field(description="Author/creator of the content")
     views: int = Field(default=0, description="Number of views")
     likes: int = Field(default=0, description="Number of likes")
     comments: int = Field(default=0, description="Number of comments")
