@@ -12,13 +12,10 @@ if TYPE_CHECKING:
 class SearchHistory(SQLModel, table=True):
     """Search history model for user search tracking"""
 
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
-    )
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # User who performed the search
-    user_id: str = Field(foreign_key="user.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Search details
     query: str = Field(max_length=500, index=True)

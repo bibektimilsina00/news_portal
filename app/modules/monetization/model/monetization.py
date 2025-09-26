@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from decimal import Decimal
 from typing import TYPE_CHECKING, List, Optional
@@ -69,11 +70,9 @@ class Payment(SQLModel, table=True):
     currency: str = Field(default="USD", max_length=3)
     status: str = Field(default="pending")  # pending, completed, failed, refunded
     payment_method: str = Field(max_length=50)  # stripe, paypal, etc.
-    payment_id: str = Field(unique=True, index=True)  # External payment provider ID
+    payment_id: UUID = Field(unique=True, index=True)  # External payment provider ID
     description: Optional[str] = Field(default=None, max_length=255)
-    extra_data: Optional[dict] = Field(
-        default_factory=dict, sa_column=Column(JSON)
-    )  # JSON metadata
+    extra_data: Optional[dict] = Field(default_factory=dict, sa_column=Column(JSON))
 
     # Timestamps
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -168,7 +167,7 @@ class CreatorPayout(SQLModel, table=True):
     currency: str = Field(default="USD", max_length=3)
     status: str = Field(default="pending")  # pending, processing, completed, failed
     payout_method: str = Field(max_length=50)  # bank_transfer, paypal, stripe, etc.
-    payout_id: str = Field(unique=True, index=True)  # External payout provider ID
+    payout_id: uuid.UUID = Field(unique=True, index=True)  # External payout provider ID
     fee: Decimal = Field(default=0, max_digits=8, decimal_places=2)  # Platform fee
     net_amount: Decimal = Field(max_digits=10, decimal_places=2)  # Amount after fees
 

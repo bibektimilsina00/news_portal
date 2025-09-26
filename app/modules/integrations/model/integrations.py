@@ -162,7 +162,7 @@ class APIKeyPublic(APIKeyBase):
 # Social Media Integration Models
 class SocialMediaPostBase(SQLModel):
     platform: str = Field(max_length=50)  # twitter, facebook, instagram, linkedin
-    external_id: str = Field(max_length=255)
+    external_id: UUID = Field(default_factory=uuid.uuid4, max_length=255)
     content_type: str = Field(max_length=50)  # post, story, reel, etc.
     content_id: UUID  # Reference to our internal content
     post_url: Optional[str] = Field(default=None, max_length=500)
@@ -196,7 +196,7 @@ class SocialMediaPostPublic(SocialMediaPostBase):
 # News API Integration Models
 class NewsSourceBase(SQLModel):
     name: str = Field(max_length=200)
-    external_id: str = Field(max_length=255, unique=True)
+    external_id: UUID = Field(default_factory=uuid.uuid4, max_length=255, unique=True)
     url: Optional[str] = Field(default=None, max_length=500)
     category: Optional[str] = Field(default=None, max_length=100)
     language: str = Field(default="en", max_length=10)
@@ -235,7 +235,7 @@ class ExternalNewsArticleBase(SQLModel):
     description: Optional[str] = Field(default=None, max_length=2000)
     content: Optional[str] = Field(default=None)
     url: str = Field(max_length=500)
-    external_id: str = Field(max_length=255, unique=True)
+    external_id: UUID = Field(default_factory=uuid.uuid4, max_length=255, unique=True)
     published_at: datetime
     author: Optional[str] = Field(default=None, max_length=200)
     image_url: Optional[str] = Field(default=None, max_length=500)
@@ -423,7 +423,7 @@ class SportsDataBase(SQLModel):
     sport: str = Field(max_length=50)
     event_type: str = Field(max_length=50)  # match, tournament, season
     event_name: str = Field(max_length=200)
-    external_id: str = Field(max_length=255)
+    external_id: UUID = Field(default_factory=uuid.uuid4, max_length=255)
     start_time: datetime
     end_time: Optional[datetime] = None
     status: str = Field(max_length=50)  # scheduled, live, finished, cancelled

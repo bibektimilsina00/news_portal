@@ -36,10 +36,7 @@ class SearchResultType(str, enum.Enum):
 class SearchQuery(SQLModel, table=True):
     """Search query model for tracking searches"""
 
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
-    )
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Search details
     query: str = Field(max_length=500, index=True)
@@ -69,18 +66,15 @@ class SearchQuery(SQLModel, table=True):
 class SearchResult(SQLModel, table=True):
     """Search result model for caching results"""
 
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
-    )
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Link to search query
-    query_id: str = Field(foreign_key="searchquery.id", index=True)
+    query_id: uuid.UUID = Field(foreign_key="searchquery.id", index=True)
 
     # Result details
     result_type: SearchResultType = Field(sa_column=Column(Enum(SearchResultType)))
     entity_type: str = Field(max_length=50)  # "post", "user", "news", etc.
-    entity_id: str = Field(max_length=100)  # UUID or ID of the entity
+    entity_id: uuid.UUID = Field(max_length=100)  # UUID or ID of the entity
     title: Optional[str] = Field(default=None, max_length=500)
     description: Optional[str] = Field(default=None, max_length=1000)
     thumbnail_url: Optional[str] = Field(default=None, max_length=1000)
