@@ -13,7 +13,7 @@ from app.modules.auth.schema.auth import (
     TwoFactorVerify,
 )
 from app.modules.auth.services.two_factor_service import two_factor_service
-from app.shared.deps.deps import CurrentUser, SessionDep, get_current_active_user
+from app.shared.deps.deps import ActiveCurrentUser, SessionDep
 from app.shared.schema.message import Message
 
 router = APIRouter(prefix="/2fa", tags=["two-factor"])
@@ -21,7 +21,8 @@ router = APIRouter(prefix="/2fa", tags=["two-factor"])
 
 @router.post("/setup", response_model=TwoFactorSetup)
 async def setup_two_factor(
-    session: SessionDep, current_user: CurrentUser = Depends(get_current_active_user)
+    session: SessionDep,
+    current_user: ActiveCurrentUser,
 ) -> Any:
     """
     Setup two-factor authentication
@@ -70,7 +71,7 @@ async def setup_two_factor(
 async def verify_two_factor_setup(
     session: SessionDep,
     verification: TwoFactorVerify,
-    current_user: CurrentUser = Depends(get_current_active_user),
+    current_user: ActiveCurrentUser,
 ) -> Any:
     """
     Verify two-factor setup with code
@@ -118,7 +119,7 @@ async def verify_two_factor_setup(
 async def verify_two_factor(
     session: SessionDep,
     verification: TwoFactorVerify,
-    current_user: CurrentUser = Depends(get_current_active_user),
+    current_user: ActiveCurrentUser,
 ) -> Any:
     """
     Verify two-factor authentication code
@@ -159,7 +160,7 @@ async def verify_two_factor(
 async def disable_two_factor(
     session: SessionDep,
     verification: TwoFactorVerify,
-    current_user: CurrentUser = Depends(get_current_active_user),
+    current_user: ActiveCurrentUser,
 ) -> Any:
     """
     Disable two-factor authentication
@@ -203,7 +204,8 @@ async def disable_two_factor(
 
 @router.get("/backup-codes", response_model=dict)
 async def get_backup_codes(
-    session: SessionDep, current_user: CurrentUser = Depends(get_current_active_user)
+    session: SessionDep,
+    current_user: ActiveCurrentUser,
 ) -> Any:
     """
     Get remaining backup codes
@@ -225,7 +227,7 @@ async def get_backup_codes(
 async def regenerate_backup_codes(
     session: SessionDep,
     verification: TwoFactorVerify,
-    current_user: CurrentUser = Depends(get_current_active_user),
+    current_user: ActiveCurrentUser,
 ) -> Any:
     """
     Regenerate backup codes
@@ -268,7 +270,7 @@ async def regenerate_backup_codes(
 
 @router.get("/status", response_model=TwoFactorResponse)
 async def get_two_factor_status(
-    current_user: CurrentUser = Depends(get_current_active_user),
+    current_user: ActiveCurrentUser,
 ) -> Any:
     """
     Get two-factor authentication status

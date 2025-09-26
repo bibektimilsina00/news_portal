@@ -38,14 +38,12 @@ class MessageStatus(str, enum.Enum):
 class Message(SQLModel, table=True):
     """Message model"""
 
-    __tablename__ = "messages"
-
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    conversation_id: uuid.UUID = Field(foreign_key="conversations.id", index=True)
-    sender_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    conversation_id: uuid.UUID = Field(foreign_key="conversation.id", index=True)
+    sender_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Message content
     type: MessageType = Field(default=MessageType.TEXT)
@@ -63,9 +61,9 @@ class Message(SQLModel, table=True):
 
     # Message metadata
     reply_to_message_id: Optional[uuid.UUID] = Field(
-        default=None, foreign_key="messages.id"
+        default=None, foreign_key="message.id"
     )
-    forwarded_from: Optional[uuid.UUID] = Field(default=None, foreign_key="users.id")
+    forwarded_from: Optional[uuid.UUID] = Field(default=None, foreign_key="user.id")
 
     # Status and delivery
     status: MessageStatus = Field(default=MessageStatus.SENDING)

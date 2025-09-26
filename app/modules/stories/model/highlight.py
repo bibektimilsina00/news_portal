@@ -12,13 +12,12 @@ if TYPE_CHECKING:
 class StoryHighlight(SQLModel, table=True):
     """Story highlights - curated collections of stories"""
 
-    __tablename__ = "story_highlights"
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Highlight details
     title: str = Field(max_length=100)

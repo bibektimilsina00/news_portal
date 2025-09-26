@@ -27,10 +27,9 @@ class TokenStatus(str, enum.Enum):
 class Token(SQLModel, table=True):
     """Token management for authentication"""
 
-    __tablename__ = "tokens"
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    user_id: uuid.UUID = Field(foreign_key="user_credentials.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="usercredentials.id", index=True)
 
     # Token details
     token: str = Field(max_length=1000, index=True)
@@ -99,7 +98,6 @@ class Token(SQLModel, table=True):
 class TokenBlacklist(SQLModel, table=True):
     """Token blacklist for revoked tokens"""
 
-    __tablename__ = "token_blacklist"
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     token: str = Field(max_length=1000, unique=True, index=True)
@@ -121,10 +119,9 @@ class TokenBlacklist(SQLModel, table=True):
 class APIToken(SQLModel, table=True):
     """API tokens for programmatic access"""
 
-    __tablename__ = "api_tokens"
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Token details
     name: str = Field(max_length=255)

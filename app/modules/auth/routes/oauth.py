@@ -6,62 +6,90 @@ from fastapi.responses import RedirectResponse
 from starlette.config import Config
 
 from app.core.config import settings
-from app.modules.authentication.schema.auth import (
+from app.modules.auth.schema.auth import (
     OAuth2Callback,
     OAuth2Login,
     OAuth2Provider,
     UserLoginResponse,
 )
-from app.modules.authentication.services.oauth_service import oauth_service
-from app.shared.deps.deps import SessionDep
+from app.modules.auth.services.oauth_service import oauth_service
+from app.shared.deps.deps import ActiveCurrentUser, SessionDep
 
 router = APIRouter(prefix="/oauth", tags=["oauth"])
 
 # OAuth configuration
-config_data = {
-    "GOOGLE_CLIENT_ID": settings.GOOGLE_CLIENT_ID,
-    "GOOGLE_CLIENT_SECRET": settings.GOOGLE_CLIENT_SECRET,
-    "FACEBOOK_CLIENT_ID": settings.FACEBOOK_CLIENT_ID,
-    "FACEBOOK_CLIENT_SECRET": settings.FACEBOOK_CLIENT_SECRET,
-    "TWITTER_CLIENT_ID": settings.TWITTER_CLIENT_ID,
-    "TWITTER_CLIENT_SECRET": settings.TWITTER_CLIENT_SECRET,
-    "GITHUB_CLIENT_ID": settings.GITHUB_CLIENT_ID,
-    "GITHUB_CLIENT_SECRET": settings.GITHUB_CLIENT_SECRET,
-}
+config_data = {}
+
+# Only add OAuth settings if they are configured
+if settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_SECRET:
+    config_data.update(
+        {
+            "GOOGLE_CLIENT_ID": settings.GOOGLE_CLIENT_ID,
+            "GOOGLE_CLIENT_SECRET": settings.GOOGLE_CLIENT_SECRET,
+        }
+    )
+
+if settings.FACEBOOK_CLIENT_ID and settings.FACEBOOK_CLIENT_SECRET:
+    config_data.update(
+        {
+            "FACEBOOK_CLIENT_ID": settings.FACEBOOK_CLIENT_ID,
+            "FACEBOOK_CLIENT_SECRET": settings.FACEBOOK_CLIENT_SECRET,
+        }
+    )
+
+if settings.TWITTER_CLIENT_ID and settings.TWITTER_CLIENT_SECRET:
+    config_data.update(
+        {
+            "TWITTER_CLIENT_ID": settings.TWITTER_CLIENT_ID,
+            "TWITTER_CLIENT_SECRET": settings.TWITTER_CLIENT_SECRET,
+        }
+    )
+
+if settings.GITHUB_CLIENT_ID and settings.GITHUB_CLIENT_SECRET:
+    config_data.update(
+        {
+            "GITHUB_CLIENT_ID": settings.GITHUB_CLIENT_ID,
+            "GITHUB_CLIENT_SECRET": settings.GITHUB_CLIENT_SECRET,
+        }
+    )
 
 config = Config(environ=config_data)
 oauth = OAuth(config)
 
-# Register OAuth providers
-oauth.register(
-    name="google",
-    server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
-    client_kwargs={"scope": "openid email profile"},
-)
+# Register OAuth providers only if credentials are available
+if settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_SECRET:
+    oauth.register(
+        name="google",
+        server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+        client_kwargs={"scope": "openid email profile"},
+    )
 
-oauth.register(
-    name="facebook",
-    api_base_url="https://graph.facebook.com/",
-    access_token_url="https://graph.facebook.com/oauth/access_token",
-    authorize_url="https://www.facebook.com/dialog/oauth",
-    client_kwargs={"scope": "email public_profile"},
-)
+if settings.FACEBOOK_CLIENT_ID and settings.FACEBOOK_CLIENT_SECRET:
+    oauth.register(
+        name="facebook",
+        api_base_url="https://graph.facebook.com/",
+        access_token_url="https://graph.facebook.com/oauth/access_token",
+        authorize_url="https://www.facebook.com/dialog/oauth",
+        client_kwargs={"scope": "email public_profile"},
+    )
 
-oauth.register(
-    name="twitter",
-    api_base_url="https://api.twitter.com/",
-    access_token_url="https://api.twitter.com/oauth/access_token",
-    authorize_url="https://api.twitter.com/oauth/authenticate",
-    client_kwargs={"scope": "email"},
-)
+if settings.TWITTER_CLIENT_ID and settings.TWITTER_CLIENT_SECRET:
+    oauth.register(
+        name="twitter",
+        api_base_url="https://api.twitter.com/",
+        access_token_url="https://api.twitter.com/oauth/access_token",
+        authorize_url="https://api.twitter.com/oauth/authenticate",
+        client_kwargs={"scope": "email"},
+    )
 
-oauth.register(
-    name="github",
-    api_base_url="https://api.github.com/",
-    access_token_url="https://github.com/login/oauth/access_token",
-    authorize_url="https://github.com/login/oauth/authorize",
-    client_kwargs={"scope": "user:email"},
-)
+if settings.GITHUB_CLIENT_ID and settings.GITHUB_CLIENT_SECRET:
+    oauth.register(
+        name="github",
+        api_base_url="https://api.github.com/",
+        access_token_url="https://github.com/login/oauth/access_token",
+        authorize_url="https://github.com/login/oauth/authorize",
+        client_kwargs={"scope": "user:email"},
+    )
 
 
 @router.get("/{provider}/login")
@@ -69,7 +97,7 @@ async def oauth_login(provider: OAuth2Provider, request: Request) -> Any:
     """
     Initiate OAuth2 login flow
     """
-    redirect_uri = f"{settings.API_BASE_URL}/auth/oauth/{provider}/callback"
+    redirect_uri = f"{settings.server_host}/api/v1/auth/oauth/{provider}/callback"
 
     try:
         return await oauth.create_client(provider).authorize_redirect(
@@ -174,7 +202,7 @@ async def oauth_token_login(
 async def unlink_oauth_provider(
     provider: OAuth2Provider,
     session: SessionDep,
-    current_user: CurrentUser = Depends(get_current_active_user),
+    current_user: ActiveCurrentUser,
 ) -> Any:
     """
     Unlink OAuth provider from user account

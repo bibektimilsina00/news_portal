@@ -24,15 +24,14 @@ class BadgeType(str, Enum):
 class StreamBadge(SQLModel, table=True):
     """Stream badges/tips model"""
 
-    __tablename__ = "stream_badges"
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    stream_id: uuid.UUID = Field(foreign_key="live_streams.id", index=True)
-    sender_id: uuid.UUID = Field(foreign_key="users.id", index=True)
-    recipient_id: Optional[uuid.UUID] = Field(default=None, foreign_key="users.id")
+    stream_id: uuid.UUID = Field(foreign_key="stream.id", index=True)
+    sender_id: uuid.UUID = Field(foreign_key="user.id", index=True)
+    recipient_id: Optional[uuid.UUID] = Field(default=None, foreign_key="user.id")
 
     # Badge details
     badge_type: BadgeType = Field(

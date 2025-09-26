@@ -21,14 +21,13 @@ class InteractionType(str, enum.Enum):
 class StoryInteraction(SQLModel, table=True):
     """Interactive elements for stories (polls, questions, quizzes)"""
 
-    __tablename__ = "story_interactions"
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    story_id: uuid.UUID = Field(foreign_key="stories.id", index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    story_id: uuid.UUID = Field(foreign_key="story.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Interaction details
     interaction_type: InteractionType = Field(index=True)

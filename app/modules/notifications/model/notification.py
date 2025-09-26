@@ -82,13 +82,13 @@ class NotificationBase(SQLModel):
 class Notification(NotificationBase, table=True):
     """Notification database model"""
 
-    __tablename__ = "notifications"
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign keys
-    recipient_id: str = Field(foreign_key="user.id", index=True)
-    sender_id: Optional[str] = Field(default=None, foreign_key="user.id", index=True)
+    recipient_id: uuid.UUID = Field(foreign_key="user.id", index=True)
+    sender_id: Optional[uuid.UUID] = Field(
+        default=None, foreign_key="user.id", index=True
+    )
 
     # Relationships
     recipient: "User" = Relationship(

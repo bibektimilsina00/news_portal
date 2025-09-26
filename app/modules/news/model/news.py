@@ -31,18 +31,16 @@ class NewsPriority(str, enum.Enum):
 class News(SQLModel, table=True):
     """News articles model"""
 
-    __tablename__ = "news"
-
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
     category_id: Optional[uuid.UUID] = Field(
-        default=None, foreign_key="categories.id", index=True
+        default=None, foreign_key="category.id", index=True
     )
     source_id: Optional[uuid.UUID] = Field(
-        default=None, foreign_key="news_sources.id", index=True
+        default=None, foreign_key="newssource.id", index=True
     )
 
     # Content Fields
@@ -203,10 +201,8 @@ class News(SQLModel, table=True):
 class NewsTag(SQLModel, table=True):
     """Many-to-many relationship between news and tags"""
 
-    __tablename__ = "news_tags"
-
     news_id: uuid.UUID = Field(foreign_key="news.id", primary_key=True)
-    tag_id: uuid.UUID = Field(foreign_key="tags.id", primary_key=True)
+    id: uuid.UUID = Field(foreign_key="newstag.id", primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
@@ -215,8 +211,6 @@ class NewsTag(SQLModel, table=True):
 
 class NewsRelated(SQLModel, table=True):
     """Related news articles"""
-
-    __tablename__ = "news_related"
 
     news_id: uuid.UUID = Field(foreign_key="news.id", primary_key=True)
     related_news_id: uuid.UUID = Field(foreign_key="news.id", primary_key=True)

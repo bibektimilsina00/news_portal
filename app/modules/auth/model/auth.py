@@ -12,10 +12,8 @@ if TYPE_CHECKING:
 class UserCredentials(SQLModel, table=True):
     """User credentials for authentication"""
 
-    __tablename__ = "user_credentials"
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", unique=True, index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", unique=True, index=True)
 
     # Authentication fields
     password_hash: str = Field(max_length=255)
@@ -30,6 +28,9 @@ class UserCredentials(SQLModel, table=True):
     # Two-factor authentication
     two_factor_enabled: bool = Field(default=False)
     two_factor_secret: Optional[str] = Field(default=None, max_length=255)
+    backup_codes: Optional[str] = Field(
+        default=None, max_length=2000
+    )  # JSON string of backup codes
 
     # Account security
     email_verified: bool = Field(default=False)
@@ -46,8 +47,7 @@ class UserCredentials(SQLModel, table=True):
     user: "User" = Relationship(back_populates="credentials")
     tokens: List["Token"] = Relationship(back_populates="user")
 
-    class Config:
-        orm_mode = True
+    model_config = {"from_attributes": True}
 
     def is_locked(self) -> bool:
         """Check if account is locked"""
@@ -75,10 +75,8 @@ class UserCredentials(SQLModel, table=True):
 class PasswordResetToken(SQLModel, table=True):
     """Password reset tokens"""
 
-    __tablename__ = "password_reset_tokens"
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
     token: str = Field(max_length=500, index=True)
     used: bool = Field(default=False)
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -101,10 +99,8 @@ class PasswordResetToken(SQLModel, table=True):
 class EmailVerificationToken(SQLModel, table=True):
     """Email verification tokens"""
 
-    __tablename__ = "email_verification_tokens"
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
     email: str = Field(max_length=255, index=True)
     token: str = Field(max_length=500, index=True)
     used: bool = Field(default=False)
@@ -128,11 +124,9 @@ class EmailVerificationToken(SQLModel, table=True):
 class SecurityLog(SQLModel, table=True):
     """Security logs for tracking authentication events"""
 
-    __tablename__ = "security_logs"
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     user_id: Optional[uuid.UUID] = Field(
-        default=None, foreign_key="users.id", index=True
+        default=None, foreign_key="user.id", index=True
     )
 
     # Event details

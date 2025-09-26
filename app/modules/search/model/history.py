@@ -12,7 +12,6 @@ if TYPE_CHECKING:
 class SearchHistory(SQLModel, table=True):
     """Search history model for user search tracking"""
 
-    __tablename__ = "search_history"
 
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True

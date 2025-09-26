@@ -11,10 +11,9 @@ if TYPE_CHECKING:
 class Profile(SQLModel, table=True):
     """Extended user profile information"""
 
-    __tablename__ = "profiles"
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", unique=True, index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", unique=True, index=True)
 
     # Extended profile information
     bio: Optional[str] = Field(default=None, max_length=500)
@@ -66,12 +65,11 @@ class Profile(SQLModel, table=True):
 class ProfileView(SQLModel, table=True):
     """Profile view tracking for analytics"""
 
-    __tablename__ = "profile_views"
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    profile_id: uuid.UUID = Field(foreign_key="profiles.id", index=True)
+    profile_id: uuid.UUID = Field(foreign_key="profile.id", index=True)
     viewer_id: Optional[uuid.UUID] = Field(
-        default=None, foreign_key="users.id", index=True
+        default=None, foreign_key="user.id", index=True
     )
     ip_address: Optional[str] = Field(default=None, max_length=45)
     user_agent: Optional[str] = Field(default=None, max_length=500)
@@ -85,11 +83,10 @@ class ProfileView(SQLModel, table=True):
 class CloseFriend(SQLModel, table=True):
     """Close friends relationships"""
 
-    __tablename__ = "close_friends"
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
-    friend_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
+    friend_id: uuid.UUID = Field(foreign_key="user.id", index=True)
     added_at: datetime = Field(default_factory=datetime.utcnow)
 
     # Relationships
@@ -100,11 +97,10 @@ class CloseFriend(SQLModel, table=True):
 class UserBlock(SQLModel, table=True):
     """User blocking relationships"""
 
-    __tablename__ = "user_blocks"
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    blocker_id: uuid.UUID = Field(foreign_key="users.id", index=True)
-    blocked_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    blocker_id: uuid.UUID = Field(foreign_key="user.id", index=True)
+    blocked_id: uuid.UUID = Field(foreign_key="user.id", index=True)
     reason: Optional[str] = Field(default=None, max_length=500)
     blocked_at: datetime = Field(default_factory=datetime.utcnow)
 

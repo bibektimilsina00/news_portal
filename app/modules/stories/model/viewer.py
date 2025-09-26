@@ -12,14 +12,13 @@ if TYPE_CHECKING:
 class StoryViewer(SQLModel, table=True):
     """Tracks who has viewed a story"""
 
-    __tablename__ = "story_viewers"
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    story_id: uuid.UUID = Field(foreign_key="stories.id", index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    story_id: uuid.UUID = Field(foreign_key="story.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # View metadata
     viewed_at: datetime = Field(default_factory=datetime.utcnow)

@@ -11,11 +11,10 @@ if TYPE_CHECKING:
 class Follow(SQLModel, table=True):
     """Follow relationship between users"""
 
-    __tablename__ = "follows"
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    follower_id: uuid.UUID = Field(foreign_key="users.id", index=True)
-    following_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    follower_id: uuid.UUID = Field(foreign_key="user.id", index=True)
+    following_id: uuid.UUID = Field(foreign_key="user.id", index=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     # Relationships

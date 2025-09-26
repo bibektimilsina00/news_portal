@@ -15,6 +15,25 @@ from app.modules.content_moderation.model.moderation import (
     UserBan,
     UserStrike,
 )
+from app.modules.content_moderation.schema.moderation import (
+    BanAppealCreate,
+    BanAppealUpdate,
+    ContentFlagCreate,
+    ContentFlagUpdate,
+    ContentReportCreate,
+    ContentReportUpdate,
+    ModerationActionCreate,
+    ModerationActionUpdate,
+    ModerationAppealCreate,
+    ModerationAppealUpdate,
+    ModerationLogCreate,
+    ModerationRuleCreate,
+    ModerationRuleUpdate,
+    UserBanCreate,
+    UserBanUpdate,
+    UserStrikeCreate,
+    UserStrikeUpdate,
+)
 from app.shared.crud.base import CRUDBase
 
 

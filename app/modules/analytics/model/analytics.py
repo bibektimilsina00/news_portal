@@ -9,7 +9,6 @@ from sqlmodel import Field, Relationship, SQLModel
 class UserAnalytics(SQLModel, table=True):
     """User analytics tracking model"""
 
-    __tablename__ = "user_analytics"
 
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
@@ -65,7 +64,6 @@ class UserAnalytics(SQLModel, table=True):
 class ContentAnalytics(SQLModel, table=True):
     """Content analytics tracking model"""
 
-    __tablename__ = "content_analytics"
 
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
@@ -123,7 +121,6 @@ class ContentAnalytics(SQLModel, table=True):
 class PlatformAnalytics(SQLModel, table=True):
     """Platform-wide analytics model"""
 
-    __tablename__ = "platform_analytics"
 
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True

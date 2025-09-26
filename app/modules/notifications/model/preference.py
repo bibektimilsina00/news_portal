@@ -51,7 +51,6 @@ class NotificationPreferenceBase(SQLModel):
 class NotificationPreference(NotificationPreferenceBase, table=True):
     """Notification preference database model"""
 
-    __tablename__ = "notification_preferences"
 
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True

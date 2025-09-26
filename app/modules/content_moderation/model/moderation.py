@@ -16,8 +16,6 @@ if TYPE_CHECKING:
 class ContentReport(SQLModel, table=True):
     """User reports for content moderation."""
 
-    __tablename__ = "content_report"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     reporter_id: UUID = Field(foreign_key="user.id", index=True)
     content_type: str = Field(max_length=50)  # post, news, story, reel, comment, etc.
@@ -43,8 +41,6 @@ class ContentReport(SQLModel, table=True):
 class ModerationAction(SQLModel, table=True):
     """Moderation actions taken on content."""
 
-    __tablename__ = "moderation_action"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     moderator_id: UUID = Field(foreign_key="user.id", index=True)
     content_type: str = Field(max_length=50)
@@ -68,10 +64,8 @@ class ModerationAction(SQLModel, table=True):
 class ModerationAppeal(SQLModel, table=True):
     """Appeals against moderation actions."""
 
-    __tablename__ = "moderation_appeal"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
-    action_id: UUID = Field(foreign_key="moderation_action.id", index=True)
+    action_id: UUID = Field(foreign_key="moderationaction.id", index=True)
     appellant_id: UUID = Field(foreign_key="user.id", index=True)
     reason: str = Field(max_length=1000)
     evidence: Optional[str] = Field(default=None, max_length=2000)
@@ -93,8 +87,6 @@ class ModerationAppeal(SQLModel, table=True):
 
 class ContentFlag(SQLModel, table=True):
     """Automated content flags from AI detection."""
-
-    __tablename__ = "content_flag"
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     content_type: str = Field(max_length=50)
@@ -123,8 +115,6 @@ class ContentFlag(SQLModel, table=True):
 class UserStrike(SQLModel, table=True):
     """User strikes for violations."""
 
-    __tablename__ = "user_strike"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     user_id: UUID = Field(foreign_key="user.id", index=True)
     issued_by: UUID = Field(foreign_key="user.id", index=True)
@@ -147,8 +137,6 @@ class UserStrike(SQLModel, table=True):
 
 class UserBan(SQLModel, table=True):
     """User bans for severe violations."""
-
-    __tablename__ = "user_ban"
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     user_id: UUID = Field(foreign_key="user.id", index=True)
@@ -174,10 +162,8 @@ class UserBan(SQLModel, table=True):
 class BanAppeal(SQLModel, table=True):
     """Appeals against user bans."""
 
-    __tablename__ = "ban_appeal"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
-    ban_id: UUID = Field(foreign_key="user_ban.id", index=True)
+    ban_id: UUID = Field(foreign_key="userban.id", index=True)
     appellant_id: UUID = Field(foreign_key="user.id", index=True)
     reason: str = Field(max_length=1000)
     evidence: Optional[str] = Field(default=None, max_length=2000)
@@ -200,8 +186,6 @@ class BanAppeal(SQLModel, table=True):
 class ModerationRule(SQLModel, table=True):
     """Community guidelines and moderation rules."""
 
-    __tablename__ = "moderation_rule"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     title: str = Field(max_length=200)
     description: str
@@ -221,8 +205,6 @@ class ModerationRule(SQLModel, table=True):
 
 class ModerationLog(SQLModel, table=True):
     """Audit log for all moderation activities."""
-
-    __tablename__ = "moderation_log"
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     moderator_id: Optional[UUID] = Field(

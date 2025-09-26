@@ -30,14 +30,12 @@ class ParticipantStatus(str, enum.Enum):
 class ConversationParticipant(SQLModel, table=True):
     """Conversation participant model"""
 
-    __tablename__ = "conversation_participants"
-
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    conversation_id: uuid.UUID = Field(foreign_key="conversations.id", index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    conversation_id: uuid.UUID = Field(foreign_key="conversation.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Participant info
     role: ParticipantRole = Field(default=ParticipantRole.MEMBER)
@@ -63,7 +61,7 @@ class ConversationParticipant(SQLModel, table=True):
     # Message tracking
     unread_count: int = Field(default=0, ge=0)
     last_read_message_id: Optional[uuid.UUID] = Field(
-        default=None, foreign_key="messages.id"
+        default=None, foreign_key="message.id"
     )
 
     # Custom settings

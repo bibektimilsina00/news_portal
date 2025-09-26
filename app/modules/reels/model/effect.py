@@ -30,7 +30,6 @@ class EffectCategory(str, enum.Enum):
 class Effect(SQLModel, table=True):
     """Video effects for reels"""
 
-    __tablename__ = "reel_effects"
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
@@ -66,9 +65,8 @@ class Effect(SQLModel, table=True):
 # class ReelEffect(SQLModel, table=True):
 #     """Many-to-many relationship between reels and effects"""
 
-#     __tablename__ = "reel_effects_applied"
 
-#     reel_id: uuid.UUID = Field(foreign_key="reels.id", primary_key=True)
+#     reel_id: uuid.UUID = Field(foreign_key="reel.id", primary_key=True)
 #     effect_id: uuid.UUID = Field(foreign_key="reel_effects.id", primary_key=True)
 
 #     # Effect application settings

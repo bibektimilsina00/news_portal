@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
+from sqlalchemy import JSON, TEXT, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
@@ -29,15 +30,13 @@ class FactCheckPriority(str, enum.Enum):
 class FactCheck(SQLModel, table=True):
     """Fact checking for news articles"""
 
-    __tablename__ = "fact_checks"
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
     news_id: uuid.UUID = Field(foreign_key="news.id", index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)  # Fact checker
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)  # Fact checker
     organization_id: Optional[uuid.UUID] = Field(
-        default=None, foreign_key="users.id"
+        default=None, foreign_key="user.id"
     )  # Organization
 
     # Fact Check Details
@@ -45,38 +44,26 @@ class FactCheck(SQLModel, table=True):
     priority: FactCheckPriority = Field(default=FactCheckPriority.MEDIUM)
 
     # Claims being checked
-    claim_summary: str = Field(sa_column_kwargs={"type_": "TEXT"})
-    claim_text: str = Field(sa_column_kwargs={"type_": "TEXT"})
-    claim_context: Optional[str] = Field(
-        default=None, sa_column_kwargs={"type_": "TEXT"}
-    )
+    claim_summary: str = Field(sa_column=Column(TEXT))
+    claim_text: str = Field(sa_column=Column(TEXT))
+    claim_context: Optional[str] = Field(default=None, sa_column=Column(TEXT))
 
     # Fact Check Results
     verdict: Optional[str] = Field(default=None, max_length=255)
-    verdict_summary: Optional[str] = Field(
-        default=None, sa_column_kwargs={"type_": "TEXT"}
-    )
-    detailed_analysis: Optional[str] = Field(
-        default=None, sa_column_kwargs={"type_": "TEXT"}
-    )
+    verdict_summary: Optional[str] = Field(default=None, sa_column=Column(TEXT))
+    detailed_analysis: Optional[str] = Field(default=None, sa_column=Column(TEXT))
 
     # Evidence & Sources
-    evidence_summary: Optional[str] = Field(
-        default=None, sa_column_kwargs={"type_": "TEXT"}
-    )
-    evidence_links: List[str] = Field(default=[], sa_column_kwargs={"type_": "JSON"})
+    evidence_summary: Optional[str] = Field(default=None, sa_column=Column(TEXT))
+    evidence_links: List[str] = Field(default=[], sa_column=Column(JSON))
     source_reliability_score: Optional[float] = Field(default=None, ge=0.0, le=1.0)
 
     # Verification Process
     verification_method: str = Field(
         default="manual", max_length=50
     )  # manual, automated, mixed
-    verification_tools: List[str] = Field(
-        default=[], sa_column_kwargs={"type_": "JSON"}
-    )
-    verification_criteria: Optional[str] = Field(
-        default=None, sa_column_kwargs={"type_": "TEXT"}
-    )
+    verification_tools: List[str] = Field(default=[], sa_column=Column(JSON))
+    verification_criteria: Optional[str] = Field(default=None, sa_column=Column(TEXT))
 
     # Confidence & Reliability
     confidence_score: Optional[float] = Field(default=None, ge=0.0, le=1.0)
@@ -86,29 +73,19 @@ class FactCheck(SQLModel, table=True):
     )  # weak, moderate, strong, very_strong
 
     # Cross-References
-    related_fact_checks: List[uuid.UUID] = Field(
-        default=[], sa_column_kwargs={"type_": "JSON"}
-    )
+    related_fact_checks: List[uuid.UUID] = Field(default=[], sa_column=Column(JSON))
     contradicting_fact_checks: List[uuid.UUID] = Field(
-        default=[], sa_column_kwargs={"type_": "JSON"}
+        default=[], sa_column=Column(JSON)
     )
 
     # External References
-    external_fact_check_urls: List[str] = Field(
-        default=[], sa_column_kwargs={"type_": "JSON"}
-    )
-    fact_check_organizations: List[str] = Field(
-        default=[], sa_column_kwargs={"type_": "JSON"}
-    )
+    external_fact_check_urls: List[str] = Field(default=[], sa_column=Column(JSON))
+    fact_check_organizations: List[str] = Field(default=[], sa_column=Column(JSON))
 
     # Media & Attachments
-    supporting_documents: List[str] = Field(
-        default=[], sa_column_kwargs={"type_": "JSON"}
-    )
-    evidence_images: List[str] = Field(default=[], sa_column_kwargs={"type_": "JSON"})
-    verification_videos: List[str] = Field(
-        default=[], sa_column_kwargs={"type_": "JSON"}
-    )
+    supporting_documents: List[str] = Field(default=[], sa_column=Column(JSON))
+    evidence_images: List[str] = Field(default=[], sa_column=Column(JSON))
+    verification_videos: List[str] = Field(default=[], sa_column=Column(JSON))
 
     # Status & Workflow
     assigned_at: Optional[datetime] = Field(default=None)
@@ -120,19 +97,15 @@ class FactCheck(SQLModel, table=True):
     review_status: str = Field(
         default="pending", max_length=50
     )  # pending, under_review, approved, rejected
-    review_notes: Optional[str] = Field(
-        default=None, sa_column_kwargs={"type_": "TEXT"}
-    )
-    reviewed_by: Optional[uuid.UUID] = Field(default=None, foreign_key="users.id")
+    review_notes: Optional[str] = Field(default=None, sa_column=Column(TEXT))
+    reviewed_by: Optional[uuid.UUID] = Field(default=None, foreign_key="user.id")
 
     # Public Visibility
     is_public: bool = Field(default=True)
-    public_notes: Optional[str] = Field(
-        default=None, sa_column_kwargs={"type_": "TEXT"}
-    )
+    public_notes: Optional[str] = Field(default=None, sa_column=Column(TEXT))
 
     # Legal & Compliance
-    legal_notes: Optional[str] = Field(default=None, sa_column_kwargs={"type_": "TEXT"})
+    legal_notes: Optional[str] = Field(default=None, sa_column=Column(TEXT))
     compliance_status: str = Field(
         default="pending", max_length=50
     )  # pending, compliant, non_compliant
@@ -209,10 +182,8 @@ class FactCheck(SQLModel, table=True):
 class FactCheckVote(SQLModel, table=True):
     """User votes on fact checks"""
 
-    __tablename__ = "fact_check_votes"
-
-    user_id: uuid.UUID = Field(foreign_key="users.id", primary_key=True)
-    fact_check_id: uuid.UUID = Field(foreign_key="fact_checks.id", primary_key=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", primary_key=True)
+    fact_check_id: uuid.UUID = Field(foreign_key="factcheck.id", primary_key=True)
     is_helpful: bool = Field(default=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
@@ -223,16 +194,14 @@ class FactCheckVote(SQLModel, table=True):
 class FactCheckComment(SQLModel, table=True):
     """Comments on fact checks"""
 
-    __tablename__ = "fact_check_comments"
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    fact_check_id: uuid.UUID = Field(foreign_key="fact_checks.id", index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    fact_check_id: uuid.UUID = Field(foreign_key="factcheck.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
     parent_comment_id: Optional[uuid.UUID] = Field(
-        default=None, foreign_key="fact_check_comments.id"
+        default=None, foreign_key="factcheckcomment.id"
     )
 
-    content: str = Field(sa_column_kwargs={"type_": "TEXT"})
+    content: str = Field(sa_column=Column(TEXT))
     is_public: bool = Field(default=True)
 
     created_at: datetime = Field(default_factory=datetime.utcnow)

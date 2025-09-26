@@ -40,13 +40,11 @@ class PostVisibility(str, enum.Enum):
 class Post(SQLModel, table=True):
     """User posts model for Instagram-style platform"""
 
-    __tablename__ = "posts"
-
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Content Fields
     caption: Optional[str] = Field(default=None, max_length=2200)
@@ -188,10 +186,8 @@ class Post(SQLModel, table=True):
 class PostMedia(SQLModel, table=True):
     """Media attachments for posts"""
 
-    __tablename__ = "post_media"
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    post_id: uuid.UUID = Field(foreign_key="posts.id", index=True)
+    post_id: uuid.UUID = Field(foreign_key="post.id", index=True)
 
     # Media Details
     media_type: str = Field(max_length=50)  # image, video, audio, document

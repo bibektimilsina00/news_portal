@@ -11,8 +11,6 @@ if TYPE_CHECKING:
 class Category(SQLModel, table=True):
     """News categories"""
 
-    __tablename__ = "categories"
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     name: str = Field(max_length=100, unique=True, index=True)
     slug: str = Field(max_length=100, unique=True, index=True)
@@ -21,7 +19,7 @@ class Category(SQLModel, table=True):
     icon_url: Optional[str] = Field(default=None, max_length=500)
 
     # Hierarchy
-    parent_id: Optional[uuid.UUID] = Field(default=None, foreign_key="categories.id")
+    parent_id: Optional[uuid.UUID] = Field(default=None, foreign_key="category.id")
     sort_order: int = Field(default=0)
 
     # SEO
@@ -60,10 +58,8 @@ class Category(SQLModel, table=True):
 class CategoryFollow(SQLModel, table=True):
     """Users following categories"""
 
-    __tablename__ = "category_follows"
-
-    user_id: uuid.UUID = Field(foreign_key="users.id", primary_key=True)
-    category_id: uuid.UUID = Field(foreign_key="categories.id", primary_key=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", primary_key=True)
+    category_id: uuid.UUID = Field(foreign_key="category.id", primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:

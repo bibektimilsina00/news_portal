@@ -9,7 +9,6 @@ from sqlmodel import Field, SQLModel
 class TrendingTopic(SQLModel, table=True):
     """Trending topics model"""
 
-    __tablename__ = "trending_topics"
 
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True

@@ -13,7 +13,6 @@ if TYPE_CHECKING:
 class Music(SQLModel, table=True):
     """Music tracks for reels"""
 
-    __tablename__ = "reel_music"
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)

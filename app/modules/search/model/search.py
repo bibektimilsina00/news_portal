@@ -36,7 +36,6 @@ class SearchResultType(str, enum.Enum):
 class SearchQuery(SQLModel, table=True):
     """Search query model for tracking searches"""
 
-    __tablename__ = "search_queries"
 
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
@@ -70,14 +69,13 @@ class SearchQuery(SQLModel, table=True):
 class SearchResult(SQLModel, table=True):
     """Search result model for caching results"""
 
-    __tablename__ = "search_results"
 
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
     )
 
     # Link to search query
-    query_id: str = Field(foreign_key="search_queries.id", index=True)
+    query_id: str = Field(foreign_key="searchquery.id", index=True)
 
     # Result details
     result_type: SearchResultType = Field(sa_column=Column(Enum(SearchResultType)))

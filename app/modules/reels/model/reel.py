@@ -33,16 +33,14 @@ class ReelVisibility(str, enum.Enum):
 class Reel(SQLModel, table=True):
     """Reel video content model"""
 
-    __tablename__ = "reels"
-
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
-    music_id: Optional[uuid.UUID] = Field(default=None, foreign_key="reel_music.id")
-    duet_reel_id: Optional[uuid.UUID] = Field(default=None, foreign_key="reels.id")
-    stitch_reel_id: Optional[uuid.UUID] = Field(default=None, foreign_key="reels.id")
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
+    music_id: Optional[uuid.UUID] = Field(default=None, foreign_key="music.id")
+    duet_reel_id: Optional[uuid.UUID] = Field(default=None, foreign_key="reel.id")
+    stitch_reel_id: Optional[uuid.UUID] = Field(default=None, foreign_key="reel.id")
 
     # Reel metadata
     type: ReelType = Field(default=ReelType.ORIGINAL)

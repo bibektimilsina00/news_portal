@@ -34,13 +34,12 @@ class StoryVisibility(str, enum.Enum):
 class Story(SQLModel, table=True):
     """Instagram-style Stories model"""
 
-    __tablename__ = "stories"
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Content Fields
     type: StoryType = Field(default=StoryType.PHOTO)

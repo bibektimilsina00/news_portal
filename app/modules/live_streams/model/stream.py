@@ -34,13 +34,12 @@ class StreamQuality(str, enum.Enum):
 class Stream(SQLModel, table=True):
     """Live stream model"""
 
-    __tablename__ = "live_streams"
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Stream metadata
     title: str = Field(max_length=200, index=True)

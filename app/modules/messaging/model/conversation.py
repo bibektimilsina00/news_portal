@@ -1,3 +1,4 @@
+
 import enum
 import uuid
 from datetime import datetime
@@ -28,7 +29,6 @@ class ConversationStatus(str, enum.Enum):
 class Conversation(SQLModel, table=True):
     """Conversation/chat model"""
 
-    __tablename__ = "conversations"
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)

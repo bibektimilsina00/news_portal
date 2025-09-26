@@ -12,8 +12,6 @@ if TYPE_CHECKING:
 class SubscriptionTier(SQLModel, table=True):
     """Subscription tiers/plans for creators."""
 
-    __tablename__ = "subscription_tier"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     creator_id: UUID = Field(foreign_key="user.id", index=True)
     name: str = Field(max_length=100)
@@ -40,11 +38,9 @@ class SubscriptionTier(SQLModel, table=True):
 class UserSubscription(SQLModel, table=True):
     """User subscriptions to creator tiers."""
 
-    __tablename__ = "user_subscription"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     user_id: UUID = Field(foreign_key="user.id", index=True)
-    tier_id: UUID = Field(foreign_key="subscription_tier.id", index=True)
+    tier_id: UUID = Field(foreign_key="subscriptiontier.id", index=True)
     status: str = Field(default="active")  # active, cancelled, expired, suspended
     current_period_start: datetime
     current_period_end: datetime
@@ -64,12 +60,10 @@ class UserSubscription(SQLModel, table=True):
 class Payment(SQLModel, table=True):
     """Payment transactions for subscriptions and purchases."""
 
-    __tablename__ = "payment"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     user_id: UUID = Field(foreign_key="user.id", index=True)
     subscription_id: Optional[UUID] = Field(
-        default=None, foreign_key="user_subscription.id", index=True
+        default=None, foreign_key="usersubscription.id", index=True
     )
     amount: Decimal = Field(max_digits=10, decimal_places=2)
     currency: str = Field(default="USD", max_length=3)
@@ -92,8 +86,6 @@ class Payment(SQLModel, table=True):
 
 class AdCampaign(SQLModel, table=True):
     """Advertising campaigns for monetization."""
-
-    __tablename__ = "ad_campaign"
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     advertiser_id: UUID = Field(foreign_key="user.id", index=True)
@@ -125,10 +117,8 @@ class AdCampaign(SQLModel, table=True):
 class AdImpression(SQLModel, table=True):
     """Individual ad impressions for tracking."""
 
-    __tablename__ = "ad_impression"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
-    campaign_id: UUID = Field(foreign_key="ad_campaign.id", index=True)
+    campaign_id: UUID = Field(foreign_key="adcampaign.id", index=True)
     user_id: Optional[UUID] = Field(default=None, foreign_key="user.id", index=True)
     impression_type: str = Field(default="view")  # view, click, conversion
     cost: Decimal = Field(max_digits=8, decimal_places=4)  # Cost per impression
@@ -146,8 +136,6 @@ class AdImpression(SQLModel, table=True):
 class CreatorEarning(SQLModel, table=True):
     """Creator earnings from various sources."""
 
-    __tablename__ = "creator_earning"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     creator_id: UUID = Field(foreign_key="user.id", index=True)
     amount: Decimal = Field(max_digits=10, decimal_places=2)
@@ -159,7 +147,7 @@ class CreatorEarning(SQLModel, table=True):
         default=None
     )  # Reference to source (subscription, campaign, etc.)
     status: str = Field(default="pending")  # pending, available, paid, cancelled
-    payout_id: Optional[UUID] = Field(default=None, foreign_key="creator_payout.id")
+    payout_id: Optional[UUID] = Field(default=None, foreign_key="creatorpayout.id")
     description: Optional[str] = Field(default=None, max_length=255)
 
     # Timestamps
@@ -173,8 +161,6 @@ class CreatorEarning(SQLModel, table=True):
 
 class CreatorPayout(SQLModel, table=True):
     """Creator payout records."""
-
-    __tablename__ = "creator_payout"
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     creator_id: UUID = Field(foreign_key="user.id", index=True)
@@ -200,8 +186,6 @@ class CreatorPayout(SQLModel, table=True):
 
 class SponsoredContent(SQLModel, table=True):
     """Sponsored content tracking."""
-
-    __tablename__ = "sponsored_content"
 
     id: UUID = Field(default_factory=UUID, primary_key=True)
     creator_id: UUID = Field(foreign_key="user.id", index=True)
@@ -230,8 +214,6 @@ class SponsoredContent(SQLModel, table=True):
 class PremiumFeature(SQLModel, table=True):
     """Premium features available for purchase."""
 
-    __tablename__ = "premium_feature"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     name: str = Field(max_length=100, unique=True)
     description: str
@@ -252,11 +234,9 @@ class PremiumFeature(SQLModel, table=True):
 class PremiumFeaturePurchase(SQLModel, table=True):
     """User purchases of premium features."""
 
-    __tablename__ = "premium_feature_purchase"
-
     id: UUID = Field(default_factory=UUID, primary_key=True)
     user_id: UUID = Field(foreign_key="user.id", index=True)
-    feature_id: UUID = Field(foreign_key="premium_feature.id", index=True)
+    feature_id: UUID = Field(foreign_key="premiumfeature.id", index=True)
     payment_id: Optional[UUID] = Field(foreign_key="payment.id", default=None)
     status: str = Field(default="active")  # active, expired, cancelled
     expires_at: Optional[datetime] = None

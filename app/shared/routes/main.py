@@ -1,7 +1,9 @@
 from fastapi import APIRouter
 
+from app.modules.ai_features.routes import ai_features_router
 from app.modules.analytics.routes import analytics_router
 from app.modules.content_moderation.routes import router as content_moderation_router
+from app.modules.integrations.routes import integrations_router
 from app.modules.live_streams.routes.main import router as live_streams_router
 from app.modules.media.routes import router as media_router
 from app.modules.messaging.routes import (
@@ -75,4 +77,10 @@ api_router.include_router(
 )
 api_router.include_router(
     content_moderation_router, prefix="/moderation", tags=["content-moderation"]
+)
+api_router.include_router(
+    ai_features_router, prefix="/ai-features", tags=["ai-features"]
+)
+api_router.include_router(
+    integrations_router, prefix="/integrations", tags=["integrations"]
 )

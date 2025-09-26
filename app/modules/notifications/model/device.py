@@ -59,14 +59,10 @@ class DeviceBase(SQLModel):
 class Device(DeviceBase, table=True):
     """Device database model"""
 
-    __tablename__ = "devices"
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
-    )
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
 
     # Foreign key
-    user_id: str = Field(foreign_key="user.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Relationship
     user: "User" = Relationship(back_populates="devices")

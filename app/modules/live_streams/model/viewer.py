@@ -19,14 +19,12 @@ class ViewerRole(str, enum.Enum):
 class StreamViewer(SQLModel, table=True):
     """Stream viewer model for tracking who watches streams"""
 
-    __tablename__ = "stream_viewers"
-
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign Keys
-    stream_id: uuid.UUID = Field(foreign_key="live_streams.id", index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    stream_id: uuid.UUID = Field(foreign_key="stream.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Viewer info
     role: ViewerRole = Field(default=ViewerRole.VIEWER)

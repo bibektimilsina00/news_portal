@@ -26,10 +26,9 @@ class VerificationType(str, enum.Enum):
 class VerificationRequest(SQLModel, table=True):
     """Verification requests for journalists and organizations"""
 
-    __tablename__ = "verification_requests"
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Request details
     verification_type: VerificationType
@@ -56,7 +55,7 @@ class VerificationRequest(SQLModel, table=True):
     # Review process
     submitted_at: datetime = Field(default_factory=datetime.utcnow)
     reviewed_at: Optional[datetime] = Field(default=None)
-    reviewed_by: Optional[uuid.UUID] = Field(default=None, foreign_key="users.id")
+    reviewed_by: Optional[uuid.UUID] = Field(default=None, foreign_key="user.id")
     review_notes: Optional[str] = Field(default=None, max_length=2000)
     rejection_reason: Optional[str] = Field(default=None, max_length=500)
 
@@ -118,10 +117,9 @@ class VerificationRequest(SQLModel, table=True):
 class VerificationBadge(SQLModel, table=True):
     """Verification badges earned by users"""
 
-    __tablename__ = "verification_badges"
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    user_id: uuid.UUID = Field(foreign_key="users.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
     verification_request_id: uuid.UUID = Field(foreign_key="verification_requests.id")
 
     # Badge details
