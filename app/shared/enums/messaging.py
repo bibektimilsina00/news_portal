@@ -2,45 +2,45 @@ import enum
 
 
 class MessageType(str, enum.Enum):
-    TEXT = "text"
-    IMAGE = "image"
-    VIDEO = "video"
-    AUDIO = "audio"
-    FILE = "file"
-    VOICE = "voice"
-    LOCATION = "location"
-    CONTACT = "contact"
-    SYSTEM = "system"
+    text = "text"
+    image = "image"
+    video = "video"
+    audio = "audio"
+    file = "file"
+    voice = "voice"
+    location = "location"
+    contact = "contact"
+    system = "system"
 
 
 class MessageStatus(str, enum.Enum):
-    SENDING = "sending"
-    SENT = "sent"
-    DELIVERED = "delivered"
-    READ = "read"
-    FAILED = "failed"
+    sending = "sending"
+    sent = "sent"
+    delivered = "delivered"
+    read = "read"
+    failed = "failed"
 
 
 class ParticipantRole(str, enum.Enum):
-    MEMBER = "member"
-    ADMIN = "admin"
-    OWNER = "owner"
+    member = "member"
+    admin = "admin"
+    owner = "owner"
 
 
 class ParticipantStatus(str, enum.Enum):
-    ACTIVE = "active"
-    MUTED = "muted"
-    BANNED = "banned"
-    LEFT = "left"
+    active = "active"
+    muted = "muted"
+    banned = "banned"
+    left = "left"
 
 
 class ConversationType(str, enum.Enum):
-    DIRECT = "direct"
-    GROUP = "group"
-    CHANNEL = "channel"
+    direct = "direct"
+    group = "group"
+    channel = "channel"
 
 
 class ConversationStatus(str, enum.Enum):
-    ACTIVE = "active"
-    ARCHIVED = "archived"
-    DELETED = "deleted"
+    active = "active"
+    archived = "archived"
+    deleted = "deleted"

@@ -77,8 +77,8 @@ class CRUDStream(CRUDBase[Stream, StreamCreate, StreamUpdate]):
         from app.modules.live_streams.model.stream import StreamStatus
 
         stream = self.get(session, stream_id)
-        if stream and stream.status in [StreamStatus.SCHEDULED, StreamStatus.ENDED]:
-            stream.status = StreamStatus.LIVE
+        if stream and stream.status in [StreamStatus.scheduled, StreamStatus.ended]:
+            stream.status = StreamStatus.live
             stream.started_at = datetime.utcnow()
             session.add(stream)
             session.commit()
@@ -90,8 +90,8 @@ class CRUDStream(CRUDBase[Stream, StreamCreate, StreamUpdate]):
         from app.modules.live_streams.model.stream import StreamStatus
 
         stream = self.get(session, stream_id)
-        if stream and stream.status == StreamStatus.LIVE:
-            stream.status = StreamStatus.ENDED
+        if stream and stream.status == StreamStatus.live:
+            stream.status = StreamStatus.ended
             stream.ended_at = datetime.utcnow()
             session.add(stream)
             session.commit()

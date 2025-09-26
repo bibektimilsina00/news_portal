@@ -2,37 +2,37 @@ import enum
 
 
 class StreamStatus(str, enum.Enum):
-    SCHEDULED = "scheduled"
-    LIVE = "live"
-    ENDED = "ended"
-    CANCELLED = "cancelled"
+    scheduled = "scheduled"
+    live = "live"
+    ended = "ended"
+    cancelled = "cancelled"
 
 
 class StreamVisibility(str, enum.Enum):
-    PUBLIC = "public"
-    PRIVATE = "private"
-    UNLISTED = "unlisted"
+    public = "public"
+    private = "private"
+    unlisted = "unlisted"
 
 
 class StreamQuality(str, enum.Enum):
-    LOW = "480p"
-    MEDIUM = "720p"
-    HIGH = "1080p"
-    ULTRA = "4k"
+    low = "480p"
+    medium = "720p"
+    high = "1080p"
+    ultra = "4k"
 
 
 class ViewerRole(str, enum.Enum):
-    VIEWER = "viewer"
-    MODERATOR = "moderator"
-    HOST = "host"
+    viewer = "viewer"
+    moderator = "moderator"
+    host = "host"
 
 
 class BadgeType(str, enum.Enum):
     """Badge types for donations/tips"""
 
-    HEART = "heart"
-    STAR = "star"
-    DIAMOND = "diamond"
-    FIRE = "fire"
-    ROCKET = "rocket"
-    CROWN = "crown"
+    heart = "heart"
+    star = "star"
+    diamond = "diamond"
+    fire = "fire"
+    rocket = "rocket"
+    crown = "crown"

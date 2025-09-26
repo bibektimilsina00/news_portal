@@ -94,7 +94,7 @@ class NewsSource(SQLModel, table=True):
     news: List["News"] = Relationship(back_populates="source")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     def increment_news_count(self) -> None:
         """Increment news count"""
@@ -133,4 +133,4 @@ class NewsSourceFollow(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        orm_mode = True
+        from_attributes = True

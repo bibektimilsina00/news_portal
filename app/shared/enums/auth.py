@@ -2,23 +2,23 @@ import enum
 
 
 class OAuth2Provider(str, enum.Enum):
-    GOOGLE = "google"
-    FACEBOOK = "facebook"
-    TWITTER = "twitter"
-    GITHUB = "github"
-    MICROSOFT = "microsoft"
+    google = "google"
+    facebook = "facebook"
+    twitter = "twitter"
+    github = "github"
+    microsoft = "microsoft"
 
 
 class TokenType(str, enum.Enum):
-    ACCESS = "access"
-    REFRESH = "refresh"
-    PASSWORD_RESET = "password_reset"
-    EMAIL_VERIFICATION = "email_verification"
-    API = "api"
+    access = "access"
+    refresh = "refresh"
+    password_reset = "password_reset"
+    email_verification = "email_verification"
+    api = "api"
 
 
 class TokenStatus(str, enum.Enum):
-    ACTIVE = "active"
-    EXPIRED = "expired"
-    REVOKED = "revoked"
-    BLACKLISTED = "blacklisted"
+    active = "active"
+    expired = "expired"
+    revoked = "revoked"
+    blacklisted = "blacklisted"

@@ -119,7 +119,7 @@ class FactCheck(SQLModel, table=True):
     )
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     def mark_as_started(self) -> None:
         """Mark fact check as started"""
@@ -173,7 +173,7 @@ class FactCheckVote(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class FactCheckComment(SQLModel, table=True):
@@ -193,4 +193,4 @@ class FactCheckComment(SQLModel, table=True):
     updated_at: Optional[datetime] = Field(default=None)
 
     class Config:
-        orm_mode = True
+        from_attributes = True

@@ -2,25 +2,25 @@ import enum
 
 
 class StoryType(str, enum.Enum):
-    PHOTO = "photo"
-    VIDEO = "video"
-    TEXT = "text"
+    photo = "photo"
+    video = "video"
+    text = "text"
 
 
 class StoryStatus(str, enum.Enum):
-    ACTIVE = "active"
-    EXPIRED = "expired"
-    DELETED = "deleted"
+    active = "active"
+    expired = "expired"
+    deleted = "deleted"
 
 
 class StoryVisibility(str, enum.Enum):
-    PUBLIC = "public"
-    CLOSE_FRIENDS = "close_friends"
-    PRIVATE = "private"
+    public = "public"
+    close_friends = "close_friends"
+    private = "private"
 
 
 class InteractionType(str, enum.Enum):
-    POLL_VOTE = "poll_vote"
-    QUESTION_REPLY = "question_reply"
-    QUIZ_ANSWER = "quiz_answer"
-    REACTION = "reaction"
+    poll_vote = "poll_vote"
+    question_reply = "question_reply"
+    quiz_answer = "quiz_answer"
+    reaction = "reaction"

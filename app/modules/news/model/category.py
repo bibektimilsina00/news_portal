@@ -43,7 +43,7 @@ class Category(SQLModel, table=True):
     parent: Optional["Category"] = Relationship(back_populates="children")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     def increment_news_count(self) -> None:
         """Increment news count"""
@@ -63,4 +63,4 @@ class CategoryFollow(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        orm_mode = True
+        from_attributes = True

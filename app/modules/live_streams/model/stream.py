@@ -23,7 +23,7 @@ class Stream(SQLModel, table=True):
     # Stream metadata
     title: str = Field(max_length=200, index=True)
     description: Optional[str] = Field(default=None, max_length=1000)
-    visibility: StreamVisibility = Field(default=StreamVisibility.PUBLIC)
+    visibility: StreamVisibility = Field(default=StreamVisibility.public)
 
     # Stream configuration
     stream_key: str = Field(max_length=100, unique=True, index=True)
@@ -31,14 +31,14 @@ class Stream(SQLModel, table=True):
     thumbnail_url: Optional[str] = Field(default=None, max_length=1000)
 
     # Stream settings
-    quality: StreamQuality = Field(default=StreamQuality.HIGH)
+    quality: StreamQuality = Field(default=StreamQuality.high)
     is_recorded: bool = Field(default=True)
     is_moderated: bool = Field(default=True)
     allow_comments: bool = Field(default=True)
     allow_reactions: bool = Field(default=True)
 
     # Stream status and timing
-    status: StreamStatus = Field(default=StreamStatus.SCHEDULED)
+    status: StreamStatus = Field(default=StreamStatus.scheduled)
     scheduled_at: Optional[datetime] = Field(default=None)
     started_at: Optional[datetime] = Field(default=None)
     ended_at: Optional[datetime] = Field(default=None)
@@ -77,18 +77,18 @@ class Stream(SQLModel, table=True):
     @property
     def is_live(self) -> bool:
         """Check if stream is currently live"""
-        return self.status == StreamStatus.LIVE
+        return self.status == StreamStatus.live
 
     @property
     def is_scheduled(self) -> bool:
         """Check if stream is scheduled"""
-        return self.status == StreamStatus.SCHEDULED
+        return self.status == StreamStatus.scheduled
 
     @property
     def duration(self) -> Optional[int]:
         """Get stream duration in seconds"""
         if self.started_at and self.ended_at:
             return int((self.ended_at - self.started_at).total_seconds())
-        elif self.started_at and self.status == StreamStatus.LIVE:
+        elif self.started_at and self.status == StreamStatus.live:
             return int((datetime.utcnow() - self.started_at).total_seconds())
         return None

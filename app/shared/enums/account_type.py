@@ -2,7 +2,7 @@ import enum
 
 
 class AccountType(str, enum.Enum):
-    PERSONAL = "personal"
-    BUSINESS = "business"
-    JOURNALIST = "journalist"
-    ORGANIZATION = "organization"
+    personal = "personal"
+    business = "business"
+    journalist = "journalist"
+    organization = "organization"

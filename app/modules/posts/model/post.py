@@ -94,7 +94,7 @@ class Post(SQLModel, table=True):
     )
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     def increment_like_count(self) -> None:
         """Increment like count"""
@@ -199,4 +199,4 @@ class PostMedia(SQLModel, table=True):
     post: "Post" = Relationship(back_populates="media_items")
 
     class Config:
-        orm_mode = True
+        from_attributes = True

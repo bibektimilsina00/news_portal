@@ -2,21 +2,21 @@ import enum
 
 
 class PostType(str, enum.Enum):
-    REGULAR = "regular"
-    STORY = "story"
-    REEL = "reel"
-    LIVE = "live"
-    ARTICLE = "article"
+    regular = "regular"
+    story = "story"
+    reel = "reel"
+    live = "live"
+    article = "article"
 
 
 class PostStatus(str, enum.Enum):
-    DRAFT = "draft"
-    PUBLISHED = "published"
-    ARCHIVED = "archived"
-    SCHEDULED = "scheduled"
+    draft = "draft"
+    published = "published"
+    archived = "archived"
+    scheduled = "scheduled"
 
 
 class PostVisibility(str, enum.Enum):
-    PUBLIC = "public"
-    FOLLOWERS_ONLY = "followers_only"
-    CLOSE_FRIENDS = "close_friends"
+    public = "public"
+    followers_only = "followers_only"
+    close_friends = "close_friends"

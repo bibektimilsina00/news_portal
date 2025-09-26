@@ -113,7 +113,7 @@ class News(SQLModel, table=True):
     fact_checks: List["FactCheck"] = Relationship(back_populates="news")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     def increment_view_count(self) -> None:
         """Increment view count"""
@@ -188,11 +188,11 @@ class NewsTag(SQLModel, table=True):
     """Many-to-many relationship between news and tags"""
 
     news_id: uuid.UUID = Field(foreign_key="news.id", primary_key=True)
-    id: uuid.UUID = Field(foreign_key="newstag.id", primary_key=True)
+    tag_id: uuid.UUID = Field(foreign_key="tag.id", primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class NewsRelated(SQLModel, table=True):
@@ -204,4 +204,4 @@ class NewsRelated(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        orm_mode = True
+        from_attributes = True

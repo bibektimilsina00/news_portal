@@ -42,7 +42,7 @@ class Token(SQLModel, table=True):
     user_credentials: "UserCredentials" = Relationship(back_populates="tokens")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     def is_expired(self) -> bool:
         """Check if token is expired"""
@@ -91,7 +91,7 @@ class TokenBlacklist(SQLModel, table=True):
     expires_at: Optional[datetime] = Field(default=None)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     def is_expired(self) -> bool:
         """Check if blacklist entry is expired"""
@@ -127,7 +127,7 @@ class APIToken(SQLModel, table=True):
     updated_at: Optional[datetime] = Field(default=None)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     def is_expired(self) -> bool:
         """Check if API token is expired"""

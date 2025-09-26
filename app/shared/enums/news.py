@@ -2,30 +2,30 @@ import enum
 
 
 class NewsStatus(str, enum.Enum):
-    DRAFT = "draft"
-    PUBLISHED = "published"
-    ARCHIVED = "archived"
-    SCHEDULED = "scheduled"
+    draft = "draft"
+    published = "published"
+    archived = "archived"
+    scheduled = "scheduled"
 
 
 class NewsPriority(str, enum.Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    BREAKING = "breaking"
+    low = "low"
+    medium = "medium"
+    high = "high"
+    breaking = "breaking"
 
 
 class FactCheckStatus(str, enum.Enum):
-    PENDING = "pending"
-    VERIFIED = "verified"
-    FALSE = "false"
-    MISLEADING = "misleading"
-    PARTIALLY_TRUE = "partially_true"
-    UNVERIFIABLE = "unverifiable"
+    pending = "pending"
+    verified = "verified"
+    false = "false"
+    misleading = "misleading"
+    partially_true = "partially_true"
+    unverifiable = "unverifiable"
 
 
 class FactCheckPriority(str, enum.Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    URGENT = "urgent"
+    low = "low"
+    medium = "medium"
+    high = "high"
+    urgent = "urgent"

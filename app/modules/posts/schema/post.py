@@ -132,7 +132,7 @@ class PostResponse(PostBase):
     is_published: Optional[bool] = Field(default=None)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class PostListResponse(BaseModel):

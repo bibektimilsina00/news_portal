@@ -18,10 +18,10 @@ class StreamBase(SQLModel):
 
     title: str = Field(min_length=1, max_length=200)
     description: Optional[str] = Field(default=None, max_length=1000)
-    visibility: StreamVisibility = Field(default=StreamVisibility.PUBLIC)
+    visibility: StreamVisibility = Field(default=StreamVisibility.public)
 
     # Stream settings
-    quality: StreamQuality = Field(default=StreamQuality.HIGH)
+    quality: StreamQuality = Field(default=StreamQuality.high)
     is_recorded: bool = Field(default=True)
     is_moderated: bool = Field(default=True)
     allow_comments: bool = Field(default=True)

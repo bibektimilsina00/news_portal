@@ -2,42 +2,42 @@ import enum
 
 
 class NotificationType(str, enum.Enum):
-    LIKE = "like"
-    COMMENT = "comment"
-    FOLLOW = "follow"
-    MENTION = "mention"
-    SHARE = "share"
-    MESSAGE = "message"
-    NEWS_PUBLISHED = "news_published"
-    STORY_ADDED = "story_added"
-    REEL_PUBLISHED = "reel_published"
-    LIVE_STREAM_STARTED = "live_stream_started"
-    SYSTEM = "system"
+    like = "like"
+    comment = "comment"
+    follow = "follow"
+    mention = "mention"
+    share = "share"
+    message = "message"
+    news_published = "news_published"
+    story_added = "story_added"
+    reel_published = "reel_published"
+    live_stream_started = "live_stream_started"
+    system = "system"
 
 
 class NotificationPriority(str, enum.Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    URGENT = "urgent"
+    low = "low"
+    medium = "medium"
+    high = "high"
+    urgent = "urgent"
 
 
 class NotificationStatus(str, enum.Enum):
-    PENDING = "pending"
-    SENT = "sent"
-    DELIVERED = "delivered"
-    READ = "read"
-    FAILED = "failed"
+    pending = "pending"
+    sent = "sent"
+    delivered = "delivered"
+    read = "read"
+    failed = "failed"
 
 
 class DeviceType(str, enum.Enum):
-    IOS = "ios"
-    ANDROID = "android"
-    WEB = "web"
-    DESKTOP = "desktop"
+    ios = "ios"
+    android = "android"
+    web = "web"
+    desktop = "desktop"
 
 
 class DeviceStatus(str, enum.Enum):
-    ACTIVE = "active"
-    INACTIVE = "inactive"
-    BLOCKED = "blocked"
+    active = "active"
+    inactive = "inactive"
+    blocked = "blocked"

@@ -180,7 +180,7 @@ class NewsResponse(NewsBase):
     share_url: Optional[str] = Field(default=None)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class NewsListResponse(BaseModel):

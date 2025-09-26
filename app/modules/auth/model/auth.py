@@ -84,7 +84,7 @@ class PasswordResetToken(SQLModel, table=True):
     used_at: Optional[datetime] = Field(default=None)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     def is_expired(self) -> bool:
         """Check if token is expired"""
@@ -109,7 +109,7 @@ class EmailVerificationToken(SQLModel, table=True):
     used_at: Optional[datetime] = Field(default=None)
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
     def is_expired(self) -> bool:
         """Check if token is expired"""
@@ -147,4 +147,4 @@ class SecurityLog(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        orm_mode = True
+        from_attributes = True

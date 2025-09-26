@@ -2,7 +2,7 @@ import enum
 
 
 class Gender(str, enum.Enum):
-    MALE = "male"
-    FEMALE = "female"
-    OTHER = "other"
-    PREFER_NOT_TO_SAY = "prefer_not_to_say"
+    male = "male"
+    female = "female"
+    other = "other"
+    prefer_not_to_say = "prefer_not_to_say"
