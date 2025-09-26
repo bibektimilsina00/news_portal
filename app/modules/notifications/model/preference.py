@@ -51,13 +51,10 @@ class NotificationPreferenceBase(SQLModel):
 class NotificationPreference(NotificationPreferenceBase, table=True):
     """Notification preference database model"""
 
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()), primary_key=True, index=True
-    )
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 
     # Foreign key
-    user_id: str = Field(foreign_key="user.id", unique=True, index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", unique=True, index=True)
 
     # Relationship
     user: "User" = Relationship(back_populates="notification_preferences")
