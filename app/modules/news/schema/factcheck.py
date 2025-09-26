@@ -50,8 +50,8 @@ class FactCheckCreate(FactCheckBase):
     user_id: Optional[uuid.UUID] = None
     organization_id: Optional[uuid.UUID] = None
 
-    status: FactCheckStatus = FactCheckStatus.PENDING
-    priority: FactCheckPriority = FactCheckPriority.MEDIUM
+    status: FactCheckStatus = FactCheckStatus.pending
+    priority: FactCheckPriority = FactCheckPriority.medium
 
 
 class FactCheckUpdate(BaseModel):
@@ -191,7 +191,7 @@ class FactCheckVerificationRequest(BaseModel):
     news_id: uuid.UUID
     claim_summary: str
     claim_details: Optional[str] = None
-    priority: FactCheckPriority = FactCheckPriority.MEDIUM
+    priority: FactCheckPriority = FactCheckPriority.medium
     notes: Optional[str] = None
 
 

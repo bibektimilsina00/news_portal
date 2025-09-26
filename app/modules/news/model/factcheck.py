@@ -25,8 +25,8 @@ class FactCheck(SQLModel, table=True):
     )  # Organization
 
     # Fact Check Details
-    status: FactCheckStatus = Field(default=FactCheckStatus.PENDING, index=True)
-    priority: FactCheckPriority = Field(default=FactCheckPriority.MEDIUM)
+    status: FactCheckStatus = Field(default=FactCheckStatus.pending, index=True)
+    priority: FactCheckPriority = Field(default=FactCheckPriority.medium)
 
     # Claims being checked
     claim_summary: str = Field(sa_column=Column(TEXT))
@@ -124,7 +124,7 @@ class FactCheck(SQLModel, table=True):
     def mark_as_started(self) -> None:
         """Mark fact check as started"""
         self.started_at = datetime.utcnow()
-        if self.status == FactCheckStatus.PENDING:
+        if self.status == FactCheckStatus.pending:
             self.status = FactCheckStatus.UNDER_REVIEW
 
     def mark_as_completed(self, status: FactCheckStatus) -> None:
