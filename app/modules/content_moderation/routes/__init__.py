@@ -1,3 +1,8 @@
-from app.modules.content_moderation.routes.moderation import router
+# Lazy import to avoid circular dependencies during model registration
+def get_router():
+    from app.modules.content_moderation.routes.moderation import router
 
-__all__ = ["router"]
+    return router
+
+
+__all__ = ["get_router"]

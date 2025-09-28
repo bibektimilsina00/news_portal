@@ -305,4 +305,4 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
 
 # Create singleton instance
-user = CRUDUser(User)
+crud_user = CRUDUser(User)

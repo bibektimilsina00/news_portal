@@ -44,16 +44,8 @@ class AuthService:
         if not user:
             return None
 
-        # Get user credentials
-        credentials = (
-            session.query(UserCredentials)
-            .filter(UserCredentials.user_id == user.id)
-            .first()
-        )
-
-        if not credentials or not self.auth_crud.verify_password(
-            password, credentials.password_hash
-        ):
+        # Verify password against user's hashed_password
+        if not self.auth_crud.verify_password(password, user.hashed_password):
             return None
 
         return user

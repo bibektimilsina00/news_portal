@@ -54,10 +54,19 @@ class VerificationRequest(SQLModel, table=True):
     updated_at: Optional[datetime] = Field(default=None)
 
     # Relationships
-    user: "User" = Relationship(back_populates="verification_requests")
+    user: "User" = Relationship(
+        back_populates="verification_requests",
+        sa_relationship_kwargs={"foreign_keys": "[VerificationRequest.user_id]"},
+    )
     reviewer: Optional["User"] = Relationship(
         back_populates="reviewed_requests",
-        sa_relationship_kwargs={"foreign_keys": "VerificationRequest.reviewed_by"},
+        sa_relationship_kwargs={"foreign_keys": "[VerificationRequest.reviewed_by]"},
+    )
+    badge: Optional["VerificationBadge"] = Relationship(
+        back_populates="verification_request",
+        sa_relationship_kwargs={
+            "foreign_keys": "[VerificationBadge.verification_request_id]"
+        },
     )
 
     class Config:
@@ -105,7 +114,7 @@ class VerificationBadge(SQLModel, table=True):
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
-    verification_request_id: uuid.UUID = Field(foreign_key="verification_requests.id")
+    verification_request_id: uuid.UUID = Field(foreign_key="verificationrequest.id")
 
     # Badge details
     badge_type: VerificationType

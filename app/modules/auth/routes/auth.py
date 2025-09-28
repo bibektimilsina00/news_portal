@@ -31,7 +31,9 @@ from app.modules.auth.schema.auth import (
     SecurityLog,
     SecurityLogsResponse,
     SecuritySettings,
-    Token as TokenSchema,
+)
+from app.modules.auth.schema.auth import Token as TokenSchema
+from app.modules.auth.schema.auth import (
     TokenPayload,
     TokenRevokeRequest,
     TokenRevokeResponse,
@@ -78,14 +80,15 @@ async def login(
     OAuth2 compatible token login, get an access token for future requests
     """
     # Authenticate user
-    user = auth_service.authenticate_user(
+    user = await auth_service.authenticate_user(
         session=session, login=form_data.username, password=form_data.password
     )
 
     if not user:
         # Log failed login attempt
-        await auth_service.log_security_event(
+        auth_service.log_security_event(
             session=session,
+            user_id=None,  # No user ID for failed login
             event_type="failed_login",
             event_status="failed",
             ip_address=x_forwarded_for,
@@ -119,22 +122,20 @@ async def login(
         session=session,
         user_id=user.id,
         token=refresh_token,
-        token_type=TokenType.REFRESH,
+        token_type=TokenType.refresh,
         expires_at=datetime.utcnow() + refresh_token_expires,
     )
 
     # Log successful login
-    await auth_service.log_security_event(
+    auth_service.log_security_event(
         session=session,
         user_id=user.id,
         event_type="login",
         event_status="success",
         ip_address=x_forwarded_for,
         user_agent=user_agent,
-        details="User logged in successfully",
-    )
-
-    # Update last login
+        details="Successful login",
+    )  # Update last login
     user_service.update_last_active(session=session, user_id=user.id)
 
     # Set secure cookie for refresh token
@@ -172,15 +173,16 @@ async def login_json(
     """
     JSON-based login for mobile apps and modern web apps
     """
-    user = auth_service.authenticate_user(
+    user = await auth_service.authenticate_user(
         session=session,
         login=login_data.username_or_email,
         password=login_data.password,
     )
 
     if not user:
-        await auth_service.log_security_event(
+        auth_service.log_security_event(
             session=session,
+            user_id=None,  # No user ID for failed login
             event_type="failed_login",
             event_status="failed",
             ip_address=x_forwarded_for,
@@ -213,13 +215,13 @@ async def login_json(
         session=session,
         user_id=user.id,
         token=refresh_token,
-        token_type=TokenType.REFRESH,
+        token_type=TokenType.refresh,
         expires_at=datetime.utcnow() + refresh_token_expires,
         user_agent=user_agent,
         ip_address=x_forwarded_for,
     )
 
-    await auth_service.log_security_event(
+    auth_service.log_security_event(
         session=session,
         user_id=user.id,
         event_type="login",
@@ -314,7 +316,7 @@ async def refresh_token(
         session=session,
         user_id=user.id,
         token=new_refresh_token,
-        token_type=TokenType.REFRESH,
+        token_type=TokenType.refresh,
         expires_at=datetime.utcnow()
         + timedelta(minutes=settings.REFRESH_TOKEN_EXPIRE_MINUTES),
     )

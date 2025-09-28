@@ -39,8 +39,17 @@ class Category(SQLModel, table=True):
 
     # Relationships
     news: List["News"] = Relationship(back_populates="category")
-    children: List["Category"] = Relationship(back_populates="parent")
-    parent: Optional["Category"] = Relationship(back_populates="children")
+    children: List["Category"] = Relationship(
+        back_populates="parent",
+        sa_relationship_kwargs={"foreign_keys": "[Category.parent_id]"},
+    )
+    parent: Optional["Category"] = Relationship(
+        back_populates="children",
+        sa_relationship_kwargs={
+            "foreign_keys": "[Category.parent_id]",
+            "remote_side": "[Category.id]",
+        },
+    )
 
     class Config:
         from_attributes = True

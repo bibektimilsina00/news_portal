@@ -5,13 +5,11 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
-    from app.modules.stories.model.story import Story
     from app.modules.users.model.user import User
 
 
 class StoryHighlight(SQLModel, table=True):
     """Story highlights - curated collections of stories"""
-
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
@@ -34,4 +32,3 @@ class StoryHighlight(SQLModel, table=True):
 
     # Relationships
     user: "User" = Relationship(back_populates="story_highlights")
-    stories: List["Story"] = Relationship(back_populates="highlights")

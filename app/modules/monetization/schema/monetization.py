@@ -71,7 +71,7 @@ class PremiumFeatureBase(SQLModel):
     price: Decimal = Field(max_digits=8, decimal_places=2, gt=0)
     currency: str = Field(max_length=3, default="USD")
     feature_type: str
-    metadata: Optional[dict] = Field(default_factory=dict)
+    extra_data: Optional[dict] = Field(default_factory=dict)
 
 
 # Public schemas

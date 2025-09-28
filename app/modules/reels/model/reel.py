@@ -8,6 +8,8 @@ from sqlmodel import Enum, Field, Relationship, SQLModel
 from app.shared.enums import ReelStatus, ReelType, ReelVisibility
 
 if TYPE_CHECKING:
+    from app.modules.reels.model.music import Music
+    from app.modules.social.model.comment import Comment
     from app.modules.users.model.user import User
 
 
@@ -69,6 +71,14 @@ class Reel(SQLModel, table=True):
 
     # Relationships
     user: "User" = Relationship(back_populates="reels")
+    music: Optional["Music"] = Relationship(back_populates="reels")
+    # comments: List["Comment"] = Relationship(
+    #     back_populates="reel",
+    #     cascade_delete=True,
+    #     sa_relationship_kwargs={
+    #         "primaryjoin": "and_(Comment.content_type == 'reel', Comment.content_id == Reel.id)"
+    #     },
+    # )
 
     # Computed properties
     @property
@@ -77,7 +87,7 @@ class Reel(SQLModel, table=True):
 
     @property
     def is_published(self) -> bool:
-        return self.status == ReelStatus.PUBLISHED
+        return self.status == ReelStatus.published
 
     @property
     def engagement_score(self) -> int:

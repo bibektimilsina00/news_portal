@@ -80,7 +80,7 @@ class Story(SQLModel, table=True):
     user: "User" = Relationship(back_populates="stories")
     viewers: List["StoryViewer"] = Relationship(back_populates="story")
     interactions: List["StoryInteraction"] = Relationship(back_populates="story")
-    highlights: List["StoryHighlight"] = Relationship(back_populates="stories")
+    # highlights: List["StoryHighlight"] = Relationship(back_populates="stories")
 
     # Computed properties
     @property

@@ -14,9 +14,7 @@ from app.core.db import engine
 from app.modules.users.model.user import User
 from app.modules.users.schema.auth import TokenPayload
 
-reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl=f"{settings.API_V1_STR}/login/access-token"
-)
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/login")
 
 
 def get_db() -> Generator[Session, None, None]:

@@ -70,7 +70,7 @@ class PasswordResetRequest(BaseModel):
     email: EmailStr
 
     class Config:
-        schema_extra = {"example": {"email": "user@example.com"}}
+        json_schema_extra = {"example": {"email": "user@example.com"}}
 
 
 class PasswordResetConfirm(BaseModel):

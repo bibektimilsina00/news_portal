@@ -3,86 +3,84 @@ from typing import Any, Dict, List, Optional
 
 from sqlmodel import Session, func, select
 
-from app.modules.social.model.follow import Follow  
-from app.modules.users.crud.crud_user import user
+from app.modules.social.model.follow import Follow
+from app.modules.users.crud.crud_user import crud_user
 from app.modules.users.model.user import AccountType, Gender, User
 from app.modules.users.schema.user import UserCreate, UserRegister, UserUpdate
-from app.shared.exceptions.exceptions import (
-    InvalidUserDataException,
-    UnauthorizedException,
-    UserAlreadyExistsException,
-    UserNotFoundException,
-)
+from app.shared.exceptions.exceptions import (InvalidUserDataException,
+                                              UnauthorizedException,
+                                              UserAlreadyExistsException,
+                                              UserNotFoundException)
 
 
 class UserService:
-    """Service layer for user management with Instagram-style news platform features"""
+    """Service layer for crud_user management with Instagram-style news platform features"""
 
     @staticmethod
     def create_user(*, session: Session, user_create: UserCreate) -> User:
-        """Create new user with validation"""
+        """Create new crud_user with validation"""
         # Check if email already exists
-        existing_user = user.get_by_email(session=session, email=user_create.email)
+        existing_user = crud_user.get_by_email(session=session, email=user_create.email)
         if existing_user:
             raise UserAlreadyExistsException("Email already registered")
 
         # Check if username already exists
-        existing_user = user.get_by_username(
+        existing_user = crud_user.get_by_username(
             session=session, username=user_create.username
         )
         if existing_user:
             raise UserAlreadyExistsException("Username already taken")
 
-        return user.create(session=session, obj_in=user_create)
+        return crud_user.create(session=session, obj_in=user_create)
 
     @staticmethod
     def get_user(session: Session, user_id: uuid.UUID) -> Optional[User]:
-        """Get user by ID"""
-        db_user = user.get(session=session, id=user_id)
+        """Get crud_user by ID"""
+        db_user = crud_user.get(session=session, id=user_id)
         if not db_user:
             raise UserNotFoundException("User not found")
         return db_user
 
     @staticmethod
     def get_user_by_email(*, session: Session, email: str) -> Optional[User]:
-        """Get user by email"""
-        return user.get_by_email(session=session, email=email)
+        """Get crud_user by email"""
+        return crud_user.get_by_email(session=session, email=email)
 
     @staticmethod
     def get_user_by_username(*, session: Session, username: str) -> Optional[User]:
-        """Get user by username"""
-        return user.get_by_username(session=session, username=username)
+        """Get crud_user by username"""
+        return crud_user.get_by_username(session=session, username=username)
 
     @staticmethod
     def get_user_by_id(*, session: Session, user_id: uuid.UUID) -> Optional[User]:
-        """Get user by UUID"""
-        return user.get_by_id(session=session, user_id=user_id)
+        """Get crud_user by UUID"""
+        return crud_user.get_by_id(session=session, user_id=user_id)
 
     @staticmethod
     def get_users(session: Session, *, skip: int = 0, limit: int = 100) -> List[User]:
         """Get multiple users with pagination"""
-        return user.get_multi(session=session, skip=skip, limit=limit)
+        return crud_user.get_multi(session=session, skip=skip, limit=limit)
 
     @staticmethod
     def get_verified_users(
         session: Session, *, skip: int = 0, limit: int = 50
     ) -> List[User]:
         """Get all verified users (journalists, news organizations, etc.)"""
-        return user.get_verified_users(session=session, skip=skip, limit=limit)
+        return crud_user.get_verified_users(session=session, skip=skip, limit=limit)
 
     @staticmethod
     def get_journalists(
         session: Session, *, skip: int = 0, limit: int = 50
     ) -> List[User]:
         """Get all journalist users"""
-        return user.get_journalists(session=session, skip=skip, limit=limit)
+        return crud_user.get_journalists(session=session, skip=skip, limit=limit)
 
     @staticmethod
     def get_by_account_type(
         session: Session, *, account_type: AccountType, skip: int = 0, limit: int = 50
     ) -> List[User]:
         """Get users by account type"""
-        return user.get_by_account_type(
+        return crud_user.get_by_account_type(
             session=session, account_type=account_type, skip=skip, limit=limit
         )
 
@@ -91,17 +89,17 @@ class UserService:
         *, session: Session, db_user: User, user_in: UserUpdate | Dict[str, Any]
     ) -> User:
         """Update user information"""
-        return user.update(session=session, db_obj=db_user, obj_in=user_in)
+        return crud_user.update(session=session, db_obj=db_user, obj_in=user_in)
 
     @staticmethod
     def update_last_active(*, session: Session, user_id: uuid.UUID) -> Optional[User]:
         """Update user's last active timestamp"""
-        return user.update_last_active(session=session, user_id=user_id)
+        return crud_user.update_last_active(session=session, user_id=user_id)
 
     @staticmethod
     def delete_user(*, session: Session, user_id: uuid.UUID) -> bool:
-        """Delete user and cascade delete related data"""
-        db_user = user.get(session=session, id=user_id)
+        """Delete crud_user and cascade delete related data"""
+        db_user = crud_user.get(session=session, id=user_id)
         if not db_user:
             raise UserNotFoundException("User not found")
 
@@ -109,7 +107,7 @@ class UserService:
         if db_user.is_superuser:
             raise UnauthorizedException("Cannot delete superuser")
 
-        # Delete user (cascade will handle relationships)
+        # Delete crud_user (cascade will handle relationships)
         session.delete(db_user)
         session.commit()
         return True
@@ -119,10 +117,12 @@ class UserService:
         *, session: Session, login: str, password: str
     ) -> Optional[User]:
         """
-        Authenticate user with email OR username and password.
+        Authenticate crud_user with email OR username and password.
         Updates last active timestamp on successful authentication.
         """
-        db_user = user.authenticate(session=session, email=login, password=password)
+        db_user = crud_user.authenticate(
+            session=session, email=login, password=password
+        )
         if not db_user:
             raise InvalidUserDataException("Invalid credentials")
 
@@ -136,43 +136,45 @@ class UserService:
         *, session: Session, query: str, skip: int = 0, limit: int = 20
     ) -> List[User]:
         """Search users by username, full_name, or email"""
-        return user.search_users(session=session, query=query, skip=skip, limit=limit)
+        return crud_user.search_users(
+            session=session, query=query, skip=skip, limit=limit
+        )
 
     @staticmethod
-    def is_active(user: User) -> bool:
-        """Check if user is active"""
-        return user.is_active
+    def is_active(crud_user: User) -> bool:
+        """Check if crud_user is active"""
+        return crud_user.is_active
 
     @staticmethod
-    def is_verified(user: User) -> bool:
-        """Check if user is verified"""
-        return user.is_verified
+    def is_verified(crud_user: User) -> bool:
+        """Check if crud_user is verified"""
+        return crud_user.is_verified
 
     @staticmethod
-    def is_superuser(user: User) -> bool:
-        """Check if user is superuser"""
-        return user.is_superuser
+    def is_superuser(crud_user: User) -> bool:
+        """Check if crud_user is superuser"""
+        return crud_user.is_superuser
 
     @staticmethod
-    def is_journalist(user: User) -> bool:
-        """Check if user is a journalist"""
-        return user.is_journalist
+    def is_journalist(crud_user: User) -> bool:
+        """Check if crud_user is a journalist"""
+        return crud_user.is_journalist
 
     @staticmethod
-    def is_organization(user: User) -> bool:
-        """Check if user is an organization"""
-        return user.is_organization
+    def is_organization(crud_user: User) -> bool:
+        """Check if crud_user is an organization"""
+        return crud_user.is_organization
 
     @staticmethod
-    def can_post_verified_content(user: User) -> bool:
-        """Check if user can post verified news content"""
-        return user.can_post_verified_content(user)
+    def can_post_verified_content(crud_user: User) -> bool:
+        """Check if crud_user can post verified news content"""
+        return crud_user.can_post_verified_content(crud_user)
 
     @staticmethod
     def is_following(
         *, session: Session, follower_id: uuid.UUID, following_id: uuid.UUID
     ) -> bool:
-        """Check if one user follows another"""
+        """Check if one crud_user follows another"""
         statement = select(Follow).where(
             and_(Follow.follower_id == follower_id, Follow.following_id == following_id)
         )
@@ -183,12 +185,12 @@ class UserService:
         *, session: Session, user_id: uuid.UUID, other_user_id: uuid.UUID
     ) -> int:
         """Get count of mutual followers between two users"""
-        # Get followers of user
+        # Get followers of crud_user
         user_followers = select(Follow.follower_id).where(
             Follow.following_id == user_id
         )
 
-        # Get followers of other user
+        # Get followers of other crud_user
         other_followers = select(Follow.follower_id).where(
             Follow.following_id == other_user_id
         )
@@ -201,23 +203,23 @@ class UserService:
 
     @staticmethod
     def get_user_stats(*, session: Session, user_id: uuid.UUID) -> Dict[str, Any]:
-        """Get comprehensive user statistics"""
-        return user.get_user_stats(session=session, user_id=user_id)
+        """Get comprehensive crud_user statistics"""
+        return crud_user.get_user_stats(session=session, user_id=user_id)
 
     @staticmethod
     def count_users(session: Session) -> int:
-        """Get total user count"""
-        return user.count(session=session)
+        """Get total crud_user count"""
+        return crud_user.count(session=session)
 
     @staticmethod
     def count_verified_users(session: Session) -> int:
-        """Get verified user count"""
+        """Get verified crud_user count"""
         statement = select(func.count(User.id)).where(User.is_verified == True)
         return session.exec(statement).one()
 
     @staticmethod
     def count_journalists(session: Session) -> int:
-        """Get journalist user count"""
+        """Get journalist crud_user count"""
         statement = select(func.count(User.id)).where(User.is_journalist == True)
         return session.exec(statement).one()
 
@@ -225,42 +227,46 @@ class UserService:
     def get_user_by_verification_token(
         *, session: Session, token: str
     ) -> Optional[User]:
-        """Get user by verification token (for email verification)"""
+        """Get crud_user by verification token (for email verification)"""
         # This would depend on your verification token implementation
         # For now, return None - implement based on your token system
         return None
 
     @staticmethod
     def verify_user(*, session: Session, user_id: uuid.UUID) -> Optional[User]:
-        """Mark user as verified"""
-        db_user = user.get(session=session, id=user_id)
+        """Mark crud_user as verified"""
+        db_user = crud_user.get(session=session, id=user_id)
         if not db_user:
             raise UserNotFoundException("User not found")
 
         if db_user.is_verified:
             return db_user  # Already verified
 
-        return user.update(
+        return crud_user.update(
             session=session, db_obj=db_user, obj_in={"is_verified": True}
         )
 
     @staticmethod
     def deactivate_user(*, session: Session, user_id: uuid.UUID) -> Optional[User]:
-        """Deactivate user account"""
-        db_user = user.get(session=session, id=user_id)
+        """Deactivate crud_user account"""
+        db_user = crud_user.get(session=session, id=user_id)
         if not db_user:
             raise UserNotFoundException("User not found")
 
-        return user.update(session=session, db_obj=db_user, obj_in={"is_active": False})
+        return crud_user.update(
+            session=session, db_obj=db_user, obj_in={"is_active": False}
+        )
 
     @staticmethod
     def reactivate_user(*, session: Session, user_id: uuid.UUID) -> Optional[User]:
-        """Reactivate user account"""
-        db_user = user.get(session=session, id=user_id)
+        """Reactivate crud_user account"""
+        db_user = crud_user.get(session=session, id=user_id)
         if not db_user:
             raise UserNotFoundException("User not found")
 
-        return user.update(session=session, db_obj=db_user, obj_in={"is_active": True})
+        return crud_user.update(
+            session=session, db_obj=db_user, obj_in={"is_active": True}
+        )
 
     @staticmethod
     def get_active_users_count(session: Session) -> int:

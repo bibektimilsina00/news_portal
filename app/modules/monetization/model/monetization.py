@@ -81,6 +81,9 @@ class Payment(SQLModel, table=True):
     # Relationships
     user: Optional["User"] = Relationship(back_populates="payments")
     subscription: Optional["UserSubscription"] = Relationship(back_populates="payments")
+    premium_purchase: Optional["PremiumFeaturePurchase"] = Relationship(
+        back_populates="payment"
+    )
 
 
 class AdCampaign(SQLModel, table=True):
@@ -206,8 +209,14 @@ class SponsoredContent(SQLModel, table=True):
     updated_at: Optional[datetime] = Field(default=None)
 
     # Relationships
-    creator: Optional["User"] = Relationship(back_populates="sponsored_content")
-    brand: Optional["User"] = Relationship(back_populates="brand_sponsorships")
+    creator: Optional["User"] = Relationship(
+        back_populates="sponsored_content",
+        sa_relationship_kwargs={"foreign_keys": "[SponsoredContent.creator_id]"},
+    )
+    brand: Optional["User"] = Relationship(
+        back_populates="brand_sponsorships",
+        sa_relationship_kwargs={"foreign_keys": "[SponsoredContent.brand_id]"},
+    )
 
 
 class PremiumFeature(SQLModel, table=True):

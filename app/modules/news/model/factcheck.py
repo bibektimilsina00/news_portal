@@ -8,7 +8,6 @@ from sqlmodel import Enum, Field, Relationship, SQLModel
 from app.shared.enums import FactCheckPriority, FactCheckStatus
 
 if TYPE_CHECKING:
-    from app.modules.news.model.news import News
     from app.modules.users.model.user import User
 
 
@@ -113,9 +112,13 @@ class FactCheck(SQLModel, table=True):
 
     # Relationships
     news: "News" = Relationship(back_populates="fact_checks")
-    checker: "User" = Relationship(back_populates="fact_checks")
+    checker: "User" = Relationship(
+        back_populates="fact_checks",
+        sa_relationship_kwargs={"foreign_keys": "[FactCheck.user_id]"},
+    )
     organization: Optional["User"] = Relationship(
-        back_populates="organization_fact_checks"
+        back_populates="organization_fact_checks",
+        sa_relationship_kwargs={"foreign_keys": "[FactCheck.organization_id]"},
     )
 
     class Config:

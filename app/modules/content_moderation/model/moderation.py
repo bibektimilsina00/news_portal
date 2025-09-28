@@ -34,8 +34,14 @@ class ContentReport(SQLModel, table=True):
     updated_at: Optional[datetime] = Field(default=None)
 
     # Relationships
-    reporter: Optional["User"] = Relationship(back_populates="reports_made")
-    reviewer: Optional["User"] = Relationship(back_populates="reports_reviewed")
+    reporter: Optional["User"] = Relationship(
+        back_populates="reports_made",
+        sa_relationship_kwargs={"foreign_keys": "[ContentReport.reporter_id]"},
+    )
+    reviewer: Optional["User"] = Relationship(
+        back_populates="reports_reviewed",
+        sa_relationship_kwargs={"foreign_keys": "[ContentReport.reviewed_by]"},
+    )
 
 
 class ModerationAction(SQLModel, table=True):
@@ -81,8 +87,14 @@ class ModerationAppeal(SQLModel, table=True):
 
     # Relationships
     action: Optional["ModerationAction"] = Relationship(back_populates="appeals")
-    appellant: Optional["User"] = Relationship(back_populates="moderation_appeals")
-    reviewer: Optional["User"] = Relationship(back_populates="appeal_reviews")
+    appellant: Optional["User"] = Relationship(
+        back_populates="moderation_appeals",
+        sa_relationship_kwargs={"foreign_keys": "[ModerationAppeal.appellant_id]"},
+    )
+    reviewer: Optional["User"] = Relationship(
+        back_populates="appeal_reviews",
+        sa_relationship_kwargs={"foreign_keys": "[ModerationAppeal.reviewed_by]"},
+    )
 
 
 class ContentFlag(SQLModel, table=True):
@@ -131,8 +143,14 @@ class UserStrike(SQLModel, table=True):
     updated_at: Optional[datetime] = Field(default=None)
 
     # Relationships
-    user: Optional["User"] = Relationship(back_populates="strikes")
-    issuer: Optional["User"] = Relationship(back_populates="issued_strikes")
+    user: Optional["User"] = Relationship(
+        back_populates="strikes",
+        sa_relationship_kwargs={"foreign_keys": "[UserStrike.user_id]"},
+    )
+    issuer: Optional["User"] = Relationship(
+        back_populates="issued_strikes",
+        sa_relationship_kwargs={"foreign_keys": "[UserStrike.issued_by]"},
+    )
 
 
 class UserBan(SQLModel, table=True):
@@ -154,8 +172,14 @@ class UserBan(SQLModel, table=True):
     updated_at: Optional[datetime] = Field(default=None)
 
     # Relationships
-    user: Optional["User"] = Relationship(back_populates="bans")
-    banner: Optional["User"] = Relationship(back_populates="banned_users")
+    user: Optional["User"] = Relationship(
+        back_populates="bans",
+        sa_relationship_kwargs={"foreign_keys": "[UserBan.user_id]"},
+    )
+    banner: Optional["User"] = Relationship(
+        back_populates="banned_users",
+        sa_relationship_kwargs={"foreign_keys": "[UserBan.banned_by]"},
+    )
     appeals: List["BanAppeal"] = Relationship(back_populates="ban")
 
 
@@ -179,8 +203,14 @@ class BanAppeal(SQLModel, table=True):
 
     # Relationships
     ban: Optional["UserBan"] = Relationship(back_populates="appeals")
-    appellant: Optional["User"] = Relationship(back_populates="ban_appeals")
-    reviewer: Optional["User"] = Relationship(back_populates="ban_appeal_reviews")
+    appellant: Optional["User"] = Relationship(
+        back_populates="ban_appeals",
+        sa_relationship_kwargs={"foreign_keys": "[BanAppeal.appellant_id]"},
+    )
+    reviewer: Optional["User"] = Relationship(
+        back_populates="ban_appeal_reviews",
+        sa_relationship_kwargs={"foreign_keys": "[BanAppeal.reviewed_by]"},
+    )
 
 
 class ModerationRule(SQLModel, table=True):

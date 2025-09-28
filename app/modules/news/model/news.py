@@ -5,12 +5,13 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.modules.news.model.category import Category
+from app.modules.news.model.factcheck import FactCheck
+from app.modules.news.model.source import NewsSource
 from app.shared.enums import NewsPriority, NewsStatus
 
 if TYPE_CHECKING:
-    from app.modules.news.model.category import Category
-    from app.modules.news.model.factcheck import FactCheck
-    from app.modules.news.model.source import NewsSource
+    from app.modules.social.model.comment import Comment
     from app.modules.users.model.user import User
 
 
@@ -111,6 +112,13 @@ class News(SQLModel, table=True):
     category: Optional["Category"] = Relationship(back_populates="news")
     source: Optional["NewsSource"] = Relationship(back_populates="news")
     fact_checks: List["FactCheck"] = Relationship(back_populates="news")
+    # comments: List["Comment"] = Relationship(
+    #     back_populates="news",
+    #     cascade_delete=True,
+    #     sa_relationship_kwargs={
+    #         "primaryjoin": "and_(Comment.content_type == 'news', Comment.content_id == News.id)"
+    #     },
+    # )
 
     class Config:
         from_attributes = True
@@ -188,7 +196,6 @@ class NewsTag(SQLModel, table=True):
     """Many-to-many relationship between news and tags"""
 
     news_id: uuid.UUID = Field(foreign_key="news.id", primary_key=True)
-    tag_id: uuid.UUID = Field(foreign_key="tag.id", primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:

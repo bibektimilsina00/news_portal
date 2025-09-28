@@ -114,8 +114,8 @@ class APIKey(APIKeyBase, table=True):
     usage_count: int = Field(default=0)
 
     # Relationships
-    integration: Integration = Relationship(back_populates="apikeys")
-    requests: List["APIRequestLog"] = Relationship(back_populates="apikey")
+    integration: Integration = Relationship(back_populates="api_keys")
+    requests: List["APIRequestLog"] = Relationship(back_populates="api_key")
 
 
 class APIKeyPublic(APIKeyBase):
@@ -216,7 +216,7 @@ class ExternalNewsArticleBase(SQLModel):
 class ExternalNewsArticle(ExternalNewsArticleBase, table=True):
 
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    source_id: UUID = Field(foreign_key="newssource.id")
+    source_id: UUID = Field(foreign_key="integrationnewssource.id")
     integration_id: UUID = Field(foreign_key="integration.id")
     created_at: datetime = Field(default_factory=datetime.utcnow)
     imported_at: Optional[datetime] = None

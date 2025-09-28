@@ -31,7 +31,7 @@ class IntegrationUpdate(SQLModel):
     config: Optional[Dict[str, Any]] = None
     credentials: Optional[Dict[str, Any]] = None
     rate_limits: Optional[Dict[str, Any]] = None
-    metadata: Optional[Dict[str, Any]] = None
+    integration_metadata: Optional[Dict[str, Any]] = None
 
 
 class Integration(IntegrationBase):

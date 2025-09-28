@@ -41,6 +41,9 @@ class SearchQuery(SQLModel, table=True):
 
     # Relationships
     user: Optional["User"] = Relationship(back_populates="search_queries")
+    results: list["SearchResult"] = Relationship(
+        back_populates="query", cascade_delete=True
+    )
 
 
 class SearchResult(SQLModel, table=True):
@@ -74,7 +77,3 @@ class SearchResult(SQLModel, table=True):
 
     # Relationships
     query: "SearchQuery" = Relationship(back_populates="results")
-
-
-# Add relationships to SearchQuery
-SearchQuery.results = Relationship(back_populates="query", cascade_delete=True)

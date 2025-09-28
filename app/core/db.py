@@ -1,9 +1,11 @@
 from sqlmodel import Session, create_engine, select
 
 from app.core.config import settings
-from app.modules.users.crud.crud_user import user as user_crud
+from app.models import *  # Import all models to register them with SQLAlchemy
+from app.modules.users.crud.crud_user import crud_user
 from app.modules.users.model.user import User
 from app.modules.users.schema.user import UserCreate
+from app.shared.enums.account_type import AccountType
 
 engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
 
@@ -27,9 +29,16 @@ def init_db(session: Session) -> None:
         select(User).where(User.email == settings.FIRST_SUPERUSER)
     ).first()
     if not user:
+        # Extract username from email (part before @)
+        username = settings.FIRST_SUPERUSER.split("@")[0]
         user_in = UserCreate(
             email=settings.FIRST_SUPERUSER,
+            username=username,
             password=settings.FIRST_SUPERUSER_PASSWORD,
             is_superuser=True,
+            is_active=True,
+            is_verified=True,
+            full_name="Super User",
+            account_type=AccountType.personal,
         )
-        user = user_crud.create(session=session, obj_in=user_in)
+        user = crud_user.create(session=session, obj_in=user_in)

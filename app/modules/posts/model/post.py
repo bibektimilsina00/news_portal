@@ -5,16 +5,13 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy import JSON, Column
 from sqlmodel import Enum, Field, Relationship, SQLModel
 
+from app.modules.posts.model.bookmark import Bookmark
+from app.modules.posts.model.like import Like
+from app.modules.users.model.user import User
 from app.shared.enums import PostStatus, PostType, PostVisibility
 
 if TYPE_CHECKING:
-    from app.modules.posts.model.bookmark import Bookmark
-    from app.modules.posts.model.comment import Comment
-    from app.modules.posts.model.like import Like
-    from app.modules.posts.model.media import PostMedia
-    from app.modules.posts.model.post_tag import PostTag
-    from app.modules.posts.model.tag import Tag
-    from app.modules.users.model.user import User
+    from app.modules.social.model.comment import Comment
 
 
 class Post(SQLModel, table=True):
@@ -81,14 +78,20 @@ class Post(SQLModel, table=True):
 
     # Relationships
     owner: "User" = Relationship(back_populates="posts")
-    comments: List["Comment"] = Relationship(back_populates="post", cascade_delete=True)
+    # comments: List["Comment"] = Relationship(
+    #     back_populates="post",
+    #     cascade_delete=True,
+    #     sa_relationship_kwargs={
+    #         "primaryjoin": "and_(Comment.content_type == 'post', Comment.content_id == Post.id)"
+    #     },
+    # )
     likes: List["Like"] = Relationship(back_populates="post", cascade_delete=True)
     bookmarks: List["Bookmark"] = Relationship(
         back_populates="post", cascade_delete=True
     )
-    post_tags: List["PostTag"] = Relationship(
-        back_populates="post", cascade_delete=True
-    )
+    # post_tags: List["PostTag"] = Relationship(
+    #     back_populates="post", cascade_delete=True
+    # )
     media_items: List["PostMedia"] = Relationship(
         back_populates="post", cascade_delete=True
     )
@@ -152,9 +155,9 @@ class Post(SQLModel, table=True):
         """Check if post is visible to specific user"""
         if self.visibility == PostVisibility.public:
             return True
-        elif self.visibility == PostVisibility.FOLLOWERS_ONLY:
+        elif self.visibility == PostVisibility.followers_only:
             return is_following
-        elif self.visibility == PostVisibility.CLOSE_FRIENDS:
+        elif self.visibility == PostVisibility.close_friends:
             return is_close_friend
         return False
 

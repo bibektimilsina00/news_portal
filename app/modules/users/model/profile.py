@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 class Profile(SQLModel, table=True):
     """Extended user profile information"""
 
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     user_id: uuid.UUID = Field(foreign_key="user.id", unique=True, index=True)
 
@@ -57,6 +56,9 @@ class Profile(SQLModel, table=True):
 
     # Relationships
     user: "User" = Relationship(back_populates="profile")
+    views: List["ProfileView"] = Relationship(
+        back_populates="profile", cascade_delete=True
+    )
 
     class Config:
         from_attributes = True
@@ -64,7 +66,6 @@ class Profile(SQLModel, table=True):
 
 class ProfileView(SQLModel, table=True):
     """Profile view tracking for analytics"""
-
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     profile_id: uuid.UUID = Field(foreign_key="profile.id", index=True)
@@ -77,12 +78,11 @@ class ProfileView(SQLModel, table=True):
 
     # Relationships
     profile: "Profile" = Relationship(back_populates="views")
-    viewer: Optional["User"] = Relationship()
+    viewer: Optional["User"] = Relationship(back_populates="profile_views")
 
 
 class CloseFriend(SQLModel, table=True):
     """Close friends relationships"""
-
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
@@ -90,13 +90,16 @@ class CloseFriend(SQLModel, table=True):
     added_at: datetime = Field(default_factory=datetime.utcnow)
 
     # Relationships
-    user: "User" = Relationship()
-    friend: "User" = Relationship()
+    user: "User" = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[CloseFriend.user_id]"}
+    )
+    friend: "User" = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[CloseFriend.friend_id]"}
+    )
 
 
 class UserBlock(SQLModel, table=True):
     """User blocking relationships"""
-
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     blocker_id: uuid.UUID = Field(foreign_key="user.id", index=True)
@@ -105,5 +108,9 @@ class UserBlock(SQLModel, table=True):
     blocked_at: datetime = Field(default_factory=datetime.utcnow)
 
     # Relationships
-    blocker: "User" = Relationship()
-    blocked: "User" = Relationship()
+    blocker: "User" = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[UserBlock.blocker_id]"}
+    )
+    blocked: "User" = Relationship(
+        sa_relationship_kwargs={"foreign_keys": "[UserBlock.blocked_id]"}
+    )

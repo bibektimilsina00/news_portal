@@ -7,14 +7,14 @@ from sqlmodel import JSON, Column, Enum, Field, Relationship, SQLModel
 from app.shared.enums import TokenStatus, TokenType
 
 if TYPE_CHECKING:
-    from app.modules.auth.model.auth import UserCredentials
+    from app.modules.users.model.user import User
 
 
 class Token(SQLModel, table=True):
     """Token management for authentication"""
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
-    user_id: uuid.UUID = Field(foreign_key="usercredentials.id", index=True)
+    user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
 
     # Token details
     token: str = Field(max_length=1000, index=True)
@@ -39,7 +39,7 @@ class Token(SQLModel, table=True):
     city: Optional[str] = Field(default=None, max_length=100)
 
     # Relationships
-    user_credentials: "UserCredentials" = Relationship(back_populates="tokens")
+    user: "User" = Relationship(back_populates="tokens")
 
     class Config:
         from_attributes = True

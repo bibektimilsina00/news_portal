@@ -93,6 +93,8 @@ from app.modules.notifications.model.preference import NotificationPreference
 
 # Posts Module
 from app.modules.posts.model.post import Post
+
+# Reels Module
 from app.modules.reels.model.effect import Effect
 from app.modules.reels.model.music import Music
 
@@ -103,10 +105,16 @@ from app.modules.search.model.history import SearchHistory
 # Search Module
 from app.modules.search.model.search import SearchQuery, SearchResult
 from app.modules.search.model.trending import TrendingTopic
+
+# Social Module
+from app.modules.social.model.comment import Comment
+from app.modules.social.model.follow import Follow
 from app.modules.stories.model.highlight import StoryHighlight
 from app.modules.stories.model.interaction import StoryInteraction
 
 # Stories Module
 from app.modules.stories.model.story import Story
 from app.modules.stories.model.viewer import StoryViewer
+from app.modules.users.model.profile import *
 from app.modules.users.model.user import User
+from app.modules.users.model.verification import *
