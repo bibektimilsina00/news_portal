@@ -17,11 +17,35 @@ class CRUDAuth(CRUDBase[UserCredentials, TokenCreate, TokenUpdate]):
     """CRUD operations for authentication with JWT tokens"""
 
     def __init__(self):
-        self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+        # Use Argon2 as the preferred scheme, but keep bcrypt in the list
+        # as a verification-only fallback during a migration window. New
+        # hashes will be Argon2; bcrypt is kept only so existing users can
+        # authenticate and be re-hashed on next successful login.
+        self.pwd_context = CryptContext(
+            schemes=["argon2", "bcrypt"],
+            default="argon2",
+            deprecated=["auto"],
+        )
 
     def verify_password(self, plain_password: str, hashed_password: str) -> bool:
         """Verify password against hash"""
-        return self.pwd_context.verify(plain_password, hashed_password)
+        # Passlib may raise UnknownHashError if the stored hash is not
+        # recognized (malformed or from a non-supported handler). Bcrypt
+        # backend may also raise ValueError for >72-byte passwords.
+        # To avoid 500s during authentication, treat unrecognizable or
+        # invalid legacy hashes as failed verification and return False.
+        from passlib.exc import UnknownHashError
+
+        try:
+            return self.pwd_context.verify(plain_password, hashed_password)
+        except UnknownHashError:
+            # Unknown/legacy hash format: treat as authentication failure
+            return False
+        except ValueError:
+            # Backend-specific errors (e.g. bcrypt length limit). Treat as
+            # failed verification so callers can handle user-facing errors
+            # (e.g. ask user to reset password).
+            return False
 
     def get_password_hash(self, password: str) -> str:
         """Generate password hash"""

@@ -3,10 +3,15 @@ from typing import Any
 
 import jwt
 from passlib.context import CryptContext
+from passlib.exc import UnknownHashError
 
 from app.core.config import settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(
+    schemes=["argon2", "bcrypt"],
+    default="argon2",
+    deprecated=["auto"],
+)
 
 
 ALGORITHM = "HS256"
@@ -20,7 +25,13 @@ def create_access_token(subject: str | Any, expires_delta: timedelta) -> str:
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    try:
+        return pwd_context.verify(plain_password, hashed_password)
+    except UnknownHashError:
+        return False
+    except ValueError:
+        # e.g. bcrypt backend complaining about >72 bytes
+        return False
 
 
 def get_password_hash(password: str) -> str:

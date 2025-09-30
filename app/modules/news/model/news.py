@@ -7,12 +7,13 @@ from sqlalchemy import JSON, Column
 from sqlmodel import Field, Relationship, SQLModel
 
 from app.modules.news.model.category import Category
-from app.modules.news.model.factcheck import FactCheck
 from app.modules.news.model.source import NewsSource
+from app.core.config import settings
 from app.shared.enums import NewsPriority, NewsStatus
 
 if TYPE_CHECKING:
     from app.modules.users.model.user import User
+    from app.modules.news.model.factcheck import FactCheck
 
 
 class News(SQLModel, table=True):

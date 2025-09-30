@@ -48,6 +48,23 @@ class AuthService:
         if not self.auth_crud.verify_password(password, user.hashed_password):
             return None
 
+        # If the stored hash is using a weaker/legacy scheme (bcrypt),
+        # re-hash the password with Argon2 and update the user record so
+        # future logins use Argon2-only verification.
+        try:
+            # passlib can tell us if a hash needs to be updated to the
+            # preferred scheme via needs_update
+            if self.auth_crud.pwd_context.needs_update(user.hashed_password):
+                new_hash = self.auth_crud.get_password_hash(password)
+                user.hashed_password = new_hash
+                session.add(user)
+                session.commit()
+                session.refresh(user)
+        except Exception:
+            # If rehash fails for any reason, don't block login. Log
+            # could be added here in the future.
+            pass
+
         return user
 
     async def create_user_session(
