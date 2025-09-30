@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from sqlmodel import Session, col, desc, func, select
+from sqlmodel import Session, desc, func, select
 
 from app.modules.monetization.model.monetization import (
     AdCampaign,

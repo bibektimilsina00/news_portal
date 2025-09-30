@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from sqlmodel import Session, desc, select
+from sqlmodel import Session, select
 
 from app.modules.search.model.trending import TrendingTopic
 from app.shared.crud.base import CRUDBase

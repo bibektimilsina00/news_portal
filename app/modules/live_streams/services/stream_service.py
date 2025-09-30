@@ -9,7 +9,6 @@ from app.modules.live_streams.crud.crud_viewer import crud_stream_viewer
 from app.modules.live_streams.model.stream import Stream
 from app.modules.live_streams.schema.stream import (
     StreamCreate,
-    StreamPublic,
     StreamUpdate,
 )
 

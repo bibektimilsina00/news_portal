@@ -3,13 +3,12 @@ from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
 from sqlalchemy import JSON, Column
-from sqlmodel import Enum, Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 from app.shared.enums import ReelStatus, ReelType, ReelVisibility
 
 if TYPE_CHECKING:
     from app.modules.reels.model.music import Music
-    from app.modules.social.model.comment import Comment
     from app.modules.users.model.user import User
 
 

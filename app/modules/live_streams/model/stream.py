@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
 from sqlalchemy import JSON, Column
-from sqlmodel import Enum, Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 from app.shared.enums import StreamQuality, StreamStatus, StreamVisibility
 

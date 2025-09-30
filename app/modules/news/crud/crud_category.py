@@ -1,7 +1,7 @@
 import uuid
 from typing import List, Optional
 
-from sqlalchemy import and_, func
+from sqlalchemy import and_
 from sqlmodel import Session, select
 
 from app.modules.news.model.category import Category

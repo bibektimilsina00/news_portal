@@ -5,12 +5,14 @@ from sqlmodel import Session, func, select
 
 from app.modules.social.model.follow import Follow
 from app.modules.users.crud.crud_user import crud_user
-from app.modules.users.model.user import AccountType, Gender, User
-from app.modules.users.schema.user import UserCreate, UserRegister, UserUpdate
-from app.shared.exceptions.exceptions import (InvalidUserDataException,
-                                              UnauthorizedException,
-                                              UserAlreadyExistsException,
-                                              UserNotFoundException)
+from app.modules.users.model.user import AccountType, User
+from app.modules.users.schema.user import UserCreate, UserUpdate
+from app.shared.exceptions.exceptions import (
+    InvalidUserDataException,
+    UnauthorizedException,
+    UserAlreadyExistsException,
+    UserNotFoundException,
+)
 
 
 class UserService:
@@ -271,13 +273,13 @@ class UserService:
     @staticmethod
     def get_active_users_count(session: Session) -> int:
         """Get count of active users"""
-        statement = select(func.count(User.id)).where(User.is_active == True)
+        statement = select(func.count(User.id)).where(User.is_active)
         return session.exec(statement).one()
 
     @staticmethod
     def get_inactive_users_count(session: Session) -> int:
         """Get count of inactive users"""
-        statement = select(func.count(User.id)).where(User.is_active == False)
+        statement = select(func.count(User.id)).where(User.is_active)
         return session.exec(statement).one()
 
 

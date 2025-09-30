@@ -2,10 +2,8 @@ import uuid
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import Field, field_validator
 from sqlmodel import SQLModel
-
-from app.shared.enums.account_type import AccountType
 
 
 # Base Profile Schema

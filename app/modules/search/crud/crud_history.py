@@ -1,8 +1,7 @@
 from datetime import datetime
-from typing import Any, Dict, List, Optional
-from uuid import UUID
+from typing import Any, Dict, List
 
-from sqlmodel import Session, desc, func, select
+from sqlmodel import Session, desc, select
 
 from app.modules.search.model.history import SearchHistory
 from app.modules.search.schema.history import SearchHistoryCreate, SearchHistoryUpdate

@@ -5,13 +5,12 @@ from typing import Any, Dict, List, Optional
 from sqlmodel import Session
 
 from app.modules.posts.crud.crud_post import post
-from app.modules.posts.model.post import Post, PostStatus, PostVisibility
-from app.modules.posts.schema.post import PostCreate, PostFilter, PostUpdate
+from app.modules.posts.model.post import Post, PostStatus
+from app.modules.posts.schema.post import PostCreate, PostUpdate
 from app.shared.exceptions.exceptions import (
     InvalidPostDataException,
     PostNotFoundException,
     UnauthorizedException,
-    UserNotFoundException,
 )
 
 

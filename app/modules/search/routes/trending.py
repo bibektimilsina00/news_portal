@@ -1,7 +1,6 @@
-from typing import List, Optional
+from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException, Query
 
 from app.modules.search.model.trending import TrendingTopic
 from app.modules.search.schema.trending import (

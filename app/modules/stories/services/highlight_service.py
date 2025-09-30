@@ -5,7 +5,6 @@ from app.modules.stories.crud.crud_highlight import crud_highlight
 from app.modules.stories.model.highlight import StoryHighlight
 from app.modules.stories.schema.highlight import (
     StoryHighlightCreate,
-    StoryHighlightPublic,
     StoryHighlightUpdate,
 )
 from app.shared.deps.deps import SessionDep

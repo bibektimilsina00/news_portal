@@ -1,10 +1,8 @@
-import asyncio
 from datetime import datetime, timedelta
 from decimal import Decimal
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-import aiohttp
 from sqlmodel import Session
 
 from app.modules.content_moderation.crud.moderation_crud import (
@@ -14,18 +12,14 @@ from app.modules.content_moderation.crud.moderation_crud import (
     crud_moderation_action,
     crud_moderation_appeal,
     crud_moderation_log,
-    crud_moderation_rule,
     crud_user_ban,
     crud_user_strike,
 )
 from app.modules.content_moderation.model.moderation import (
     BanAppeal,
-    ContentFlag,
     ContentReport,
     ModerationAction,
     ModerationAppeal,
-    ModerationLog,
-    ModerationRule,
     UserBan,
     UserStrike,
 )
@@ -41,13 +35,11 @@ from app.modules.content_moderation.schema.moderation import (
     ModerationActionCreate,
     ModerationAppealCreate,
     ModerationLogCreate,
-    ModerationRuleCreate,
     ModerationStats,
     ModeratorActivity,
     UserBanCreate,
     UserStrikeCreate,
 )
-from app.shared.deps.deps import SessionDep
 
 
 class ContentModerationService:

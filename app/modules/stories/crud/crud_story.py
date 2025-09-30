@@ -1,11 +1,11 @@
 import uuid
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import List
 
-from sqlalchemy import and_, func
+from sqlalchemy import and_
 from sqlmodel import Session, select
 
-from app.modules.stories.model.story import Story, StoryStatus, StoryVisibility
+from app.modules.stories.model.story import Story, StoryStatus
 from app.modules.stories.schema.story import StoryCreate, StoryUpdate
 from app.shared.crud.base import CRUDBase
 

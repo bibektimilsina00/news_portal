@@ -1,11 +1,8 @@
-import asyncio
-import json
 from datetime import datetime, timedelta
 from decimal import Decimal
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-import aiohttp
 from sqlmodel import Session
 
 from app.modules.ai_features.crud.ai_features_crud import (
@@ -22,16 +19,8 @@ from app.modules.ai_features.crud.ai_features_crud import (
     crud_user_behavior,
 )
 from app.modules.ai_features.model.ai_features import (
-    AIModelMetrics,
-    AnomalyDetection,
-    ChurnPrediction,
-    ContentAnalysis,
-    ContentClassification,
     ContentRecommendation,
-    EngagementPrediction,
     PersonalizedFeed,
-    TranslationCache,
-    TrendAnalysis,
     UserBehavior,
 )
 from app.modules.ai_features.schema.ai_features import (
@@ -46,7 +35,6 @@ from app.modules.ai_features.schema.ai_features import (
     ChurnPredictionCreate,
     ChurnPredictionPublic,
     ContentAnalysisCreate,
-    ContentAnalysisPublic,
     ContentAnalysisRequest,
     ContentAnalysisResponse,
     ContentClassificationCreate,
@@ -62,15 +50,12 @@ from app.modules.ai_features.schema.ai_features import (
     RecommendationRequest,
     RecommendationResponse,
     TranslationCacheCreate,
-    TranslationCachePublic,
     TranslationRequest,
     TranslationResponse,
-    TrendAnalysisCreate,
     TrendAnalysisPublic,
     TrendAnalysisResponse,
     UserBehaviorCreate,
 )
-from app.shared.deps.deps import SessionDep
 
 
 class AIFeaturesService:

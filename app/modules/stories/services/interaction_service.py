@@ -5,7 +5,6 @@ from app.modules.stories.crud.crud_interaction import crud_interaction
 from app.modules.stories.model.interaction import InteractionType, StoryInteraction
 from app.modules.stories.schema.interaction import (
     StoryInteractionCreate,
-    StoryInteractionPublic,
     StoryInteractionUpdate,
 )
 from app.shared.deps.deps import SessionDep

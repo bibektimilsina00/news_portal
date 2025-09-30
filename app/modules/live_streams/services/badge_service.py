@@ -5,7 +5,6 @@ from sqlmodel import Session
 
 from app.modules.live_streams.crud.crud_badge import crud_stream_badge
 from app.modules.live_streams.model.badge import StreamBadge
-from app.modules.live_streams.schema.badge import StreamBadgeCreate
 
 
 class StreamBadgeService:

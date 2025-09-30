@@ -1,11 +1,10 @@
 import base64
-import uuid
 from io import BytesIO
-from typing import Any, Optional
+from typing import Any
 
 import pyotp
 import qrcode
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 
 from app.modules.auth.schema.auth import (
     TwoFactorResponse,

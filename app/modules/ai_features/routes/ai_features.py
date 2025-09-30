@@ -1,8 +1,7 @@
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException, Query
 
 from app.modules.ai_features.schema.ai_features import (
     AIModelHealthCheck,
@@ -26,7 +25,6 @@ from app.modules.ai_features.schema.ai_features import (
     TranslationRequest,
     TranslationResponse,
     TrendAnalysisResponse,
-    UserBehavior,
 )
 from app.modules.ai_features.services.ai_features_service import AIFeaturesService
 from app.shared.deps.deps import CurrentUser, SessionDep

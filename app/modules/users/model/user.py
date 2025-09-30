@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
-from sqlmodel import JSON, Column, Enum, Field, Relationship
+from sqlmodel import Field, Relationship
 
 # Import models that have relationships with User to avoid forward reference issues
 from app.modules.auth.model.auth import UserCredentials  # noqa: E402

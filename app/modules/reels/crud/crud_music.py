@@ -1,7 +1,7 @@
 import uuid
 from typing import List, Optional
 
-from sqlalchemy import and_, func, or_
+from sqlalchemy import or_
 from sqlmodel import Session, select
 
 from app.modules.reels.model.music import Music

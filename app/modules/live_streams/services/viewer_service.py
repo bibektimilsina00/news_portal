@@ -6,7 +6,6 @@ from sqlmodel import Session
 from app.modules.live_streams.crud.crud_viewer import crud_stream_viewer
 from app.modules.live_streams.model.viewer import StreamViewer
 from app.modules.live_streams.schema.viewer import (
-    StreamViewerCreate,
     StreamViewerUpdate,
 )
 

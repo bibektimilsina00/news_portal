@@ -2,13 +2,12 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 
-from sqlmodel import Enum, Field, Relationship, SQLModel
+from sqlmodel import Field, SQLModel
 
 from app.shared.enums import ParticipantRole, ParticipantStatus
 
 if TYPE_CHECKING:
-    from app.modules.messaging.model.conversation import Conversation
-    from app.modules.users.model.user import User
+    pass
 
 
 class ConversationParticipant(SQLModel, table=True):

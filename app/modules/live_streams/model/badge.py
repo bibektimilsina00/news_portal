@@ -2,13 +2,12 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, SQLModel
 
 from app.shared.enums import BadgeType
 
 if TYPE_CHECKING:
-    from app.modules.live_streams.model.stream import Stream
-    from app.modules.users.model.user import User
+    pass
 
 
 class StreamBadge(SQLModel, table=True):

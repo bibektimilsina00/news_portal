@@ -1,13 +1,12 @@
 import uuid
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from sqlalchemy import and_, func, or_
 from sqlmodel import Session, case, select
 
-from app.core.config import settings
 from app.modules.news.model.news import News, NewsPriority, NewsStatus
-from app.modules.news.schema.news import NewsCreate, NewsFilter, NewsUpdate
+from app.modules.news.schema.news import NewsCreate, NewsUpdate
 from app.shared.crud.base import CRUDBase
 
 

@@ -1,7 +1,6 @@
 import uuid
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
-from sqlalchemy import and_, desc
 from sqlmodel import Session, select
 
 from app.modules.stories.model.highlight import StoryHighlight

@@ -1,10 +1,8 @@
 from typing import List
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException, status
 
-from app.modules.messaging.crud.crud_conversation import crud_conversation
 from app.modules.messaging.schema.conversation import (
     ConversationCreate,
     ConversationPublic,

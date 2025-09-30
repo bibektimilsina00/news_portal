@@ -1,8 +1,6 @@
-from typing import List
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException, Query
 
 from app.modules.live_streams.schema.viewer import (
     StreamViewerList,

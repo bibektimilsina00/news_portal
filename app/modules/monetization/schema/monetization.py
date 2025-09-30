@@ -3,7 +3,7 @@ from decimal import Decimal
 from typing import List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, Field
 from sqlmodel import SQLModel
 
 
@@ -76,18 +76,17 @@ class PremiumFeatureBase(SQLModel):
 
 # Public schemas
 class SubscriptionTierPublic(SubscriptionTierBase):
-    model_config = ConfigDict(from_attributes=True)
-
     id: UUID
     creator_id: UUID
     is_active: bool
     created_at: datetime
     updated_at: datetime
 
+    class Config:
+        from_attributes = True
+
 
 class UserSubscriptionPublic(UserSubscriptionBase):
-    model_config = ConfigDict(from_attributes=True)
-
     id: UUID
     user_id: UUID
     current_period_start: datetime
@@ -100,8 +99,6 @@ class UserSubscriptionPublic(UserSubscriptionBase):
 
 
 class PaymentPublic(PaymentBase):
-    model_config = ConfigDict(from_attributes=True)
-
     id: UUID
     user_id: UUID
     subscription_id: Optional[UUID] = None
@@ -112,8 +109,6 @@ class PaymentPublic(PaymentBase):
 
 
 class AdCampaignPublic(AdCampaignBase):
-    model_config = ConfigDict(from_attributes=True)
-
     id: UUID
     advertiser_id: UUID
     spent: Decimal
@@ -123,8 +118,6 @@ class AdCampaignPublic(AdCampaignBase):
 
 
 class CreatorEarningPublic(CreatorEarningBase):
-    model_config = ConfigDict(from_attributes=True)
-
     id: UUID
     creator_id: UUID
     status: str
@@ -136,8 +129,6 @@ class CreatorEarningPublic(CreatorEarningBase):
 
 
 class CreatorPayoutPublic(CreatorPayoutBase):
-    model_config = ConfigDict(from_attributes=True)
-
     id: UUID
     creator_id: UUID
     status: str
@@ -150,8 +141,6 @@ class CreatorPayoutPublic(CreatorPayoutBase):
 
 
 class SponsoredContentPublic(SponsoredContentBase):
-    model_config = ConfigDict(from_attributes=True)
-
     id: UUID
     creator_id: UUID
     status: str
@@ -160,8 +149,6 @@ class SponsoredContentPublic(SponsoredContentBase):
 
 
 class PremiumFeaturePublic(PremiumFeatureBase):
-    model_config = ConfigDict(from_attributes=True)
-
     id: UUID
     is_active: bool
     created_at: datetime
@@ -169,8 +156,6 @@ class PremiumFeaturePublic(PremiumFeatureBase):
 
 
 class PremiumFeaturePurchasePublic(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
     id: UUID
     user_id: UUID
     feature_id: UUID

@@ -6,7 +6,6 @@ from app.modules.search.crud.crud_history import crud_search_history
 from app.modules.search.model.history import SearchHistory
 from app.modules.search.schema.history import (
     SearchHistoryCreate,
-    SearchHistoryPublic,
     SearchHistoryStats,
     SearchHistoryUpdate,
 )

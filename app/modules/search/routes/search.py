@@ -1,8 +1,7 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlmodel import Session
+from fastapi import APIRouter, Depends, Query
 
 from app.modules.search.schema.search import (
     SearchRequest,
@@ -11,7 +10,7 @@ from app.modules.search.schema.search import (
     TrendingTopicsResponse,
 )
 from app.modules.search.services.search_service import search_service
-from app.shared.deps.deps import CurrentUser, SessionDep, get_current_active_user
+from app.shared.deps.deps import SessionDep, get_current_active_user
 
 router = APIRouter()
 

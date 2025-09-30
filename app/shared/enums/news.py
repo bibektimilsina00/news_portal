@@ -17,6 +17,7 @@ class NewsPriority(str, enum.Enum):
 
 class FactCheckStatus(str, enum.Enum):
     pending = "pending"
+    under_review = "under_review"
     verified = "verified"
     false = "false"
     misleading = "misleading"

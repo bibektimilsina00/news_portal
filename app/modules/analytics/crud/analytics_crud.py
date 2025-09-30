@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from sqlmodel import Session, desc, func, select
+from sqlmodel import Session, desc, select
 
 from app.modules.analytics.model.analytics import (
     ContentAnalytics,

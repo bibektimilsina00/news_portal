@@ -1,7 +1,6 @@
 import uuid
 from typing import List, Optional
 
-from sqlalchemy.orm import Session
 
 from app.modules.reels.crud.crud_effect import crud_effect
 from app.modules.reels.model.effect import Effect, EffectCategory

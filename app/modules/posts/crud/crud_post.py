@@ -1,13 +1,12 @@
 import uuid
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
-from sqlalchemy import and_, func, or_
-from sqlmodel import Session, case, select
+from sqlalchemy import and_, asc, func, or_
+from sqlmodel import Session, select
 
-from app.core.config import settings
 from app.modules.posts.model.post import Post, PostStatus, PostType, PostVisibility
-from app.modules.posts.schema.post import PostCreate, PostFilter, PostUpdate
+from app.modules.posts.schema.post import PostCreate, PostUpdate
 from app.shared.crud.base import CRUDBase
 
 
@@ -229,11 +228,11 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
             .where(
                 and_(
                     Post.user_id == user_id,
-                    Post.status == PostStatus.SCHEDULED,
+                    Post.status == PostStatus.scheduled,
                     Post.scheduled_at > datetime.utcnow(),
                 )
             )
-            .order_by(Post.scheduled_at.asc())
+            .order_by(asc(Post.scheduled_at))
         )
 
         return list(session.exec(statement))
@@ -263,7 +262,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
         if not post:
             return None
 
-        post.status = PostStatus.SCHEDULED
+        post.status = PostStatus.scheduled
         post.scheduled_at = scheduled_at
 
         session.add(post)
@@ -294,7 +293,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
         if not post:
             return None
 
-        post.status = PostStatus.ARCHIVED
+        post.status = PostStatus.archived
 
         session.add(post)
         session.commit()
@@ -332,7 +331,7 @@ class CRUDPost(CRUDBase[Post, PostCreate, PostUpdate]):
         scheduled_count = session.exec(
             select(func.count(Post.id))
             .select_from(base_query)
-            .where(Post.status == PostStatus.SCHEDULED)
+            .where(Post.status == PostStatus.scheduled)
         ).one()
 
         # With media

@@ -9,40 +9,40 @@ MODULES_DIR="modules"
 create_module() {
     local module_name=$1
     local module_dir="$MODULES_DIR/$module_name"
-    
+
     echo "📁 Creating $module_name module..."
-    
+
     # Create main module directory
     mkdir -p $module_dir
-    
+
     # Create CRUD directory and files
     mkdir -p "$module_dir/crud"
     touch "$module_dir/crud/__init__.py"
     touch "$module_dir/crud/crud_${module_name}.py"
-    
+
     # Create Model directory and files
     mkdir -p "$module_dir/model"
     touch "$module_dir/model/__init__.py"
     touch "$module_dir/model/${module_name}.py"
-    
+
     # Create Routes directory and files
     mkdir -p "$module_dir/routes"
     touch "$module_dir/routes/__init__.py"
     touch "$module_dir/routes/${module_name}.py"
-    
+
     # Create Schema directory and files
     mkdir -p "$module_dir/schema"
     touch "$module_dir/schema/__init__.py"
     touch "$module_dir/schema/${module_name}.py"
-    
+
     # Create Services directory and files
     mkdir -p "$module_dir/services"
     touch "$module_dir/services/__init__.py"
     touch "$module_dir/services/${module_name}_service.py"
-    
+
     # Create main module __init__.py
     touch "$module_dir/__init__.py"
-    
+
     echo "✅ $module_name module created!"
 }
 

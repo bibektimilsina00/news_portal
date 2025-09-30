@@ -1,7 +1,6 @@
 import uuid
 from typing import List, Optional
 
-from sqlalchemy import and_
 from sqlmodel import Session, select
 
 from app.modules.reels.model.effect import Effect, EffectCategory

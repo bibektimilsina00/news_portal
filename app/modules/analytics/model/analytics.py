@@ -1,9 +1,9 @@
 import uuid
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Optional
 
-from sqlalchemy import JSON, Column, DateTime, Float, ForeignKey, Integer, String
-from sqlmodel import Field, Relationship, SQLModel
+from sqlalchemy import JSON, Column
+from sqlmodel import Field, SQLModel
 
 
 class UserAnalytics(SQLModel, table=True):

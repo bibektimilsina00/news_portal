@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from sqlmodel import Session, select
@@ -61,7 +61,6 @@ class CRUDConversation(CRUDBase[Conversation, ConversationCreate, ConversationUp
         message_at: datetime,
     ) -> Optional[Conversation]:
         """Update conversation's last message info"""
-        from datetime import datetime
 
         conversation = self.get(session, conversation_id)
         if conversation:

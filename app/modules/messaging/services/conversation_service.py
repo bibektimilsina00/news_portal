@@ -8,7 +8,6 @@ from app.modules.messaging.crud.crud_participant import crud_participant
 from app.modules.messaging.model.conversation import Conversation
 from app.modules.messaging.schema.conversation import (
     ConversationCreate,
-    ConversationPublic,
     ConversationUpdate,
 )
 

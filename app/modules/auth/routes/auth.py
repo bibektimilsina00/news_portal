@@ -1,18 +1,15 @@
 import uuid
 from datetime import datetime, timedelta
-from typing import Any, List, Optional
+from typing import Any, Optional
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Response
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy import and_
-from sqlmodel import Session
 
 from app.core.config import settings
-from app.core.security import get_password_hash
 from app.modules.auth.crud.crud_auth import auth
 from app.modules.auth.crud.crud_token import token
-from app.modules.auth.model.auth import SecurityLog, UserCredentials
-from app.modules.auth.model.token import Token, TokenType
+from app.modules.auth.model.token import TokenType
 from app.modules.auth.schema.auth import (
     APITokenCreate,
     APITokenList,
@@ -20,26 +17,18 @@ from app.modules.auth.schema.auth import (
     DeviceInfo,
     DeviceList,
     EmailVerificationConfirm,
-    EmailVerificationRequest,
     EmailVerificationResponse,
-    LoginDevice,
     PasswordResetConfirm,
     PasswordResetRequest,
     PasswordResetResponse,
     RefreshTokenRequest,
     RefreshTokenResponse,
-    SecurityLog,
     SecurityLogsResponse,
     SecuritySettings,
 )
-from app.modules.auth.schema.auth import Token as TokenSchema
 from app.modules.auth.schema.auth import (
-    TokenPayload,
     TokenRevokeRequest,
     TokenRevokeResponse,
-    TwoFactorResponse,
-    TwoFactorSetup,
-    TwoFactorVerify,
     UserLogin,
     UserLoginResponse,
 )
@@ -47,18 +36,14 @@ from app.modules.auth.services.auth_service import auth_service
 from app.modules.users.model.user import User
 from app.modules.users.services.user_service import user_service
 from app.shared.deps.deps import (
-    CurrentUser,
     SessionDep,
     get_current_active_user,
     get_current_user_optional,
 )
 from app.shared.exceptions.exceptions import (
     AccountDisabledException,
-    AccountNotVerifiedException,
     InvalidCredentialsException,
-    TokenExpiredException,
     TokenInvalidException,
-    UnauthorizedException,
     UserNotFoundException,
 )
 from app.shared.schema.message import Message

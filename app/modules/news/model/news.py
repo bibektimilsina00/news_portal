@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
 from sqlalchemy import JSON, Column
-from sqlmodel import Enum, Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 from app.modules.news.model.category import Category
 from app.modules.news.model.factcheck import FactCheck
@@ -11,7 +11,6 @@ from app.modules.news.model.source import NewsSource
 from app.shared.enums import NewsPriority, NewsStatus
 
 if TYPE_CHECKING:
-    from app.modules.social.model.comment import Comment
     from app.modules.users.model.user import User
 
 
@@ -168,11 +167,11 @@ class News(SQLModel, table=True):
 
     def is_published(self) -> bool:
         """Check if news is published"""
-        return self.status == NewsStatus.PUBLISHED and self.published_at is not None
+        return self.status == NewsStatus.published and self.published_at is not None
 
     def is_scheduled(self) -> bool:
         """Check if news is scheduled"""
-        return self.status == NewsStatus.SCHEDULED and self.scheduled_at is not None
+        return self.status == NewsStatus.scheduled and self.scheduled_at is not None
 
     def is_breaking(self) -> bool:
         """Check if news is breaking news"""

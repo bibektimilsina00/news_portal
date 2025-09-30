@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
-from sqlmodel import JSON, Column, Enum, Field, Relationship, SQLModel
+from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 from app.shared.enums import TokenStatus, TokenType
 
@@ -71,7 +71,7 @@ class Token(SQLModel, table=True):
 
     def deactivate(self) -> None:
         """Deactivate token"""
-        self.status = TokenStatus.REVOKED
+        self.status = TokenStatus.revoked
         self.deactivated_at = datetime.utcnow()
 
     def reactivate(self) -> None:

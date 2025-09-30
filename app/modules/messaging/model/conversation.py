@@ -1,14 +1,14 @@
 import uuid
 from datetime import datetime
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import JSON, Column
-from sqlmodel import Enum, Field, Relationship, SQLModel
+from sqlmodel import Field, SQLModel
 
 from app.shared.enums import ConversationStatus, ConversationType
 
 if TYPE_CHECKING:
-    from app.modules.users.model.user import User
+    pass
 
 
 class Conversation(SQLModel, table=True):

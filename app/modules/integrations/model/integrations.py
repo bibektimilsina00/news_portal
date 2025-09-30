@@ -4,10 +4,7 @@ from decimal import Decimal
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from sqlalchemy import String
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
-
-from app.shared.enums import IntegrationStatus, IntegrationType, WebhookEvent
 
 
 # Core Integration Models
@@ -32,7 +29,6 @@ class IntegrationBase(SQLModel):
 
 
 class Integration(IntegrationBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
@@ -69,7 +65,6 @@ class WebhookBase(SQLModel):
 
 
 class Webhook(WebhookBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     integration_id: UUID = Field(foreign_key="integration.id")
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -105,7 +100,6 @@ class APIKeyBase(SQLModel):
 
 
 class APIKey(APIKeyBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     integration_id: UUID = Field(foreign_key="integration.id")
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -142,7 +136,6 @@ class SocialMediaPostBase(SQLModel):
 
 
 class SocialMediaPost(SocialMediaPostBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     integration_id: UUID = Field(foreign_key="integration.id")
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -176,7 +169,6 @@ class NewsSourceBase(SQLModel):
 
 
 class IntegrationNewsSource(NewsSourceBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     integration_id: UUID = Field(foreign_key="integration.id")
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -214,7 +206,6 @@ class ExternalNewsArticleBase(SQLModel):
 
 
 class ExternalNewsArticle(ExternalNewsArticleBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     source_id: UUID = Field(foreign_key="integrationnewssource.id")
     integration_id: UUID = Field(foreign_key="integration.id")
@@ -248,7 +239,6 @@ class WebhookDeliveryBase(SQLModel):
 
 
 class WebhookDelivery(WebhookDeliveryBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     webhook_id: UUID = Field(foreign_key="webhook.id")
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -277,7 +267,6 @@ class APIRequestLogBase(SQLModel):
 
 
 class APIRequestLog(APIRequestLogBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     api_key_id: UUID = Field(foreign_key="apikey.id")
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -306,7 +295,6 @@ class IntegrationSyncLogBase(SQLModel):
 
 
 class IntegrationSyncLog(IntegrationSyncLogBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     integration_id: UUID = Field(foreign_key="integration.id")
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -337,7 +325,6 @@ class WeatherDataBase(SQLModel):
 
 
 class WeatherData(WeatherDataBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     integration_id: UUID = Field(foreign_key="integration.id")
     fetched_at: datetime = Field(default_factory=datetime.utcnow)
@@ -369,7 +356,6 @@ class StockDataBase(SQLModel):
 
 
 class StockData(StockDataBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     integration_id: UUID = Field(foreign_key="integration.id")
     fetched_at: datetime = Field(default_factory=datetime.utcnow)
@@ -408,7 +394,6 @@ class SportsDataBase(SQLModel):
 
 
 class SportsData(SportsDataBase, table=True):
-
     id: UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     integration_id: UUID = Field(foreign_key="integration.id")
     fetched_at: datetime = Field(default_factory=datetime.utcnow)

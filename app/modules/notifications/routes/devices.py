@@ -1,15 +1,13 @@
 from typing import List
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException
 
 from app.modules.notifications.crud.crud_device import crud_device
 from app.modules.notifications.schema.device import (
     DeviceCreate,
     DevicePublic,
     DeviceUpdate,
-    DeviceWithUser,
 )
 from app.shared.deps.deps import CurrentUser, SessionDep
 

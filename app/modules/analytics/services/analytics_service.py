@@ -15,19 +15,13 @@ from app.modules.analytics.model.analytics import (
 )
 from app.modules.analytics.schema.analytics import (
     AnalyticsSummary,
-    ContentAnalyticsCreate,
     ContentAnalyticsList,
     ContentAnalyticsPublic,
-    ContentAnalyticsUpdate,
     DateRangeFilter,
-    PlatformAnalyticsCreate,
     PlatformAnalyticsList,
     PlatformAnalyticsPublic,
-    PlatformAnalyticsUpdate,
-    UserAnalyticsCreate,
     UserAnalyticsList,
     UserAnalyticsPublic,
-    UserAnalyticsUpdate,
 )
 
 

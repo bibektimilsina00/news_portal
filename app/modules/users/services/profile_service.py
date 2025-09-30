@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime, timedelta
 from typing import List, Optional
 
 from app.modules.users.crud.crud_profile import close_friend, profile, user_block

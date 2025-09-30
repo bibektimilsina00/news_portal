@@ -1,14 +1,14 @@
 import uuid
 from datetime import datetime
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import JSON, Column
-from sqlmodel import Enum, Field, Relationship, SQLModel
+from sqlmodel import Field, SQLModel
 
 from app.shared.enums import EffectCategory, EffectType
 
 if TYPE_CHECKING:
-    from app.modules.reels.model.reel import Reel
+    pass
 
 
 class Effect(SQLModel, table=True):

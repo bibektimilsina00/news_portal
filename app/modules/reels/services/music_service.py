@@ -1,7 +1,6 @@
 import uuid
 from typing import List, Optional
 
-from sqlalchemy.orm import Session
 
 from app.modules.reels.crud.crud_music import crud_music
 from app.modules.reels.model.music import Music

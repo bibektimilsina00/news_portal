@@ -1,16 +1,14 @@
-from typing import Any, Optional
+from typing import Any
 
 from authlib.integrations.starlette_client import OAuth, OAuthError
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
 from starlette.config import Config
 
 from app.core.config import settings
 from app.modules.auth.schema.auth import (
-    OAuth2Callback,
     OAuth2Login,
     OAuth2Provider,
-    UserLoginResponse,
 )
 from app.modules.auth.services.oauth_service import oauth_service
 from app.shared.deps.deps import ActiveCurrentUser, SessionDep
@@ -103,7 +101,7 @@ async def oauth_login(provider: OAuth2Provider, request: Request) -> Any:
         return await oauth.create_client(provider).authorize_redirect(
             request, redirect_uri
         )
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to initiate {provider} OAuth flow",
@@ -155,10 +153,10 @@ async def oauth_callback(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"OAuth authentication failed: {error.error}",
         )
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"OAuth callback processing failed",
+            detail="OAuth callback processing failed",
         )
 
 
@@ -191,10 +189,10 @@ async def oauth_token_login(
 
         return login_response
 
-    except Exception as e:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"OAuth token validation failed",
+            detail="OAuth token validation failed",
         )
 
 

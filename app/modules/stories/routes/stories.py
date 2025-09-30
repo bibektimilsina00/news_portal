@@ -1,7 +1,7 @@
 import uuid
 from typing import Any, List
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, status
 
 from app.modules.stories.schema.story import StoryCreate, StoryPublic, StoryUpdate
 from app.modules.stories.services.story_service import story_service

@@ -14,10 +14,7 @@ from app.modules.users.model.verification import (
 )
 from app.modules.users.schema.verification import (
     VerificationAppealRequest,
-    VerificationBadgeResponse,
     VerificationRequestCreate,
-    VerificationRequestResponse,
-    VerificationRequestUpdate,
     VerificationReviewRequest,
 )
 from app.shared.deps.deps import SessionDep

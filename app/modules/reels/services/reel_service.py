@@ -1,15 +1,12 @@
 import uuid
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
-from sqlalchemy.orm import Session
 
 from app.modules.reels.crud.crud_reel import crud_reel
-from app.modules.reels.model.reel import Reel, ReelStatus, ReelType, ReelVisibility
+from app.modules.reels.model.reel import Reel, ReelStatus, ReelType
 from app.modules.reels.schema.reel import (
     ReelCreate,
     ReelDuetCreate,
-    ReelPublic,
     ReelStitchCreate,
     ReelUpdate,
 )

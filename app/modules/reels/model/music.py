@@ -2,17 +2,14 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
-from sqlalchemy import JSON, Column
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from app.modules.reels.model.reel import Reel
-    from app.modules.users.model.user import User
 
 
 class Music(SQLModel, table=True):
     """Music tracks for reels"""
-
 
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)

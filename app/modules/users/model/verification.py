@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
-from sqlmodel import JSON, Column, Enum, Field, Relationship, SQLModel
+from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 from app.shared.enums import VerificationStatus, VerificationType
 
@@ -81,7 +81,7 @@ class VerificationRequest(SQLModel, table=True):
 
     def approve(self, reviewer_id: uuid.UUID, notes: Optional[str] = None) -> None:
         """Approve the verification request"""
-        self.status = VerificationStatus.APPROVED
+        self.status = VerificationStatus.approved
         self.reviewed_at = datetime.utcnow()
         self.reviewed_by = reviewer_id
         self.review_notes = notes
@@ -96,7 +96,7 @@ class VerificationRequest(SQLModel, table=True):
         self, reviewer_id: uuid.UUID, reason: str, notes: Optional[str] = None
     ) -> None:
         """Reject the verification request"""
-        self.status = VerificationStatus.REJECTED
+        self.status = VerificationStatus.rejected
         self.reviewed_at = datetime.utcnow()
         self.reviewed_by = reviewer_id
         self.rejection_reason = reason
@@ -105,7 +105,7 @@ class VerificationRequest(SQLModel, table=True):
 
     def mark_under_review(self) -> None:
         """Mark request as under review"""
-        self.status = VerificationStatus.UNDER_REVIEW
+        self.status = VerificationStatus.under_review
         self.updated_at = datetime.utcnow()
 
 

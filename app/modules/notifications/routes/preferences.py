@@ -1,5 +1,4 @@
 from fastapi import APIRouter, HTTPException
-from sqlmodel import Session
 
 from app.modules.notifications.crud.crud_preference import crud_notification_preference
 from app.modules.notifications.schema.preference import (

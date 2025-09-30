@@ -1,7 +1,6 @@
 import uuid
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 
-from sqlalchemy import and_
 from sqlmodel import Session, select
 
 from app.modules.stories.model.interaction import InteractionType, StoryInteraction

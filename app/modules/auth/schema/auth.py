@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
-from sqlmodel import SQLModel
 
 from app.shared.enums import OAuth2Provider
 

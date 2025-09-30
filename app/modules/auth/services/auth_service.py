@@ -3,7 +3,7 @@ Authentication service for handling user authentication logic
 """
 
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from sqlmodel import Session, desc, or_, select

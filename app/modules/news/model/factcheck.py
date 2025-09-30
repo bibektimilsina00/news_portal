@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
 from sqlalchemy import JSON, TEXT, Column
-from sqlmodel import Enum, Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship, SQLModel
 
 from app.shared.enums import FactCheckPriority, FactCheckStatus
 
@@ -128,7 +128,7 @@ class FactCheck(SQLModel, table=True):
         """Mark fact check as started"""
         self.started_at = datetime.utcnow()
         if self.status == FactCheckStatus.pending:
-            self.status = FactCheckStatus.UNDER_REVIEW
+            self.status = FactCheckStatus.under_review
 
     def mark_as_completed(self, status: FactCheckStatus) -> None:
         """Mark fact check as completed"""

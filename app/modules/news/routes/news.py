@@ -11,7 +11,6 @@ from app.modules.news.schema.news import (
     NewsCreate,
     NewsFilter,
     NewsListResponse,
-    NewsPublishRequest,
     NewsPublishResponse,
     NewsResponse,
     NewsScheduleRequest,

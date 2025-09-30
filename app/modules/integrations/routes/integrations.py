@@ -1,16 +1,13 @@
-from typing import Any, Dict, List, Optional
+from typing import Dict, List, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, status
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException, Query
 
 from app.modules.integrations.schema.integrations import (
-    APIKeyCreate,
     APIKeyGenerateRequest,
     APIKeyGenerateResponse,
     APIKeyPublic,
     APIKeyStatsResponse,
-    APIKeyUpdate,
     APIRequestLogPublic,
     ExternalNewsArticlePublic,
     IntegrationCreate,

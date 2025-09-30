@@ -1,16 +1,13 @@
 from typing import List
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException, Query
 
-from app.modules.notifications.model.notification import NotificationStatus
 from app.modules.notifications.schema.notification import (
-    NotificationPublic,
     NotificationWithSender,
 )
 from app.modules.notifications.services.notification_service import notification_service
-from app.shared.deps.deps import CurrentUser, SessionDep, get_current_active_user
+from app.shared.deps.deps import CurrentUser, SessionDep
 
 router = APIRouter()
 

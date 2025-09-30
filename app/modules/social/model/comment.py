@@ -2,13 +2,9 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
-from sqlalchemy import and_
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
-    from app.modules.news.model.news import News
-    from app.modules.posts.model.post import Post
-    from app.modules.reels.model.reel import Reel
     from app.modules.users.model.user import User
 
 

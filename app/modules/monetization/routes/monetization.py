@@ -1,13 +1,11 @@
 from typing import List, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, Query
 
 from app.modules.monetization.crud import (
     crud_ad_campaign,
     crud_creator_earning,
-    crud_creator_payout,
     crud_payment,
     crud_premium_feature,
     crud_premium_feature_purchase,
@@ -42,7 +40,6 @@ from app.modules.monetization.schema.monetization import (
     RevenueAnalytics,
     SponsoredContentCreate,
     SponsoredContentPublic,
-    SponsoredContentUpdate,
     SubscriptionCheckout,
     SubscriptionTierCreate,
     SubscriptionTierPublic,
@@ -52,12 +49,11 @@ from app.modules.monetization.schema.monetization import (
 from app.modules.monetization.services import (
     AdService,
     CreatorService,
-    PaymentService,
     PremiumFeatureService,
     SponsoredContentService,
     SubscriptionService,
 )
-from app.shared.deps.deps import CurrentUser, SessionDep, get_current_active_superuser
+from app.shared.deps.deps import CurrentUser, SessionDep
 
 router = APIRouter()
 

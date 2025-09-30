@@ -2,7 +2,6 @@ from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
 
-from sqlalchemy import and_
 from sqlmodel import Session, select
 
 from app.modules.notifications.model.notification import (

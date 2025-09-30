@@ -1,12 +1,10 @@
 import uuid
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
-from sqlalchemy.orm import Session
 
 from app.modules.stories.crud.crud_story import crud_story
-from app.modules.stories.model.story import Story, StoryStatus
-from app.modules.stories.schema.story import StoryCreate, StoryPublic, StoryUpdate
+from app.modules.stories.model.story import Story
+from app.modules.stories.schema.story import StoryCreate, StoryUpdate
 from app.shared.deps.deps import SessionDep
 
 

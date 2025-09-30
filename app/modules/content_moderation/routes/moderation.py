@@ -1,8 +1,7 @@
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlmodel import Session
+from fastapi import APIRouter, Depends, Query
 
 from app.modules.content_moderation.schema.moderation import (
     AIModerationRequest,
@@ -18,7 +17,6 @@ from app.modules.content_moderation.schema.moderation import (
     ContentReport,
     ContentReportCreate,
     ContentReportPublic,
-    ContentReportUpdate,
     ModerationAction,
     ModerationActionCreate,
     ModerationActionPublic,
@@ -43,7 +41,6 @@ from app.modules.content_moderation.services.moderation_service import (
     ContentModerationService,
 )
 from app.shared.deps.deps import CurrentUser, SessionDep, get_current_active_superuser
-from app.shared.schema.message import Message
 
 router = APIRouter()
 

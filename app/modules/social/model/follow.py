@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -10,7 +10,6 @@ if TYPE_CHECKING:
 
 class Follow(SQLModel, table=True):
     """Follow relationship between users"""
-
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
     follower_id: uuid.UUID = Field(foreign_key="user.id", index=True)

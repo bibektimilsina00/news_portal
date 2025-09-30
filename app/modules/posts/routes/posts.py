@@ -1,7 +1,6 @@
 import uuid
-from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query
 
 from app.modules.posts.schema.post import (
     PostCreate,
@@ -94,7 +93,7 @@ def get_post(
     try:
         post = post_service.get_post(session=session, post_id=post_id)
         return PostResponse.model_validate(post)
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=404, detail="Post not found")
 
 

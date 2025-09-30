@@ -1,7 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException, Query
 
 from app.modules.search.model.history import SearchHistory
 from app.modules.search.schema.history import (

@@ -8,12 +8,9 @@ from app.modules.messaging.crud.crud_participant import crud_participant
 from app.modules.messaging.model.participant import (
     ConversationParticipant,
     ParticipantRole,
-    ParticipantStatus,
 )
 from app.modules.messaging.schema.participant import (
     ConversationParticipantCreate,
-    ConversationParticipantPublic,
-    ConversationParticipantUpdate,
 )
 
 

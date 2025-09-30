@@ -6,10 +6,6 @@ from uuid import UUID
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
-    from app.modules.news.model.news import News
-    from app.modules.posts.model.post import Post
-    from app.modules.reels.model.reel import Reel
-    from app.modules.stories.model.story import Story
     from app.modules.users.model.user import User
 
 

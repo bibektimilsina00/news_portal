@@ -6,7 +6,7 @@ from sqlmodel import Session, func, or_, select
 
 from app.core.security import get_password_hash, verify_password
 from app.modules.users.model.user import User
-from app.modules.users.schema.user import AccountType, Gender, UserCreate, UserUpdate
+from app.modules.users.schema.user import AccountType, UserCreate, UserUpdate
 from app.shared.crud.base import CRUDBase
 
 

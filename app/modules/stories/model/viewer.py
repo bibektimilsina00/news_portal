@@ -12,7 +12,6 @@ if TYPE_CHECKING:
 class StoryViewer(SQLModel, table=True):
     """Tracks who has viewed a story"""
 
-
     # Primary Key
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True, index=True)
 

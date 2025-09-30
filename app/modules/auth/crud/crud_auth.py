@@ -4,16 +4,11 @@ from typing import Any, Dict, Optional
 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from sqlmodel import Session, func, select
+from sqlmodel import Session
 
 from app.core.config import settings
 from app.core.security import ALGORITHM
 from app.modules.auth.model.auth import UserCredentials
-from app.modules.auth.schema.auth import (
-    PasswordResetConfirm,
-    PasswordResetRequest,
-    UserLogin,
-)
 from app.modules.auth.schema.token import TokenCreate, TokenUpdate
 from app.shared.crud.base import CRUDBase
 

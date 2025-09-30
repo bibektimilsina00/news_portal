@@ -2,12 +2,11 @@ import uuid
 from typing import Any, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlmodel import col, delete, func, select
+from sqlmodel import select
 
 from app.core.config import settings
-from app.core.security import get_password_hash, verify_password
-from app.modules.users.model.user import AccountType, Gender, User
-from app.modules.users.schema.auth import Token
+from app.core.security import verify_password
+from app.modules.users.model.user import AccountType, User
 from app.modules.users.schema.user import (
     UpdatePassword,
     UserCreate,
@@ -20,7 +19,6 @@ from app.modules.users.schema.user import (
     UserUpdate,
     UserUpdateMe,
     VerificationRequest,
-    VerificationResponse,
 )
 from app.modules.users.services.user_service import user_service
 from app.shared.deps.deps import CurrentUser, SessionDep, get_current_active_superuser

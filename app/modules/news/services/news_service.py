@@ -9,14 +9,11 @@ from app.modules.news.model.news import News, NewsPriority, NewsStatus
 from app.modules.news.schema.news import (
     NewsCreate,
     NewsFilter,
-    NewsListResponse,
-    NewsResponse,
     NewsUpdate,
 )
 from app.shared.exceptions.exceptions import (
     PostNotFoundException,
     UnauthorizedException,
-    UserNotFoundException,
 )
 
 
@@ -103,11 +100,11 @@ class NewsService:
         # Only show published news to non-owners
         if current_user_id:
             query = query.where(
-                (News.status == NewsStatus.PUBLISHED)
+                (News.status == NewsStatus.published)
                 | (News.user_id == current_user_id)
             )
         else:
-            query = query.where(News.status == NewsStatus.PUBLISHED)
+            query = query.where(News.status == NewsStatus.published)
 
         # Apply sorting
         sort_field = getattr(News, news_filter.sort_by if news_filter else "created_at")
@@ -202,7 +199,7 @@ class NewsService:
             raise Exception("Only draft articles can be published")
 
         update_data = NewsUpdate(
-            status=NewsStatus.PUBLISHED, published_at=datetime.utcnow()
+            status=NewsStatus.published, published_at=datetime.utcnow()
         )
         return news.update(session=session, db_obj=news_obj, obj_in=update_data)
 
@@ -224,7 +221,7 @@ class NewsService:
         if scheduled_at <= datetime.utcnow():
             raise Exception("Scheduled time must be in the future")
 
-        update_data = NewsUpdate(status=NewsStatus.SCHEDULED, scheduled_at=scheduled_at)
+        update_data = NewsUpdate(status=NewsStatus.scheduled, scheduled_at=scheduled_at)
         return news.update(session=session, db_obj=news_obj, obj_in=update_data)
 
     @staticmethod
@@ -239,7 +236,7 @@ class NewsService:
         if news_obj.user_id != current_user_id:
             raise UnauthorizedException("Not authorized to modify this news article")
 
-        update_data = NewsUpdate(is_breaking_news=True, priority=NewsPriority.BREAKING)
+        update_data = NewsUpdate(is_breaking_news=True, priority=NewsPriority.breaking)
         return news.update(session=session, db_obj=news_obj, obj_in=update_data)
 
     @staticmethod
@@ -268,7 +265,7 @@ class NewsService:
 
         query = (
             select(News)
-            .where(News.status == NewsStatus.PUBLISHED)
+            .where(News.status == NewsStatus.published)
             .where(News.created_at >= cutoff_time)
             .order_by(News.view_count.desc())
             .limit(limit)
@@ -298,9 +295,9 @@ class NewsService:
 
         stats = {
             "total_news": len(all_news),
-            "published": len([n for n in all_news if n.status == NewsStatus.PUBLISHED]),
+            "published": len([n for n in all_news if n.status == NewsStatus.published]),
             "drafts": len([n for n in all_news if n.status == NewsStatus.draft]),
-            "scheduled": len([n for n in all_news if n.status == NewsStatus.SCHEDULED]),
+            "scheduled": len([n for n in all_news if n.status == NewsStatus.scheduled]),
             "breaking_news": len([n for n in all_news if n.is_breaking_news]),
             "featured": len([n for n in all_news if n.is_featured]),
             "total_views": sum(n.view_count for n in all_news),

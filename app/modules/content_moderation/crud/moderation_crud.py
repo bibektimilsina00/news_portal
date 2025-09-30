@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 from uuid import UUID
 
-from sqlmodel import Session, and_, delete, func, or_, select, update
+from sqlmodel import Session, and_, func, or_, select, update
 
 from app.modules.content_moderation.model.moderation import (
     BanAppeal,

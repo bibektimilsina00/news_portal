@@ -1,9 +1,9 @@
 import uuid
-from typing import Any, Dict, List, Optional
+from typing import Any, List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, status
 
-from app.modules.stories.schema.viewer import StoryViewerPublic, StoryViewerUpdate
+from app.modules.stories.schema.viewer import StoryViewerPublic
 from app.modules.stories.services.viewer_service import story_viewer_service
 from app.shared.deps.deps import CurrentUser, SessionDep
 

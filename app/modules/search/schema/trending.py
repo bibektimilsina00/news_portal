@@ -1,11 +1,8 @@
-import uuid
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 from sqlmodel import SQLModel
-
-from app.modules.search.model.trending import TrendingTopic
 
 
 # Base schemas

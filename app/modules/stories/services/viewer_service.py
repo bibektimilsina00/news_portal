@@ -4,8 +4,6 @@ from typing import Any, Dict, List, Optional
 from app.modules.stories.crud.crud_viewer import crud_viewer
 from app.modules.stories.model.viewer import StoryViewer
 from app.modules.stories.schema.viewer import (
-    StoryViewerCreate,
-    StoryViewerPublic,
     StoryViewerUpdate,
 )
 from app.shared.deps.deps import SessionDep

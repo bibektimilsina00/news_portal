@@ -18,7 +18,6 @@ from app.modules.search.schema.search import (
     SearchQueryCreate,
     SearchRequest,
     SearchResponse,
-    TrendingTopicCreate,
     TrendingTopicPublic,
     TrendingTopicsResponse,
 )

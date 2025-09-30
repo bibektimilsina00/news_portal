@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import Optional
 from uuid import UUID
 
 from sqlmodel import Session
@@ -10,7 +10,6 @@ from app.modules.messaging.crud.crud_participant import crud_participant
 from app.modules.messaging.model.message import Message, MessageStatus
 from app.modules.messaging.schema.message import (
     MessageCreate,
-    MessagePublic,
     MessageUpdate,
 )
 

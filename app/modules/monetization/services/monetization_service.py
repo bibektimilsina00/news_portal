@@ -23,7 +23,6 @@ from app.modules.monetization.model.monetization import (
     CreatorEarning,
     CreatorPayout,
     Payment,
-    PremiumFeature,
     PremiumFeaturePurchase,
     SponsoredContent,
     SubscriptionTier,
@@ -33,16 +32,10 @@ from app.modules.monetization.schema.monetization import (
     AdCampaignCreate,
     AdImpressionCreate,
     CreatorDashboard,
-    CreatorEarningCreate,
-    CreatorPayoutCreate,
-    PaymentCreate,
-    PremiumFeatureCreate,
-    PremiumFeaturePurchaseCreate,
     RevenueAnalytics,
     SponsoredContentCreate,
     SubscriptionCheckout,
     SubscriptionTierCreate,
-    UserSubscriptionCreate,
 )
 
 

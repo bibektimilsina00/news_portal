@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
 
@@ -14,11 +13,7 @@ from app.modules.notifications.model.notification import (
 )
 from app.modules.notifications.schema.notification import (
     NotificationCreate,
-    NotificationPublic,
-    NotificationUpdate,
-    NotificationWithSender,
 )
-from app.modules.users.model.user import User
 
 
 class NotificationService:

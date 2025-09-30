@@ -1,10 +1,9 @@
-import enum
 import uuid
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, EmailStr, Field, field_validator
-from sqlmodel import SQLModel
+from pydantic import EmailStr, field_validator
+from sqlmodel import Field, SQLModel
 
 from app.shared.enums.account_type import AccountType
 from app.shared.enums.gender import Gender

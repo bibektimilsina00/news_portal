@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from sqlmodel import Session, and_, delete, desc, func, or_, select, update
+from sqlmodel import Session, and_, desc, func, select, update
 
 from app.modules.ai_features.model.ai_features import (
     AIModelMetrics,

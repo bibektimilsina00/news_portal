@@ -1,8 +1,7 @@
 from typing import List
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlmodel import Session
+from fastapi import APIRouter, HTTPException, Query
 
 from app.modules.live_streams.schema.stream import (
     StreamAnalytics,
@@ -10,11 +9,10 @@ from app.modules.live_streams.schema.stream import (
     StreamEnd,
     StreamList,
     StreamPublic,
-    StreamStart,
     StreamUpdate,
 )
 from app.modules.live_streams.services.stream_service import stream_service
-from app.shared.deps.deps import CurrentUser, SessionDep, get_current_active_user
+from app.shared.deps.deps import CurrentUser, SessionDep
 
 router = APIRouter()
 

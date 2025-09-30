@@ -1,11 +1,10 @@
 import uuid
 from datetime import datetime
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, Optional
 
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
-    from app.modules.auth.model.token import Token
     from app.modules.users.model.user import User
 
 
@@ -45,7 +44,6 @@ class UserCredentials(SQLModel, table=True):
 
     # Relationships
     user: "User" = Relationship(back_populates="credentials")
-
 
     model_config = {"from_attributes": True}
 
