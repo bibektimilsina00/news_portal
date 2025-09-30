@@ -45,7 +45,7 @@ class UserCredentials(SQLModel, table=True):
 
     # Relationships
     user: "User" = Relationship(back_populates="credentials")
-    tokens: List["Token"] = Relationship(back_populates="user_credentials")
+
 
     model_config = {"from_attributes": True}
 
