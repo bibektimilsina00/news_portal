@@ -23,7 +23,7 @@ class CRUDReel(CRUDBase[Reel, ReelCreate, ReelUpdate]):
             .offset(skip)
             .limit(limit)
         )
-        return session.exec(statement).all()
+        return list(session.exec(statement))
 
     def get_published(
         self, session: Session, *, skip: int = 0, limit: int = 100
@@ -36,7 +36,7 @@ class CRUDReel(CRUDBase[Reel, ReelCreate, ReelUpdate]):
             .offset(skip)
             .limit(limit)
         )
-        return session.exec(statement).all()
+        return list(session.exec(statement))
 
     def get_trending(self, session: Session, *, limit: int = 20) -> List[Reel]:
         """Get trending reels based on engagement"""
@@ -48,7 +48,7 @@ class CRUDReel(CRUDBase[Reel, ReelCreate, ReelUpdate]):
             )
             .limit(limit)
         )
-        return session.exec(statement).all()
+        return list(session.exec(statement))
 
     def get_by_hashtag(
         self, session: Session, *, hashtag: str, skip: int = 0, limit: int = 100
@@ -66,7 +66,7 @@ class CRUDReel(CRUDBase[Reel, ReelCreate, ReelUpdate]):
             .offset(skip)
             .limit(limit)
         )
-        return session.exec(statement).all()
+        return list(session.exec(statement))
 
     def get_by_music(
         self, session: Session, *, music_id: uuid.UUID, skip: int = 0, limit: int = 100
@@ -79,7 +79,7 @@ class CRUDReel(CRUDBase[Reel, ReelCreate, ReelUpdate]):
             .offset(skip)
             .limit(limit)
         )
-        return session.exec(statement).all()
+        return list(session.exec(statement))
 
     def get_duets(
         self,
@@ -103,7 +103,7 @@ class CRUDReel(CRUDBase[Reel, ReelCreate, ReelUpdate]):
             .offset(skip)
             .limit(limit)
         )
-        return session.exec(statement).all()
+        return list(session.exec(statement))
 
     def get_stitches(
         self,
@@ -127,7 +127,7 @@ class CRUDReel(CRUDBase[Reel, ReelCreate, ReelUpdate]):
             .offset(skip)
             .limit(limit)
         )
-        return session.exec(statement).all()
+        return list(session.exec(statement))
 
     def update_engagement(
         self, session: Session, *, reel_id: uuid.UUID, engagement_data: Dict[str, int]

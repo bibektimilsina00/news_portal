@@ -29,7 +29,7 @@ class ContentReportUpdate(SQLModel):
 
 
 class ContentReport(ContentReportBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     reporter_id: UUID
@@ -73,7 +73,7 @@ class ModerationActionUpdate(SQLModel):
 
 
 class ModerationAction(ModerationActionBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     moderator_id: UUID
@@ -108,7 +108,7 @@ class ModerationAppealUpdate(SQLModel):
 
 
 class ModerationAppeal(ModerationAppealBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     appellant_id: UUID
@@ -149,7 +149,7 @@ class ContentFlagUpdate(SQLModel):
 
 
 class ContentFlag(ContentFlagBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     status: str
@@ -190,7 +190,7 @@ class UserStrikeUpdate(SQLModel):
 
 
 class UserStrike(UserStrikeBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     issued_by: UUID
@@ -232,7 +232,7 @@ class UserBanUpdate(SQLModel):
 
 
 class UserBan(UserBanBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     banned_by: UUID
@@ -269,7 +269,7 @@ class BanAppealUpdate(SQLModel):
 
 
 class BanAppeal(BanAppealBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     appellant_id: UUID
@@ -316,7 +316,7 @@ class ModerationRuleUpdate(SQLModel):
 
 
 class ModerationRule(ModerationRuleBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     is_active: bool
@@ -348,7 +348,7 @@ class ModerationLogCreate(ModerationLogBase):
 
 
 class ModerationLog(ModerationLogBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     moderator_id: Optional[UUID] = None

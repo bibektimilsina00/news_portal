@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
+from pydantic import ConfigDict
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 from app.shared.enums import TokenStatus, TokenType
@@ -41,8 +42,7 @@ class Token(SQLModel, table=True):
     # Relationships
     user: "User" = Relationship(back_populates="tokens")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def is_expired(self) -> bool:
         """Check if token is expired"""
@@ -90,8 +90,7 @@ class TokenBlacklist(SQLModel, table=True):
     blacklisted_at: datetime = Field(default_factory=datetime.utcnow)
     expires_at: Optional[datetime] = Field(default=None)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def is_expired(self) -> bool:
         """Check if blacklist entry is expired"""
@@ -126,8 +125,7 @@ class APIToken(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = Field(default=None)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def is_expired(self) -> bool:
         """Check if API token is expired"""

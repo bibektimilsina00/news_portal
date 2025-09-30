@@ -46,7 +46,7 @@ class CRUDSearchHistory(
         history_items = list(session.exec(select(SearchHistory)))
 
         # Count query frequencies
-        query_counts = {}
+        query_counts: dict[str, int] = {}
         for item in history_items:
             query = item.query.lower().strip()
             if query:
@@ -71,7 +71,7 @@ class CRUDSearchHistory(
         unique_queries = len(set(item.query for item in history_items))
 
         # Get most used search type (simplified)
-        type_counts = {}
+        type_counts: dict[str, int] = {}
         for item in history_items:
             type_counts[item.search_type] = type_counts.get(item.search_type, 0) + 1
 

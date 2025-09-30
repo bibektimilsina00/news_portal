@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
+from pydantic import ConfigDict
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
@@ -60,8 +61,7 @@ class Profile(SQLModel, table=True):
         back_populates="profile", cascade_delete=True
     )
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
 
 class ProfileView(SQLModel, table=True):

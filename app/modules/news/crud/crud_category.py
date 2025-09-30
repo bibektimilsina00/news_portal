@@ -34,7 +34,7 @@ class CRUDCategory(CRUDBase[Category, CategoryCreate, CategoryUpdate]):
         """Get featured categories"""
         statement = (
             select(Category)
-            .where(and_(Category.is_active == True, Category.is_featured == True))
+            .where(and_(Category.is_active == True, Category.is_featured == True))  # type: ignore
             .order_by(Category.sort_order)
         )
         return list(session.exec(statement.offset(skip).limit(limit)))
@@ -68,7 +68,7 @@ class CRUDCategory(CRUDBase[Category, CategoryCreate, CategoryUpdate]):
         statement = (
             select(Category)
             .where(Category.is_active == True)
-            .order_by(Category.news_count.desc())
+            .order_by(Category.news_count.desc())  # type: ignore
         )
         return list(session.exec(statement.offset(skip).limit(limit)))
 

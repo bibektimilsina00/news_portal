@@ -19,7 +19,7 @@ class CRUDMusic(CRUDBase[Music, MusicCreate, MusicUpdate]):
         statement = (
             select(Music)
             .where(Music.artist == artist)
-            .order_by(Music.created_at.desc())
+            .order_by(Music.created_at.desc())  # type: ignore
             .offset(skip)
             .limit(limit)
         )
@@ -32,7 +32,7 @@ class CRUDMusic(CRUDBase[Music, MusicCreate, MusicUpdate]):
         statement = (
             select(Music)
             .where(Music.genre == genre)
-            .order_by(Music.use_count.desc())
+            .order_by(Music.use_count.desc())  # type: ignore
             .offset(skip)
             .limit(limit)
         )
@@ -40,7 +40,7 @@ class CRUDMusic(CRUDBase[Music, MusicCreate, MusicUpdate]):
 
     def get_trending(self, session: Session, *, limit: int = 50) -> List[Music]:
         """Get trending music"""
-        statement = select(Music).order_by(Music.trending_score.desc()).limit(limit)
+        statement = select(Music).order_by(Music.trending_score.desc()).limit(limit)  # type: ignore
         return list(session.exec(statement))
 
     def search_music(
@@ -50,8 +50,8 @@ class CRUDMusic(CRUDBase[Music, MusicCreate, MusicUpdate]):
         search_term = f"%{query}%"
         statement = (
             select(Music)
-            .where(or_(Music.title.ilike(search_term), Music.artist.ilike(search_term)))
-            .order_by(Music.use_count.desc())
+            .where(or_(Music.title.ilike(search_term), Music.artist.ilike(search_term)))  # type: ignore
+            .order_by(Music.use_count.desc())  # type: ignore
             .offset(skip)
             .limit(limit)
         )

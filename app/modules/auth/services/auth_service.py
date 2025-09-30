@@ -240,7 +240,7 @@ class AuthService:
         ).all()
 
         total_query = select(SecurityLog).where(SecurityLog.user_id == user_id)
-        total = len(session.exec(total_query).all())
+        total = len(list(session.exec(total_query)))
 
         # Convert model objects to schema objects
         schema_logs = []

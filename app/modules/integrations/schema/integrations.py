@@ -35,7 +35,7 @@ class IntegrationUpdate(SQLModel):
 
 
 class Integration(IntegrationBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     created_at: datetime
@@ -80,7 +80,7 @@ class WebhookUpdate(SQLModel):
 
 
 class Webhook(WebhookBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     integration_id: UUID
@@ -125,7 +125,7 @@ class APIKeyUpdate(SQLModel):
 
 
 class APIKey(APIKeyBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     integration_id: UUID
@@ -168,7 +168,7 @@ class SocialMediaPostUpdate(SQLModel):
 
 
 class SocialMediaPost(SocialMediaPostBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     integration_id: UUID
@@ -216,7 +216,7 @@ class NewsSourceUpdate(SQLModel):
 
 
 class NewsSource(NewsSourceBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     integration_id: UUID
@@ -270,7 +270,7 @@ class ExternalNewsArticleUpdate(SQLModel):
 
 
 class ExternalNewsArticle(ExternalNewsArticleBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     source_id: UUID
@@ -313,7 +313,7 @@ class WebhookDeliveryUpdate(SQLModel):
 
 
 class WebhookDelivery(WebhookDeliveryBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     webhook_id: UUID
@@ -344,7 +344,7 @@ class APIRequestLogCreate(APIRequestLogBase):
 
 
 class APIRequestLog(APIRequestLogBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     api_key_id: UUID
@@ -373,7 +373,7 @@ class IntegrationSyncLogCreate(IntegrationSyncLogBase):
 
 
 class IntegrationSyncLog(IntegrationSyncLogBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     integration_id: UUID
@@ -425,7 +425,7 @@ class WeatherDataUpdate(SQLModel):
 
 
 class WeatherData(WeatherDataBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     integration_id: UUID
@@ -475,7 +475,7 @@ class StockDataUpdate(SQLModel):
 
 
 class StockData(StockDataBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     integration_id: UUID
@@ -521,7 +521,7 @@ class SportsDataUpdate(SQLModel):
 
 
 class SportsData(SportsDataBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     integration_id: UUID

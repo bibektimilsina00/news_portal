@@ -55,7 +55,7 @@ def read_users(
     if is_journalist is not None:
         query = query.where(User.is_journalist == is_journalist)
 
-    count = len(session.exec(query).all())
+    count = len(list(session.exec(query)))
     users = session.exec(query.offset(skip).limit(limit)).all()
 
     users_public = [UserPublic.model_validate(user) for user in users]

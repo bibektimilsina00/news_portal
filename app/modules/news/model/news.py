@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
+from pydantic import ConfigDict
 from sqlalchemy import JSON, Column
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -119,8 +120,7 @@ class News(SQLModel, table=True):
     #     },
     # )
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def increment_view_count(self) -> None:
         """Increment view count"""
@@ -197,8 +197,7 @@ class NewsTag(SQLModel, table=True):
     news_id: uuid.UUID = Field(foreign_key="news.id", primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
 
 class NewsRelated(SQLModel, table=True):
@@ -209,5 +208,4 @@ class NewsRelated(SQLModel, table=True):
     relevance_score: float = Field(default=0.0)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore

@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, validator
 from sqlmodel import SQLModel
 
 from app.modules.news.model.news import NewsPriority, NewsStatus
@@ -179,8 +179,7 @@ class NewsResponse(NewsBase):
     reading_time: Optional[int] = Field(default=None)
     share_url: Optional[str] = Field(default=None)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
 
 class NewsListResponse(BaseModel):

@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from pydantic import ConfigDict
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
@@ -26,5 +27,4 @@ class Follow(SQLModel, table=True):
         sa_relationship_kwargs={"foreign_keys": "Follow.following_id"},
     )
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore

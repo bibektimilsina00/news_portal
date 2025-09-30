@@ -166,7 +166,7 @@ class CRUDSocialMediaPost(
         query = select(SocialMediaPost).where(SocialMediaPost.content_id == content_id)
         if platform:
             query = query.where(SocialMediaPost.platform == platform)
-        return session.exec(query).all()
+        return list(session.exec(query))
 
     def get_pending_posts(
         self, session: Session, platform: Optional[str] = None
@@ -174,7 +174,7 @@ class CRUDSocialMediaPost(
         query = select(SocialMediaPost).where(SocialMediaPost.status == "pending")
         if platform:
             query = query.where(SocialMediaPost.platform == platform)
-        return session.exec(query).all()
+        return list(session.exec(query))
 
     def update_post_status(
         self,
@@ -506,7 +506,7 @@ class CRUDSportsData(CRUDBase[SportsData, SportsDataCreate, SportsDataUpdate]):
         )
         if sport:
             query = query.where(SportsData.sport == sport)
-        return session.exec(query).all()
+        return list(session.exec(query))
 
     def get_upcoming_events(
         self, session: Session, sport: Optional[str] = None, limit: int = 50

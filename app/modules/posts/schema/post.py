@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, validator
 from sqlmodel import SQLModel
 
 from app.modules.posts.model.post import PostStatus, PostType, PostVisibility
@@ -131,8 +131,7 @@ class PostResponse(PostBase):
     share_url: Optional[str] = Field(default=None)
     is_published: Optional[bool] = Field(default=None)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
 
 class PostListResponse(BaseModel):

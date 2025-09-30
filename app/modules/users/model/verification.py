@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
+from pydantic import ConfigDict
 from sqlmodel import JSON, Column, Field, Relationship, SQLModel
 
 from app.shared.enums import VerificationStatus, VerificationType
@@ -69,8 +70,7 @@ class VerificationRequest(SQLModel, table=True):
         },
     )
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def is_expired(self) -> bool:
         """Check if verification request has expired"""
@@ -136,8 +136,7 @@ class VerificationBadge(SQLModel, table=True):
     user: "User" = Relationship(back_populates="verification_badges")
     verification_request: VerificationRequest = Relationship(back_populates="badge")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def is_expired(self) -> bool:
         """Check if badge has expired"""

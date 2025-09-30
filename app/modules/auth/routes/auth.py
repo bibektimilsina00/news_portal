@@ -695,7 +695,7 @@ async def get_api_tokens(
         .offset(skip)
         .limit(limit)
     )
-    tokens = session.exec(statement).all()
+    tokens = list(session.exec(statement))
 
     token_responses = []
     for token_obj in tokens:

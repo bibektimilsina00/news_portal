@@ -114,7 +114,7 @@ class NewsService:
             query = query.order_by(sort_field.asc())
 
         # Get total count
-        total_count = len(session.exec(query).all())
+        total_count = len(list(session.exec(query)))
 
         # Apply pagination
         news_items = session.exec(query.offset(skip).limit(limit)).all()
@@ -142,7 +142,7 @@ class NewsService:
 
         query = query.order_by(News.created_at.desc())
 
-        total_count = len(session.exec(query).all())
+        total_count = len(list(session.exec(query)))
         news_items = session.exec(query.offset(skip).limit(limit)).all()
 
         return {
@@ -271,7 +271,7 @@ class NewsService:
             .limit(limit)
         )
 
-        return session.exec(query).all()
+        return list(session.exec(query))
 
     @staticmethod
     def increment_view_count(session: Session, news_id: uuid.UUID) -> None:
@@ -291,7 +291,7 @@ class NewsService:
         if user_id:
             query = query.where(News.user_id == user_id)
 
-        all_news = session.exec(query).all()
+        all_news = list(session.exec(query))
 
         stats = {
             "total_news": len(all_news),

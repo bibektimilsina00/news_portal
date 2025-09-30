@@ -377,7 +377,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
             .limit(limit)
         )
 
-        trending_news = session.exec(statement).all()
+        trending_news = list(session.exec(statement))
 
         topics = []
         for news in trending_news:

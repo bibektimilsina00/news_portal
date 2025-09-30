@@ -82,17 +82,17 @@ class Message(SQLModel, table=True):
     def is_media_message(self) -> bool:
         """Check if this is a media message"""
         return self.type in [
-            MessageType.IMAGE,
-            MessageType.VIDEO,
-            MessageType.AUDIO,
-            MessageType.FILE,
-            MessageType.VOICE,
+            MessageType.image,
+            MessageType.video,
+            MessageType.audio,
+            MessageType.file,
+            MessageType.voice,
         ]
 
     @property
     def is_system_message(self) -> bool:
         """Check if this is a system message"""
-        return self.type == MessageType.SYSTEM
+        return self.type == MessageType.system
 
     @property
     def is_expired(self) -> bool:

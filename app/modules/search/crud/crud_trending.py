@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, cast
 
 from sqlmodel import Session, select
 
@@ -30,29 +30,35 @@ class CRUDTrendingTopic(CRUDBase[TrendingTopic, TrendingTopic, TrendingTopic]):
         self, session: Session, limit: int = 20
     ) -> List[TrendingTopic]:
         """Get currently active trending topics ordered by engagement score."""
-        return list(
-            session.exec(
-                select(TrendingTopic)
-                .where(TrendingTopic.expires_at > datetime.utcnow())
-                .order_by(TrendingTopic.engagement_score.desc())
-                .limit(limit)
-            )
+        return cast(
+            List[TrendingTopic],
+            list(
+                session.exec(
+                    select(TrendingTopic)
+                    .where(TrendingTopic.expires_at > datetime.utcnow())
+                    .order_by(TrendingTopic.engagement_score.desc())  # type: ignore
+                    .limit(limit)
+                )
+            ),
         )
 
     def get_trending_topics_by_category(
         self, session: Session, category: str, limit: int = 10
     ) -> List[TrendingTopic]:
         """Get trending topics for a specific category."""
-        return list(
-            session.exec(
-                select(TrendingTopic)
-                .where(
-                    TrendingTopic.category == category,
-                    TrendingTopic.expires_at > datetime.utcnow(),
+        return cast(
+            List[TrendingTopic],
+            list(
+                session.exec(
+                    select(TrendingTopic)
+                    .where(
+                        TrendingTopic.category == category,
+                        TrendingTopic.expires_at > datetime.utcnow(),
+                    )
+                    .order_by(TrendingTopic.engagement_score.desc())  # type: ignore
+                    .limit(limit)
                 )
-                .order_by(TrendingTopic.engagement_score.desc())
-                .limit(limit)
-            )
+            ),
         )
 
     def update_topic_score(

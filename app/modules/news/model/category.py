@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
+from pydantic import ConfigDict
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
@@ -51,8 +52,7 @@ class Category(SQLModel, table=True):
         },
     )
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def increment_news_count(self) -> None:
         """Increment news count"""
@@ -71,5 +71,4 @@ class CategoryFollow(SQLModel, table=True):
     category_id: uuid.UUID = Field(foreign_key="category.id", primary_key=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore

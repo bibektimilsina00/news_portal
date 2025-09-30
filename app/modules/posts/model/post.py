@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
+from pydantic import ConfigDict
 from sqlalchemy import JSON, Column
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -96,8 +97,7 @@ class Post(SQLModel, table=True):
         back_populates="post", cascade_delete=True
     )
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def increment_like_count(self) -> None:
         """Increment like count"""
@@ -201,5 +201,4 @@ class PostMedia(SQLModel, table=True):
     # Relationships
     post: "Post" = Relationship(back_populates="media_items")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore

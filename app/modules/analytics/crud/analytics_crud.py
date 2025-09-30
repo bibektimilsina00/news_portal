@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from sqlalchemy import column
 from sqlmodel import Session, desc, select
 
 from app.modules.analytics.model.analytics import (
@@ -32,6 +33,7 @@ class CRUDUserAnalytics(CRUDBase[UserAnalytics, UserAnalytics, UserAnalytics]):
         self, session: Session, user_id: str, start_date: datetime, end_date: datetime
     ) -> List[UserAnalytics]:
         """Get user analytics for a date range."""
+
         return list(
             session.exec(
                 select(UserAnalytics)
@@ -40,7 +42,7 @@ class CRUDUserAnalytics(CRUDBase[UserAnalytics, UserAnalytics, UserAnalytics]):
                     UserAnalytics.date_recorded >= start_date,
                     UserAnalytics.date_recorded <= end_date,
                 )
-                .order_by(UserAnalytics.date_recorded)
+                .order_by(column("date_recorded"))
             )
         )
 
@@ -117,13 +119,11 @@ class CRUDContentAnalytics(
         """Get content analytics for a date range."""
         return list(
             session.exec(
-                select(ContentAnalytics)
-                .where(
+                select(ContentAnalytics).where(
                     ContentAnalytics.content_id == content_id,
                     ContentAnalytics.date_recorded >= start_date,
                     ContentAnalytics.date_recorded <= end_date,
                 )
-                .order_by(ContentAnalytics.date_recorded)
             )
         )
 
@@ -202,12 +202,10 @@ class CRUDPlatformAnalytics(
         """Get platform analytics for a date range."""
         return list(
             session.exec(
-                select(PlatformAnalytics)
-                .where(
+                select(PlatformAnalytics).where(
                     PlatformAnalytics.date_recorded >= start_date,
                     PlatformAnalytics.date_recorded <= end_date,
                 )
-                .order_by(PlatformAnalytics.date_recorded)
             )
         )
 

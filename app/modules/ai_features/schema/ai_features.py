@@ -30,7 +30,7 @@ class ContentRecommendationUpdate(SQLModel):
 
 
 class ContentRecommendation(ContentRecommendationBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore  # type: ignore
 
     id: UUID
     user_id: UUID
@@ -77,7 +77,7 @@ class ContentAnalysisUpdate(SQLModel):
 
 
 class ContentAnalysis(ContentAnalysisBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     is_active: bool
@@ -107,8 +107,12 @@ class UserBehaviorCreate(UserBehaviorBase):
     user_id: UUID
 
 
+class UserBehaviorUpdate(SQLModel):
+    pass
+
+
 class UserBehavior(UserBehaviorBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     user_id: UUID
@@ -148,7 +152,7 @@ class PersonalizedFeedUpdate(SQLModel):
 
 
 class PersonalizedFeed(PersonalizedFeedBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     user_id: UUID
@@ -197,7 +201,7 @@ class TrendAnalysisUpdate(SQLModel):
 
 
 class TrendAnalysis(TrendAnalysisBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     is_viral: bool
@@ -254,7 +258,7 @@ class ContentClassificationUpdate(SQLModel):
 
 
 class ContentClassification(ContentClassificationBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     created_at: datetime
@@ -289,7 +293,7 @@ class AnomalyDetectionUpdate(SQLModel):
 
 
 class AnomalyDetection(AnomalyDetectionBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     is_investigated: bool
@@ -343,7 +347,7 @@ class EngagementPredictionUpdate(SQLModel):
 
 
 class EngagementPrediction(EngagementPredictionBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     prediction_accuracy: Optional[Decimal] = None
@@ -385,7 +389,7 @@ class ChurnPredictionUpdate(SQLModel):
 
 
 class ChurnPrediction(ChurnPredictionBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     is_action_taken: bool
@@ -429,7 +433,7 @@ class TranslationCacheUpdate(SQLModel):
 
 
 class TranslationCache(TranslationCacheBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     is_active: bool
@@ -467,7 +471,7 @@ class AIModelMetricsUpdate(SQLModel):
 
 
 class AIModelMetrics(AIModelMetricsBase):
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     id: UUID
     evaluation_date: datetime

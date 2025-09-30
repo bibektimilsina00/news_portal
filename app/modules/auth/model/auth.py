@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 
+from pydantic import ConfigDict
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
@@ -45,7 +46,7 @@ class UserCredentials(SQLModel, table=True):
     # Relationships
     user: "User" = Relationship(back_populates="credentials")
 
-    model_config = {"from_attributes": True}
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def is_locked(self) -> bool:
         """Check if account is locked"""
@@ -81,8 +82,7 @@ class PasswordResetToken(SQLModel, table=True):
     expires_at: datetime
     used_at: Optional[datetime] = Field(default=None)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def is_expired(self) -> bool:
         """Check if token is expired"""
@@ -106,8 +106,7 @@ class EmailVerificationToken(SQLModel, table=True):
     expires_at: datetime
     used_at: Optional[datetime] = Field(default=None)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def is_expired(self) -> bool:
         """Check if token is expired"""
@@ -144,5 +143,4 @@ class SecurityLog(SQLModel, table=True):
     # Timestamps
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore

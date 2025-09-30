@@ -74,7 +74,7 @@ class CRUDStoryInteraction(
         )
 
         results = {}
-        rows = session.exec(statement).all()
+        rows = list(session.exec(statement))
         for row in rows:
             option = row
             if option:

@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import EmailStr, field_validator
+from pydantic import ConfigDict, EmailStr, field_validator
 from sqlmodel import Field, SQLModel
 
 from app.shared.enums.account_type import AccountType
@@ -36,8 +36,8 @@ class UserBase(SQLModel):
     is_journalist: bool = Field(default=False)
     is_organization: bool = Field(default=False)
 
-    class Config:
-        use_enum_values = True
+    model_config=ConfigDict(use_enum_values=True)
+
 
 
 # Creation Schemas
@@ -123,8 +123,7 @@ class UserUpdateMe(SQLModel):
     is_professional_account: Optional[bool] = None
     category: Optional[str] = Field(default=None, max_length=50)
 
-    class Config:
-        use_enum_values = True
+    
 
 
 # Password Update Schema
@@ -154,8 +153,7 @@ class UserPublic(UserBase):
     last_active: Optional[datetime] = None
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
 
 class UserProfilePublic(UserPublic):

@@ -84,7 +84,7 @@ class CRUDToken(CRUDBase[Token, TokenCreate, TokenUpdate]):
         """Deactivate a specific token"""
         db_obj = self.get(session=session, id=token_id)
         if db_obj:
-            db_obj.status = TokenStatus.BLACKLISTED
+            db_obj.status = TokenStatus.blacklisted
             db_obj.deactivated_at = datetime.now(timezone.utc)
             session.add(db_obj)
             session.commit()
@@ -110,7 +110,7 @@ class CRUDToken(CRUDBase[Token, TokenCreate, TokenUpdate]):
         count = 0
 
         for token in tokens:
-            token.status = TokenStatus.EXPIRED
+            token.status = TokenStatus.expired
             token.deactivated_at = datetime.now(timezone.utc)
             session.add(token)
             count += 1
@@ -121,14 +121,14 @@ class CRUDToken(CRUDBase[Token, TokenCreate, TokenUpdate]):
     def cleanup_expired_tokens(self, session: Session) -> int:
         """Remove expired tokens"""
         statement = select(Token).where(
-            and_(Token.expires_at < func.now(), Token.status == TokenStatus.ACTIVE)
+            and_(Token.expires_at < func.now(), Token.status == TokenStatus.active)
         )
 
         expired_tokens = session.exec(statement)
         count = 0
 
         for token in expired_tokens:
-            token.status = TokenStatus.EXPIRED
+            token.status = TokenStatus.expired
             token.deactivated_at = datetime.now(timezone.utc)
             session.add(token)
             count += 1
@@ -154,7 +154,7 @@ class CRUDToken(CRUDBase[Token, TokenCreate, TokenUpdate]):
         """Revoke/blacklist a token"""
         db_token = self.get_by_token(session=session, token=token)
         if db_token:
-            db_token.status = TokenStatus.REVOKED
+            db_token.status = TokenStatus.revoked
             db_token.deactivated_at = datetime.now(timezone.utc)
             session.add(db_token)
             session.commit()
@@ -169,7 +169,7 @@ class CRUDToken(CRUDBase[Token, TokenCreate, TokenUpdate]):
 
         active_tokens = session.exec(
             select(func.count(Token.id)).where(
-                and_(Token.user_id == user_id, Token.status == TokenStatus.ACTIVE)
+                and_(Token.user_id == user_id, Token.status == TokenStatus.active)
             )
         ).one()
 

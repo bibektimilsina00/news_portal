@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
+from pydantic import ConfigDict
 from sqlalchemy import JSON, TEXT, Column
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -121,8 +122,7 @@ class FactCheck(SQLModel, table=True):
         sa_relationship_kwargs={"foreign_keys": "[FactCheck.organization_id]"},
     )
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
     def mark_as_started(self) -> None:
         """Mark fact check as started"""
@@ -175,8 +175,7 @@ class FactCheckVote(SQLModel, table=True):
     is_helpful: bool = Field(default=True)
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
 
 
 class FactCheckComment(SQLModel, table=True):
@@ -195,5 +194,4 @@ class FactCheckComment(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = Field(default=None)
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)  # type: ignore
