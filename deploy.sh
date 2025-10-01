@@ -293,7 +293,7 @@ docker logs news-portal-blue --tail 5
 # Wait for new container to be healthy
 log_progress_start "Waiting for blue container to be ready..."
 sleep 10
-HEALTH_CHECK_URL="http://localhost:8081/health/"
+HEALTH_CHECK_URL="http://localhost:8081/api/v1/health"
 RETRIES=0
 MAX_RETRIES=50
 
