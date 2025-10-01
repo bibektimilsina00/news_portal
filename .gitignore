@@ -150,10 +150,11 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 
-# Upload directories
+
+# Uploaded media 
+# Note: This excludes uploaded files but NOT app/modules/media/ source code
 uploads/
-media/
-staticfiles/
+static/media/
 
 # Logs
 *.log

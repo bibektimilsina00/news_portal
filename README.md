@@ -1,138 +1,319 @@
-# 🚀 FastAPI + PostgreSQL Starter Kit
+# 🚀 News Portal API
 
-Welcome to the **FastAPI + PostgreSQL Starter Kit** – your new best friend for building blazing-fast backend applications with a database that's as solid as a rock (or should we say, as solid as a _Postgres_? 😉).
+A comprehensive **News Portal API** built with FastAPI, featuring modular clean architecture, domain-driven design, and a complete social media platform with news, posts, stories, reels, live streaming, and more.
 
 ## 🛠 What's Inside the Box?
 
-This kit comes fully loaded with everything you need to start your backend adventures:
+This is a full-featured news and social media platform API with everything you need:
 
-- **FastAPI**: The cool, modern web framework that's got speed in its DNA. Think of it as the Flash of web frameworks.
-- **PostgreSQL**: The trusty ol' database that never lets you down. It's like the Gandalf of databases – wise, powerful, and always there when you need it.
-- **Poetry**: Not the kind that makes you ponder life's mysteries, but the kind that makes managing Python dependencies as smooth as butter.
-- **Docker**: Because who doesn't love shipping containers? 🚢
-- **Alembic**: The migration tool that handles your database changes with grace and ease.
-- **SQLAlchemy Models**: Built-in SQL models for a smooth and powerful ORM experience, making your database interactions clean and Pythonic.
+- **FastAPI**: Modern, high-performance web framework with automatic OpenAPI documentation
+- **PostgreSQL**: Robust relational database with SQLAlchemy/SQLModel ORM
+- **UV Package Manager**: Lightning-fast Python package management
+- **Docker**: Containerized deployment with blue-green deployment strategy
+- **Alembic**: Database migration management
+- **JWT Authentication**: Secure token-based authentication system
+- **Modular Architecture**: Clean separation of concerns with feature-based modules
+- **Real-time Features**: Live streaming, stories, notifications, and messaging
+- **Media Management**: Image and video processing with cloud storage support
+- **AI Features**: AI-powered content analysis and recommendations
+- **Monetization**: Payment processing and subscription management
+
+## 📦 Available Modules
+
+The API is organized into self-contained modules:
+
+- **Authentication** - JWT-based auth with OAuth2 support
+- **Users** - User management with profiles and verification
+- **Posts** - Social media posts with likes and bookmarks
+- **News** - News articles with categories and sources
+- **Stories** - Instagram-style stories with highlights
+- **Reels** - Short-form video content
+- **Live Streams** - Live streaming functionality with viewers
+- **Media** - Image and video management with processing
+- **Messaging** - Direct messaging and chat system
+- **Notifications** - Push notifications and preferences
+- **Search** - Content search with trending algorithms
+- **Content Moderation** - Reporting and moderation tools
+- **Analytics** - Usage analytics and metrics
+- **Monetization** - Payments and subscriptions
+- **AI Features** - AI-powered content features
+- **Integrations** - Third-party service integrations
 
 ## 🚀 Getting Started
 
-Ready to dive in? Let's get this party started!
-
 ### Prerequisites
 
-- [Docker](https://www.docker.com/get-started) – because we like our code portable and our developers happy.
+- [Docker](https://www.docker.com/get-started) - For containerized development
+- [UV](https://github.com/astral-sh/uv) - Modern Python package manager
+- [Git](https://git-scm.com/) - Version control
 
-### Installation
+### Local Development Setup
 
 1. **Clone the Repository**
 
-   First things first, grab a copy of this awesome project:
-
    ```bash
-   git clone https://github.com/yourusername/fastapi-postgres-starter-kit.git
-   cd fastapi-postgres-starter-kit
+   git clone https://github.com/bibektimilsina00/news-portal.git
+   cd news-portal
    ```
 
-2. **Setup Your Environment**
+2. **Setup Environment**
 
-   We've got a .env.example file waiting for you. Make a copy, name it .env, and tweak the variables to suit your needs:
+   Copy the example environment file and configure your settings:
 
    ```bash
    cp .env.example .env
+   # Edit .env with your database credentials and secrets
    ```
 
-3. **Fire It Up**
-
-   Now comes the fun part – launching the whole shebang with just one command:
+3. **Install Dependencies**
 
    ```bash
-   docker-compose up --build
+   uv sync
    ```
 
-   Sit back, relax, and watch as Docker works its magic. In no time, you'll have everything up and running.
+4. **Start Database**
 
-4. **Access the Application**
+   ```bash
+   docker run -d \
+     --name postgres \
+     -p 5432:5432 \
+     -e POSTGRES_USER=news_portal \
+     -e POSTGRES_PASSWORD=password \
+     -e POSTGRES_DB=news_portal_dev \
+     postgres:16-alpine
+   ```
 
-   Boom! Your FastAPI application is live at http://localhost:4000. Go ahead, give it a whirl!
+5. **Run Migrations**
 
-## 🗄 Database Migrations
+   ```bash
+   uv run alembic upgrade head
+   ```
 
-Need to make some changes to your database? No problem! Alembic's got your back:
+6. **Start Development Server**
+
+   ```bash
+   uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+
+   The API will be available at http://localhost:8000 with automatic documentation at http://localhost:8000/docs
+
+### Docker Development
+
+For a complete containerized development environment:
 
 ```bash
-docker-compose exec backend alembic upgrade head
+# Build and run with Docker Compose
+docker-compose up --build
+
+# Or use the build script
+./build.sh --env development --version dev
 ```
 
-Just like that, your database is up to date. 🎉
+## 🗄 Database Operations
 
-## 🧪 Running Tests
-
-We know you're a responsible developer who loves testing, right? Here's how you can run your tests inside the Docker container:
+### Migrations
 
 ```bash
-docker-compose exec backend pytest
+# Create new migration
+uv run alembic revision --autogenerate -m "Add new feature"
+
+# Apply migrations
+uv run alembic upgrade head
+
+# Downgrade
+uv run alembic downgrade -1
 ```
 
-Testing has never been so easy. Go on, give yourself a pat on the back!
+### Database Reset (Development)
 
-## 🎓 Development Setup (For the Rebels)
+```bash
+# Reset database (dangerous!)
+uv run alembic downgrade base
+uv run alembic upgrade head
+```
 
-If you're feeling adventurous and want to run this project outside of Docker (we salute you!), here's what you need to do:
+## 🧪 Testing & Quality
 
-1. **Install Dependencies**
+### Run Tests
 
-   Poetry to the rescue:
+```bash
+# All tests
+uv run pytest
 
-   ```bash
-   poetry install
-   ```
+# With coverage
+uv run pytest --cov=app --cov-report=html
 
-2. **Run the Application**
+# Specific test file
+uv run pytest tests/modules/users/test_user_service.py
+```
 
-   Fire up the app with Uvicorn:
+### Code Quality
 
-   ```bash
-   uvicorn app.main:app --reload --host 0.0.0.0 --port 4000
-   ```
+```bash
+# Type checking
+uv run mypy app/
 
-You're all set to code like a rockstar. 🎸
+# Linting and formatting
+uv run ruff check app/
+uv run ruff format app/
 
-## 🌍 Deployment
+# Security checks
+uv run bandit -r app/
+```
 
-Ready to take your app to the world? You can use this same Docker setup for production, or deploy it to any platform that loves containers as much as we do. Just make sure those environment variables are production-ready!
+### Development Commands
 
-## 🙌 Contributing
+```bash
+# Install dependencies
+uv sync
 
-Have an idea for an improvement? Spotted a bug? Or maybe you just want to say hi? We're all ears! Feel free to open an issue or submit a pull request. We'd love to have you contribute!
+# Add new dependency
+uv add package-name
+uv add --group dev package-name
+
+# Run development server
+uv run uvicorn app.main:app --reload
+
+# Run with hot reload
+make run
+
+# Run all quality checks
+make lint
+
+# Run tests
+make test
+```
+
+## 🚀 Deployment
+
+### Production Build
+
+```bash
+# Build production image
+./build.sh --env production --version 1.0.0 --push
+
+# Deploy to server
+./deploy.sh main
+```
+
+### Blue-Green Deployment
+
+The deployment script supports zero-downtime blue-green deployment:
+
+```bash
+# Deploy main branch
+./deploy.sh main
+
+# Deploy develop branch
+./deploy.sh develop
+
+# Force clean deployment
+./deploy.sh main force
+```
+
+### Environment Configuration
+
+Create appropriate `.env` files for each environment:
+
+- `.env` - Local development
+- `.env.staging` - Staging environment
+- `.env.production` - Production environment
+
+## 📊 API Documentation
+
+Once running, visit:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+- **OpenAPI Schema**: http://localhost:8000/openapi.json
+
+## � Configuration
+
+Key environment variables:
+
+```bash
+# Database
+POSTGRES_SERVER=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=news_portal
+POSTGRES_PASSWORD=password
+POSTGRES_DB=news_portal_prod
+
+# Security
+SECRET_KEY=your-secret-key-here
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_MINUTES=1440
+
+# CORS
+BACKEND_CORS_ORIGINS=["http://localhost:3000", "https://yourdomain.com"]
+
+# Email (optional)
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+
+# Media Storage (optional)
+AWS_ACCESS_KEY_ID=your-key
+AWS_SECRET_ACCESS_KEY=your-secret
+AWS_S3_BUCKET_NAME=your-bucket
+```
+
+## 🏗 Architecture
+
+### Modular Structure
+
+```
+app/
+├── modules/          # Feature modules
+│   ├── {module}/
+│   │   ├── crud/     # Database operations
+│   │   ├── model/    # SQLModel database models
+│   │   ├── routes/   # FastAPI route handlers
+│   │   ├── schema/   # Pydantic schemas
+│   │   └── services/ # Business logic
+│   └── shared/       # Shared utilities
+├── core/            # Configuration, database, security
+├── db_init/         # Database initialization
+└── main.py          # FastAPI app entry point
+```
+
+### Key Patterns
+
+- **Layered Architecture**: Route → Service → CRUD → Model
+- **Dependency Injection**: SessionDep, CurrentUser dependencies
+- **Type Safety**: Full mypy type checking
+- **Clean Code**: SOLID principles and DRY
+- **Domain-Driven Design**: Feature-based module organization
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes with proper tests
+4. Run quality checks: `make lint && make test`
+5. Commit your changes: `git commit -m 'Add amazing feature'`
+6. Push to the branch: `git push origin feature/amazing-feature`
+7. Open a Pull Request
+
+### Development Guidelines
+
+- Follow the established module structure
+- Add tests for new features
+- Update documentation as needed
+- Ensure type safety with mypy
+- Follow the commit message conventions
 
 ## 📜 License
 
 This project is licensed under the MIT License.
 
-## 🎉 Acknowledgements
+## 🙏 Acknowledgments
 
-This project is inspired by the full-stack-fastapi-postgresql template created by the legendary Sebastián Ramírez. Big thanks to the FastAPI and Docker communities for their amazing work and support.
+- Built with [FastAPI](https://fastapi.tiangolo.com/)
+- Database ORM with [SQLModel](https://sqlmodel.tiangolo.com/)
+- Package management with [UV](https://github.com/astral-sh/uv)
+- Inspired by full-stack-fastapi-postgresql template
 
-Now go ahead and build something awesome! 🚀✨
+---
 
-## CI / Continuous Integration
-
-The project includes GitHub Actions workflows to run linting, type checking, database migrations, tests with coverage, and an optional Docker image build/push workflow. Replace OWNER and REPO in the badge URLs below with your GitHub organization and repository name to show live status.
-
-- CI (main pipeline):
-
-   ![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)
-
-- Docker build/push (optional):
-
-   ![Docker build & push](https://github.com/OWNER/REPO/actions/workflows/docker-build-push.yml/badge.svg)
-
-What the pipeline runs (typical):
-
-- Install dependencies
-- Run formatters and linters (ruff/black/isort)
-- Type-check with mypy
-- Run Alembic migrations against a test Postgres service
-- Run pytest and upload coverage
-- (Optional) Build and push a Docker image to GHCR
-
-Tip: To enable the Docker build/push workflow you will need to add repository secrets (for example, `GHCR_PAT` or use the default `GITHUB_TOKEN`) in your repository settings.
+**Ready to build the next generation news platform? 🚀**
