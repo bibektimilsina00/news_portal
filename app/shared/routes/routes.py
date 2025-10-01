@@ -12,9 +12,10 @@ from app.modules.live_streams.routes.main import router as live_streams_router
 from app.modules.live_streams.routes.viewers import (
     router as live_streams_viewers_router,
 )
-from app.modules.media.routes import router as media_router
-from app.modules.media.routes.images import router as media_images_router
-from app.modules.media.routes.videos import router as media_videos_router
+
+# from app.modules.media.routes import router as media_router
+# from app.modules.media.routes.images import router as media_images_router
+# from app.modules.media.routes.videos import router as media_videos_router
 from app.modules.messaging.routes import (
     conversations_router,
     messages_router,
@@ -106,13 +107,13 @@ api_router.include_router(
     trending_router, prefix="/search/trending", tags=["search-trending"]
 )
 api_router.include_router(analytics_router, prefix="/analytics", tags=["analytics"])
-api_router.include_router(media_router, prefix="/media", tags=["media"])
-api_router.include_router(
-    media_images_router, prefix="/media/images", tags=["media-images"]
-)
-api_router.include_router(
-    media_videos_router, prefix="/media/videos", tags=["media-videos"]
-)
+# api_router.include_router(media_router, prefix="/media", tags=["media"])
+# api_router.include_router(
+#     media_images_router, prefix="/media/images", tags=["media-images"]
+# )
+# api_router.include_router(
+#     media_videos_router, prefix="/media/videos", tags=["media-videos"]
+# )
 api_router.include_router(
     monetization_router, prefix="/monetization", tags=["monetization"]
 )
