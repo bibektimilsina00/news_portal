@@ -74,5 +74,3 @@ docker-compose*.yml
 # Node modules (if any frontend assets)
 node_modules/
 
-# Media files (will be mounted as volume)
-media/
