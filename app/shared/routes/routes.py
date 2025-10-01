@@ -4,7 +4,7 @@ from app.modules.ai_features.routes import ai_features_router
 from app.modules.analytics.routes import analytics_router
 from app.modules.auth.routes import auth_router, oauth_router, two_factor_router
 from app.modules.content_moderation.routes import (
-    get_router as get_content_moderation_router,
+    router as get_content_moderation_router,
 )
 from app.modules.integrations.routes import integrations_router
 from app.modules.live_streams.routes.badges import router as live_streams_badges_router
@@ -42,6 +42,7 @@ from app.modules.users.routes import profile, users, verification
 from app.shared.routes.health import router as health_router
 
 api_router = APIRouter()
+
 api_router.include_router(health_router, tags=["health"])
 api_router.include_router(auth_router, tags=["authentication"])
 api_router.include_router(oauth_router, prefix="/auth", tags=["oauth"])
@@ -116,7 +117,7 @@ api_router.include_router(
     monetization_router, prefix="/monetization", tags=["monetization"]
 )
 api_router.include_router(
-    get_content_moderation_router(), prefix="/moderation", tags=["content-moderation"]
+    get_content_moderation_router, prefix="/moderation", tags=["content-moderation"]
 )
 api_router.include_router(
     ai_features_router, prefix="/ai-features", tags=["ai-features"]

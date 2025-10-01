@@ -74,3 +74,7 @@ docker-compose*.yml
 # Node modules (if any frontend assets)
 node_modules/
 
+# Uploaded media files (will be mounted as volume)
+# Note: This excludes uploaded files but NOT app/modules/media/ source code
+uploads/
+static/media/
