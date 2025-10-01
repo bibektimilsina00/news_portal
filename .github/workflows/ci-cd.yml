@@ -115,7 +115,7 @@ jobs:
         with:
           host: ${{ vars.SERVER_HOST }}
           username: ${{ vars.SERVER_NAME }}
-          key: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             set -e
             echo "[$(date)] Starting deployment..."
