@@ -33,7 +33,7 @@ services:
       retries: 3
 
   web:
-    image: ${IMAGE_NAME:-ghcr.io/bibektimilsina00/news-portal:latest}
+    image: ${IMAGE_NAME:-ghcr.io/bibektimilsina00/news_portal:latest}
     restart: unless-stopped
     environment:
       - ENVIRONMENT=production

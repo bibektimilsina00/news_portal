@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-#!/bin/bash
-set -e
-
 # ════════════════════════════════════════════════
 # ║       NEWS PORTAL DEPLOYMENT SCRIPT          ║
 # ════════════════════════════════════════════════
@@ -34,13 +31,15 @@ fi
 # Determine Docker image tag based on branch
 if [[ -z "${DOCKER_TAG}" ]]; then
   if [[ "$DEPLOY_BRANCH" == "main" ]]; then
-    DOCKER_TAG="ghcr.io/bibektimilsina00/news-portal:deploy"
+    # CI builds produce: ghcr.io/<owner>/news_portal:latest-production
+    DOCKER_TAG="ghcr.io/bibektimilsina00/news_portal:latest-production"
   elif [[ "$DEPLOY_BRANCH" == "develop" ]]; then
-    DOCKER_TAG="ghcr.io/bibektimilsina00/news-portal:develop-deploy"
+    # Use staging tag for develop
+    DOCKER_TAG="ghcr.io/bibektimilsina00/news_portal:latest-staging"
   else
-    # For feature branches, use branch-specific tag
-    BRANCH_TAG=$(echo "$DEPLOY_BRANCH" | sed 's/[^a-zA-Z0-9]/-/g')
-    DOCKER_TAG="ghcr.io/bibektimilsina00/news-portal:${BRANCH_TAG}-deploy"
+    # For feature branches, use branch-specific latest tag
+    BRANCH_TAG=$(echo "$DEPLOY_BRANCH" | sed 's/[^a-zA-Z0-9]/_/g')
+    DOCKER_TAG="ghcr.io/bibektimilsina00/news_portal:latest-${BRANCH_TAG}"
   fi
 fi
 
@@ -147,13 +146,13 @@ else
   log_warning "Not a git repository - skipping branch switch"
 fi
 
-if [ -f ".backend.env" ]; then
+if [ -f ".env" ]; then
   log_info "Loading environment variables..."
   
   while IFS= read -r line || [[ -n "$line" ]]; do
     [[ "$line" =~ ^#.*$ ]] || [[ -z "$line" ]] && continue
     handle_env_var "$line"
-  done < .backend.env
+  done < .env
   log_success "Environment variables loaded successfully"
 else
   log_error "No .env file found. Please create one."
@@ -191,6 +190,15 @@ fi
 
 # Force remove local image first to ensure fresh pull
 docker rmi "$DOCKER_TAG" 2>/dev/null || log_info "No local image to remove"
+
+# Authenticate with GHCR if credentials are available in environment (from .env)
+if [[ -n "${GHCR_USER}" ]] && [[ -n "${GHCR_TOKEN}" ]]; then
+  log_step "Authenticating with GHCR..."
+  echo "${GHCR_TOKEN}" | docker login ghcr.io -u "${GHCR_USER}" --password-stdin
+  log_success "Authenticated with GHCR"
+else
+  log_warning "GHCR_USER or GHCR_TOKEN not set in .env; attempting pull without explicit login"
+fi
 
 # Pull with --pull=always equivalent behavior
 docker pull postgres:16-alpine &> /dev/null &
@@ -270,7 +278,7 @@ CONTAINER_ID=$(docker run -d \
   -p "8081:8080" \
   -v uv_cache:/home/appuser/.cache/uv \
   -v venv_data:/app/.venv \
-  --env-file .backend.env \
+  --env-file .env \
   "$DOCKER_TAG")
   
 # Print shorter container ID
@@ -327,7 +335,7 @@ GREEN_ID=$(docker run -d \
   -p "8080:8080" \
   -v uv_cache:/home/appuser/.cache/uv \
   -v venv_data:/app/.venv \
-  --env-file .backend.env \
+  --env-file .env \
   "$DOCKER_TAG")
 
 # Print shorter container ID  

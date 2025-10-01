@@ -81,21 +81,25 @@ jobs:
       - name: 🚀 Run build script and push image
         run: |
           chmod +x build.sh
+          # Build and normalize image name to use underscores instead of hyphens
+          REPO_SAN=$(echo "${{ github.repository }}" | sed 's/-/_/g')
           ./build.sh \
             --env "${{ steps.set-version.outputs.env }}" \
             --version "${{ steps.set-version.outputs.app_version }}" \
             --push \
             --registry "ghcr.io" \
-            --name "${{ github.repository }}"
+            --name "${REPO_SAN}" \
+            --deploy-tag deploy
 
       - name: 🏷️ Tag production image
         if: success()
         run: |
-          # Pull the built image and tag it for deployment
-          docker pull ghcr.io/${{ github.repository }}:${{ steps.set-version.outputs.app_version }}-${{ steps.set-version.outputs.env }}
-          docker tag ghcr.io/${{ github.repository }}:${{ steps.set-version.outputs.app_version }}-${{ steps.set-version.outputs.env }} ghcr.io/${{ github.repository }}:deploy
-          docker push ghcr.io/${{ github.repository }}:deploy
-          echo "Pushed deployment tag: ghcr.io/${{ github.repository }}:deploy"
+          # Pull the built image and tag it for deployment (normalize repo name)
+          REPO_SAN=$(echo "${{ github.repository }}" | sed 's/-/_/g')
+          docker pull ghcr.io/${REPO_SAN}:${{ steps.set-version.outputs.app_version }}-${{ steps.set-version.outputs.env }}
+          docker tag ghcr.io/${REPO_SAN}:${{ steps.set-version.outputs.app_version }}-${{ steps.set-version.outputs.env }} ghcr.io/${REPO_SAN}:deploy
+          docker push ghcr.io/${REPO_SAN}:deploy
+          echo "Pushed deployment tag: ghcr.io/${REPO_SAN}:deploy"
 
   deploy-backend:
     needs: build-backend
@@ -120,5 +124,6 @@ jobs:
             set -e
             echo "[$(date)] Starting deployment..."
             # Set the image name for deployment
-            export IMAGE_NAME="ghcr.io/${{ github.repository }}:deploy"
+            REPO_SAN=$(echo "${{ github.repository }}" | sed 's/-/_/g')
+            export DEPLOY_IMAGE="ghcr.io/${REPO_SAN}:deploy"
             ./deploy.sh

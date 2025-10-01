@@ -50,7 +50,7 @@ ENV="production"
 APP_VERSION="latest"
 PUSH=false
 REGISTRY="ghcr.io"
-IMAGE_NAME="bibektimilsina00/news-portal"
+IMAGE_NAME="bibektimilsina00/news_portal"
 BRANCH=""
 DEPLOY_TAG=""
 
@@ -64,7 +64,7 @@ usage() {
   echo -e "  -v, --version VERSION  Set application version"
   echo -e "  -p, --push             Push image to registry after build"
   echo -e "  -r, --registry NAME    Docker registry name (default: ghcr.io)"
-  echo -e "  -n, --name NAME        Image name (default: bibektimilsina00/news-portal)"
+  echo -e "  -n, --name NAME        Image name (default: bibektimilsina00/news_portal)"
   echo -e "  -b, --branch BRANCH    Git branch to build from (auto-detected if not specified)"
   echo -e "  --deploy-tag TAG       Optional deploy tag to apply (example: 'deploy' or 'latest-production')"
   echo -e "  -h, --help             Show this help message"
