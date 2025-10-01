@@ -17,12 +17,12 @@ uv run alembic upgrade head
 
 # Run pre-start checks (if applicable)
 echo "[$(date)] Running pre-start checks..."
-uv run ./app/backend_pre_start.py || true
+uv run ./app/db_init/backend_pre_start.py || true
 
 
 # Create initial data (if applicable)
 echo "[$(date)] Creating initial data..."
-uv run ./app/initial_data.py || true
+uv run ./app/db_init/initial_data.py || true
 
 # Start the FastAPI application
 echo "[$(date)] Starting FastAPI application..."
