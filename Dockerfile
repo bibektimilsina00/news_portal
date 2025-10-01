@@ -1,36 +1,67 @@
-# Lightweight Dockerfile for news_portal
-FROM python:3.13-slim
+FROM python:3.13-slim-bookworm
 
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+# Build-time arguments for environment configuration
+ARG ENV=production
+ARG APP_VERSION=latest
+ARG GIT_BRANCH=unknown
 
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    libpq-dev \
+    gcc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN adduser --disabled-password --gecos "" appuser
+
+# Set up working directory
 WORKDIR /app
 
-# system deps
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential gcc libpq-dev curl && rm -rf /var/lib/apt/lists/*
+# Install UV
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+RUN uv --version
 
-# copy only pyproject for better cache
-COPY pyproject.toml uv.lock /app/
+# Create directories with correct permissions
+RUN mkdir -p /home/appuser/.cache/uv /app/.venv \
+    && chown -R appuser:appuser /home/appuser /app
 
-# install uv (package manager) and use it to install project dependencies
-# we only invoke pip here to install the `uv` tool itself; `uv` will
-# handle the rest of dependency installation (no direct pip installs).
-## install standalone `uv` binary from official releases and use it to install deps
-# Note: this uses the linux-amd64 release asset. If you need ARM support,
-# replace the URL with the appropriate artifact for your target architecture.
-RUN curl -fsSL -o /usr/local/bin/uv \
-	"https://github.com/astral-sh/uv/releases/latest/download/uv-linux-amd64" && \
-	chmod +x /usr/local/bin/uv && \
-	uv sync --no-dev
+# Copy ALL application files first
+COPY --chown=appuser:appuser . .
 
-# copy project
-COPY . /app
+# Add environment label
+LABEL environment=${ENV}
+LABEL version=${APP_VERSION}
+LABEL git_branch=${GIT_BRANCH}
+LABEL maintainer="News Portal Team"
 
-# add entrypoint that runs migrations before starting the app
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# Switch to non-root user for dependency installation
+USER appuser
 
-# expose
-EXPOSE 8000
+# Install dependencies based on environment
+RUN if [ "$ENV" = "development" ] || [ "$ENV" = "staging" ]; then \
+    uv sync; \
+    else \
+    uv sync --frozen; \
+    fi
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Make entrypoint executable
+RUN chmod +x entrypoint.sh
+
+# Configure environment
+ENV PYTHONPATH="/app" \
+    PORT=8080 \
+    PATH="/app/.venv/bin:$PATH" \
+    HOME="/home/appuser" \
+    APP_ENV=${ENV}
+
+# Expose port
+EXPOSE 8080
+
+# Add health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/health/ || exit 1
+
+# Set entrypoint
+ENTRYPOINT ["/app/entrypoint.sh"]
