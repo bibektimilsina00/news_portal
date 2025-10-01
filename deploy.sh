@@ -12,6 +12,11 @@ set -e
 DEPLOY_BRANCH="${1:-main}"
 FORCE_CLEAN="${2:-false}"
 
+# Allow overriding the full image name via DEPLOY_IMAGE env var (CI can set this)
+if [[ -n "${DEPLOY_IMAGE}" ]]; then
+  DOCKER_TAG="${DEPLOY_IMAGE}"
+fi
+
 # Show usage if help is requested
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
   echo "Usage: $0 [branch_name] [force]"
@@ -27,14 +32,16 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 fi
 
 # Determine Docker image tag based on branch
-if [[ "$DEPLOY_BRANCH" == "main" ]]; then
-  DOCKER_TAG="ghcr.io/bibektimilsina00/news-portal:deploy"
-elif [[ "$DEPLOY_BRANCH" == "develop" ]]; then
-  DOCKER_TAG="ghcr.io/bibektimilsina00/news-portal:develop-deploy"
-else
-  # For feature branches, use branch-specific tag
-  BRANCH_TAG=$(echo "$DEPLOY_BRANCH" | sed 's/[^a-zA-Z0-9]/-/g')
-  DOCKER_TAG="ghcr.io/bibektimilsina00/news-portal:${BRANCH_TAG}-deploy"
+if [[ -z "${DOCKER_TAG}" ]]; then
+  if [[ "$DEPLOY_BRANCH" == "main" ]]; then
+    DOCKER_TAG="ghcr.io/bibektimilsina00/news-portal:deploy"
+  elif [[ "$DEPLOY_BRANCH" == "develop" ]]; then
+    DOCKER_TAG="ghcr.io/bibektimilsina00/news-portal:develop-deploy"
+  else
+    # For feature branches, use branch-specific tag
+    BRANCH_TAG=$(echo "$DEPLOY_BRANCH" | sed 's/[^a-zA-Z0-9]/-/g')
+    DOCKER_TAG="ghcr.io/bibektimilsina00/news-portal:${BRANCH_TAG}-deploy"
+  fi
 fi
 
 # Color definitions

@@ -52,6 +52,7 @@ PUSH=false
 REGISTRY="ghcr.io"
 IMAGE_NAME="bibektimilsina00/news-portal"
 BRANCH=""
+DEPLOY_TAG=""
 
 # Print usage
 usage() {
@@ -65,6 +66,7 @@ usage() {
   echo -e "  -r, --registry NAME    Docker registry name (default: ghcr.io)"
   echo -e "  -n, --name NAME        Image name (default: bibektimilsina00/news-portal)"
   echo -e "  -b, --branch BRANCH    Git branch to build from (auto-detected if not specified)"
+  echo -e "  --deploy-tag TAG       Optional deploy tag to apply (example: 'deploy' or 'latest-production')"
   echo -e "  -h, --help             Show this help message"
   exit 1
 }
@@ -98,6 +100,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     -b|--branch)
       BRANCH="$2"
+      shift 2
+      ;;
+    --deploy-tag)
+      DEPLOY_TAG="$2"
       shift 2
       ;;
     -h|--help)
@@ -144,8 +150,8 @@ else
   log_warning "${ENV_FILE} does not exist."
 fi
 
-# Set image tags
-FULL_TAG="${REGISTRY}/${IMAGE_NAME}:latest-${ENV}"
+# Set image tags (use versioned tag)
+FULL_TAG="${REGISTRY}/${IMAGE_NAME}:${APP_VERSION}-${ENV}"
 if [[ "$ENV" == "production" ]]; then
   LATEST_TAG="${REGISTRY}/${IMAGE_NAME}:latest"
   log_info "Will also tag as: ${BOLD}${LATEST_TAG}${NC}"
@@ -173,18 +179,29 @@ fi
 # Push images if requested
 if [[ "$PUSH" == true ]]; then
   log_header "PUSHING IMAGES TO REGISTRY"
-  
-  # We're already logged in from the build step, so we can proceed with pushing
+
+  # Push the versioned build tag
   log_step "Pushing ${FULL_TAG}..."
   docker push "${FULL_TAG}"
   log_success "${FULL_TAG} pushed"
-  
-  if [[ "$ENV" == "production" ]]; then
-    log_step "Pushing ${LATEST_TAG}..."
-    docker push "${LATEST_TAG}"
-    log_success "${LATEST_TAG} pushed"
+
+  # If a deploy tag was requested, tag and push that single deploy tag (used by CI/CD)
+  if [[ -n "$DEPLOY_TAG" ]]; then
+    DEPLOY_FULL_TAG="${REGISTRY}/${IMAGE_NAME}:${DEPLOY_TAG}"
+    log_step "Tagging ${FULL_TAG} as ${DEPLOY_FULL_TAG}..."
+    docker tag "${FULL_TAG}" "${DEPLOY_FULL_TAG}"
+    log_step "Pushing ${DEPLOY_FULL_TAG}..."
+    docker push "${DEPLOY_FULL_TAG}"
+    log_success "${DEPLOY_FULL_TAG} pushed"
+  else
+    # For production builds without an explicit deploy tag, also push the :latest tag
+    if [[ "$ENV" == "production" ]]; then
+      log_step "Pushing ${LATEST_TAG}..."
+      docker push "${LATEST_TAG}"
+      log_success "${LATEST_TAG} pushed"
+    fi
   fi
-  
+
   log_success "All images pushed successfully!"
 fi
 
