@@ -107,7 +107,7 @@ jobs:
 
           echo "HOST is: ${{vars.SERVER_HOST}}"
           echo "USERNAME is: ${{ vars.SERVER_NAME }}" 
-          echo "SSH_KEY is: ${{ secrets.ACCESS_TOKEN_SECRET }}"
+          echo "SSH_KEY is: ${{ secrets.SSH_PRIVATE_KEY }}"
           echo "FIRST_SUPER_USER is: ${{ secrets.FIRST_SUPERUSER }}"
 
       - name: Deploy to DigitalOcean
@@ -119,36 +119,6 @@ jobs:
           script: |
             set -e
             echo "[$(date)] Starting deployment..."
-
-            # Navigate to deployment directory
-            cd /opt/news-portal
-
             # Set the image name for deployment
             export IMAGE_NAME="ghcr.io/${{ github.repository }}:deploy"
-
-            # Pull latest image
-            echo "Pulling latest image: $IMAGE_NAME"
-            docker pull $IMAGE_NAME
-
-            # Stop existing containers
-            echo "Stopping existing containers..."
-            docker-compose down
-
-            # Start new containers
-            echo "Starting new containers..."
-            docker-compose up -d
-
-            # Run database migrations
-            echo "Running database migrations..."
-            docker-compose exec -T web uv run alembic upgrade head
-
-            # Health check
-            echo "Performing health check..."
-            sleep 30
-            curl -f http://localhost:8000/api/v1/health || exit 1
-
-            # Clean up old images
-            echo "Cleaning up old images..."
-            docker image prune -f
-
-            echo "[$(date)] Deployment completed successfully!"
+            ./deploy.sh
