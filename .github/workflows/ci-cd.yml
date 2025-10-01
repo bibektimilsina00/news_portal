@@ -1,0 +1,153 @@
+name: Deploy Production
+
+on:
+  push:
+    branches: [main, production]
+    tags:
+      - "v*"
+  pull_request:
+    types: [closed]
+    branches: [production]
+
+jobs:
+  build-backend:
+    if: |
+      (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)) &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production/backend' || startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 15
+    outputs:
+      app_version: ${{ steps.set-version.outputs.app_version }}
+      env: ${{ steps.set-version.outputs.env }}
+
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: � Set version and environment
+        id: set-version
+        run: |
+          # Determine version based on trigger
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            VERSION=$(echo ${{ github.ref }} | sed 's|refs/tags/||')
+            ENV="production"
+          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            VERSION="latest"
+            ENV="production"
+          else
+            VERSION="dev"
+            ENV="staging"
+          fi
+
+          echo "app_version=$VERSION" >> $GITHUB_OUTPUT
+          echo "env=$ENV" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION, Environment: $ENV"
+
+      - name: �🔐 Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PAT }}
+
+      - name: 📝 Generate .env file for production
+        run: |
+          cat <<EOF > .env
+          ENVIRONMENT=production
+          SERVER_NAME=${{ vars.SERVER_NAME }}
+          SERVER_HOST=${{ vars.SERVER_HOST }}
+          PROJECT_NAME=${{ vars.PROJECT_NAME }}
+          FIRST_SUPERUSER=${{ secrets.FIRST_SUPERUSER }}
+          FIRST_SUPERUSER_PASSWORD=${{ secrets.FIRST_SUPERUSER_PASSWORD }}
+          FIRST_SUPERUSER_PHONE=${{ secrets.FIRST_SUPERUSER_PHONE }}
+          USERS_OPEN_REGISTRATION=False
+          ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}
+          BACKEND_CORS_ORIGINS=${{ vars.BACKEND_CORS_ORIGINS }}
+          ACCESS_TOKEN_EXPIRE_MINUTES=${{ vars.ACCESS_TOKEN_EXPIRE_MINUTES }}
+          REFRESH_TOKEN_EXPIRE_MINUTES=${{ vars.REFRESH_TOKEN_EXPIRE_MINUTES }}
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_SERVER=${{ vars.POSTGRES_SERVER }}
+          POSTGRES_PORT=${{ vars.POSTGRES_PORT }}
+          POSTGRES_SSL_MODE=${{ vars.POSTGRES_SSL_MODE }}
+          POSTGRES_CONNECT_TIMEOUT=${{ vars.POSTGRES_CONNECT_TIMEOUT }}
+          UVICORN_HOST=${{ vars.UVICORN_HOST }}
+          UVICORN_PORT=${{ vars.UVICORN_PORT }}
+          UVICORN_LOG_LEVEL=${{ vars.UVICORN_LOG_LEVEL }}
+ 
+          EOF
+
+      - name: 🚀 Run build script and push image
+        run: |
+          chmod +x build.sh
+          ./build.sh \
+            --env "${{ steps.set-version.outputs.env }}" \
+            --version "${{ steps.set-version.outputs.app_version }}" \
+            --push \
+            --registry "ghcr.io" \
+            --name "${{ github.repository }}"
+
+      - name: 🏷️ Tag production image
+        if: success()
+        run: |
+          # Pull the built image and tag it for deployment
+          docker pull ghcr.io/${{ github.repository }}:${{ steps.set-version.outputs.app_version }}-${{ steps.set-version.outputs.env }}
+          docker tag ghcr.io/${{ github.repository }}:${{ steps.set-version.outputs.app_version }}-${{ steps.set-version.outputs.env }} ghcr.io/${{ github.repository }}:deploy
+          docker push ghcr.io/${{ github.repository }}:deploy
+          echo "Pushed deployment tag: ghcr.io/${{ github.repository }}:deploy"
+
+  deploy-backend:
+    needs: build-backend
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Debug check
+        run: |
+
+          echo "HOST is: ${{vars.SERVER_HOST}}"
+          echo "USERNAME is: ${{ vars.SERVER_NAME }}" 
+          echo "SSH_KEY is: ${{ secrets.ACCESS_TOKEN_SECRET }}"
+          echo "FIRST_SUPER_USER is: ${{ secrets.FIRST_SUPERUSER }}"
+
+      - name: Deploy to DigitalOcean
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.SERVER_HOST }}
+          username: ${{ vars.SERVER_NAME }}
+          key: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          script: |
+            set -e
+            echo "[$(date)] Starting deployment..."
+
+            # Navigate to deployment directory
+            cd /opt/news-portal
+
+            # Set the image name for deployment
+            export IMAGE_NAME="ghcr.io/${{ github.repository }}:deploy"
+
+            # Pull latest image
+            echo "Pulling latest image: $IMAGE_NAME"
+            docker pull $IMAGE_NAME
+
+            # Stop existing containers
+            echo "Stopping existing containers..."
+            docker-compose down
+
+            # Start new containers
+            echo "Starting new containers..."
+            docker-compose up -d
+
+            # Run database migrations
+            echo "Running database migrations..."
+            docker-compose exec -T web uv run alembic upgrade head
+
+            # Health check
+            echo "Performing health check..."
+            sleep 30
+            curl -f http://localhost:8000/api/v1/health || exit 1
+
+            # Clean up old images
+            echo "Cleaning up old images..."
+            docker image prune -f
+
+            echo "[$(date)] Deployment completed successfully!"

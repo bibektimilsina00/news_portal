@@ -113,3 +113,26 @@ This project is licensed under the MIT License.
 This project is inspired by the full-stack-fastapi-postgresql template created by the legendary Sebastián Ramírez. Big thanks to the FastAPI and Docker communities for their amazing work and support.
 
 Now go ahead and build something awesome! 🚀✨
+
+## CI / Continuous Integration
+
+The project includes GitHub Actions workflows to run linting, type checking, database migrations, tests with coverage, and an optional Docker image build/push workflow. Replace OWNER and REPO in the badge URLs below with your GitHub organization and repository name to show live status.
+
+- CI (main pipeline):
+
+   ![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)
+
+- Docker build/push (optional):
+
+   ![Docker build & push](https://github.com/OWNER/REPO/actions/workflows/docker-build-push.yml/badge.svg)
+
+What the pipeline runs (typical):
+
+- Install dependencies
+- Run formatters and linters (ruff/black/isort)
+- Type-check with mypy
+- Run Alembic migrations against a test Postgres service
+- Run pytest and upload coverage
+- (Optional) Build and push a Docker image to GHCR
+
+Tip: To enable the Docker build/push workflow you will need to add repository secrets (for example, `GHCR_PAT` or use the default `GITHUB_TOKEN`) in your repository settings.

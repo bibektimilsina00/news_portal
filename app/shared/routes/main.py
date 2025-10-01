@@ -39,8 +39,10 @@ from app.modules.stories.routes.interactions import router as interactions_route
 from app.modules.stories.routes.stories import router as stories_router
 from app.modules.stories.routes.viewers import router as viewers_router
 from app.modules.users.routes import profile, users, verification
+from app.shared.routes.health import router as health_router
 
 api_router = APIRouter()
+api_router.include_router(health_router, tags=["health"])
 api_router.include_router(auth_router, tags=["authentication"])
 api_router.include_router(oauth_router, prefix="/auth", tags=["oauth"])
 api_router.include_router(two_factor_router, prefix="/auth", tags=["two-factor"])

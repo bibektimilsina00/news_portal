@@ -237,6 +237,110 @@ docker-logs: ## Show Docker logs
 	@echo "$(BLUE)📋 Showing Docker logs...$(NC)"
 	docker-compose logs -f
 
+db-reset: ## ⚠️  Reset database to initial state
+	@echo "$(RED)🚨 WARNING: This will delete all data!$(NC)"
+	@read -p "Are you sure? (y/N): " confirm; \
+	if [[ $$confirm =~ ^[Yy]$ ]]; then \
+		echo "$(YELLOW)Resetting database...$(NC)"; \
+		uv run alembic downgrade base; \
+		uv run alembic upgrade head; \
+		echo "$(GREEN)✅ Database reset complete!$(NC)"; \
+	else \
+		echo "$(YELLOW)Aborted.$(NC)"; \
+	fi
+
+# =============================================================================
+# Docker & Deployment
+# =============================================================================
+docker-build: ## Build Docker image
+	@echo "$(BLUE)🏗️ Building Docker image...$(NC)"
+	docker build -t news-portal:latest .
+
+docker-run: ## Run Docker container locally
+	@echo "$(BLUE)🚀 Running Docker container...$(NC)"
+	docker run -p 8000:8000 --env-file .env news-portal:latest
+
+docker-dev: ## Start local development with Docker Compose
+	@echo "$(BLUE)🐳 Starting local development environment...$(NC)"
+	docker-compose up -d
+	@echo "$(GREEN)✅ Services started!$(NC)"
+	@echo "$(YELLOW)API available at: http://localhost:8000$(NC)"
+	@echo "$(YELLOW)API docs at: http://localhost:8000/docs$(NC)"
+
+docker-dev-logs: ## View Docker Compose logs
+	@echo "$(BLUE)📋 Viewing Docker Compose logs...$(NC)"
+	docker-compose logs -f
+
+docker-dev-stop: ## Stop Docker Compose services
+	@echo "$(BLUE)🛑 Stopping Docker Compose services...$(NC)"
+	docker-compose down
+
+docker-prod-build: ## Build production Docker image
+	@echo "$(BLUE)🏗️ Building production Docker image...$(NC)"
+	docker build -t news-portal:prod .
+
+docker-deploy-prep: ## Prepare deployment files
+	@echo "$(BLUE)📦 Preparing deployment files...$(NC)"
+	@if [ ! -f .env.prod ]; then \
+		cp .env.prod.example .env.prod; \
+		echo "$(YELLOW)⚠️  Created .env.prod from template. Please configure it!$(NC)"; \
+	else \
+		echo "$(GREEN)✅ .env.prod already exists$(NC)"; \
+	fi
+	@echo "$(GREEN)✅ Deployment files ready!$(NC)"
+
+deploy-check: ## Check deployment prerequisites
+	@echo "$(BLUE)🔍 Checking deployment prerequisites...$(NC)"
+	@if [ ! -f .env.prod ]; then \
+		echo "$(RED)❌ .env.prod not found. Run 'make deploy-prep' first.$(NC)"; \
+		exit 1; \
+	fi
+	@if ! command -v docker-compose &> /dev/null; then \
+		echo "$(RED)❌ docker-compose not found.$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(GREEN)✅ Prerequisites check passed!$(NC)"
+
+deploy-local: ## Deploy locally with Docker Compose
+	@echo "$(BLUE)🚀 Deploying locally...$(NC)"
+	$(MAKE) deploy-check
+	docker-compose -f docker-compose.prod.yml up -d --build
+	@echo "$(YELLOW)⏳ Waiting for services to be healthy...$(NC)"
+	sleep 30
+	docker-compose -f docker-compose.prod.yml exec -T web uv run alembic upgrade head
+	@echo "$(GREEN)✅ Local deployment complete!$(NC)"
+	@echo "$(YELLOW)API available at: http://localhost:8000$(NC)"
+
+deploy-remote: ## Deploy to remote server (requires SSH config)
+	@echo "$(BLUE)🚀 Deploying to remote server...$(NC)"
+	@if [ -z "$$REMOTE_HOST" ]; then \
+		echo "$(RED)❌ REMOTE_HOST not set. Usage: make deploy-remote REMOTE_HOST=user@host$(NC)"; \
+		exit 1; \
+	fi
+	rsync -avz --exclude='.git' --exclude='__pycache__' --exclude='.env' . $$REMOTE_HOST:/opt/news-portal/
+	ssh $$REMOTE_HOST "cd /opt/news-portal && make deploy-local"
+
+backup: ## Create database backup
+	@echo "$(BLUE)💾 Creating database backup...$(NC)"
+	@timestamp=$$(date +%Y%m%d_%H%M%S); \
+	docker-compose -f docker-compose.prod.yml exec -T db pg_dump -U $$POSTGRES_USER $$POSTGRES_DB > backup_$$timestamp.sql; \
+	echo "$(GREEN)✅ Backup created: backup_$$timestamp.sql$(NC)"
+
+restore: ## Restore database from backup
+	@echo "$(BLUE)🔄 Restoring database from backup...$(NC)"
+	@if [ -z "$$BACKUP_FILE" ]; then \
+		echo "$(RED)❌ BACKUP_FILE not specified. Usage: make restore BACKUP_FILE=backup_file.sql$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(RED)🚨 WARNING: This will overwrite the current database!$(NC)"
+	@read -p "Are you sure? (y/N): " confirm; \
+	if [[ $$confirm =~ ^[Yy]$ ]]; then \
+		docker-compose -f docker-compose.prod.yml exec -T db psql -U $$POSTGRES_USER -d $$POSTGRES_DB < $$BACKUP_FILE; \
+		echo "$(GREEN)✅ Database restored from $$BACKUP_FILE$(NC)"; \
+	else \
+		echo "$(YELLOW)Aborted.$(NC)"; \
+	fi
+
 # =============================================================================
 # Utility Commands
 # =============================================================================

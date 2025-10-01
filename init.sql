@@ -1,0 +1,9 @@
+-- Initial database setup for News Portal
+-- This file runs when the PostgreSQL container is first created
+-- Create extensions if needed
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- CREATE EXTENSION IF NOT EXISTS "pg_trgm";
+-- You can add any initial database setup here
+-- For example: creating additional databases, users, or initial data
+-- Note: The main database schema is created by Alembic migrations
+-- This file is mainly for any PostgreSQL-specific setup
