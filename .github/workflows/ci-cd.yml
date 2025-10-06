@@ -115,7 +115,7 @@ jobs:
           echo "FIRST_SUPER_USER is: ${{ secrets.FIRST_SUPERUSER }}"
 
       - name: Deploy to DigitalOcean
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ vars.SERVER_HOST }}
           username: ${{ vars.SERVER_NAME }}
